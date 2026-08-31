@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quest Keeper — the game library that knows what you actually played</title>
+<meta name="description" content="A game library and play-session tracker for Mac and iPhone. Finds your cover art, logs a session in one tap, and keeps thousands of games in order.">
+
+<meta property="og:title" content="Quest Keeper">
+<meta property="og:description" content="The game library that knows what you actually played. Mac and iPhone.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.png">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<style>
+/* The app's identity is blocky — square corners on purpose, monospace for anything that is
+   data rather than prose. The site inherits that rather than inventing a softer version of it. */
+:root{
+  --bg:#F4F4F6; --panel:#FFFFFF; --ink:#16161A; --dim:#5C5C68; --line:#D8D8DE;
+  --accent:#2F5FE0; --done:#2E8B57; --attention:#C97F19; --danger:#B52318; --progress:#7D5CFF;
+  --ground:#16161A;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0E0E12; --panel:#17171D; --ink:#F2F2F0; --dim:#9A9AA6; --line:#2A2A34;
+         --accent:#7FA0FF; --done:#57C98A; --attention:#E8AC4A; --danger:#E5665A; --progress:#A98CFF; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+section{padding:88px 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+h1,h2,h3{margin:0 0 16px;letter-spacing:-0.02em;line-height:1.08}
+h1{font-size:clamp(34px,6vw,62px);font-weight:800}
+h2{font-size:clamp(26px,4vw,42px);font-weight:800}
+h3{font-size:19px;font-weight:700;letter-spacing:-0.01em}
+p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
+.lead{font-size:clamp(18px,2.2vw,22px);color:var(--dim);max-width:56ch}
+
+/* ---- hero ---- */
+#hero{background:var(--ground);color:#F2F2F0;border-top:0;padding:64px 0 0}
+#hero p{color:#A6A6B4}
+.badge{
+  display:inline-block;padding:5px 10px;border:1px solid #3A3A46;color:#A6A6B4;
+  font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;
+}
+.mark{display:block;width:76px;height:76px;margin-bottom:22px}
+.shot{
+  display:block;width:100%;max-width:1000px;margin:56px auto -1px;border:1px solid #2A2A34;
+  border-bottom:0;box-shadow:0 -20px 60px rgba(0,0,0,.35);
+}
+.shotnote{text-align:center;font-size:12px;color:#6E6E7C;padding:0 0 14px}
+
+/* ---- feature grid ---- */
+.grid{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);margin-top:40px}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+.cell{background:var(--panel);padding:28px}
+.cell p{font-size:15px;margin-bottom:0}
+.glyph{font-size:22px;line-height:1;margin-bottom:14px;display:block}
+
+/* ---- status list ---- */
+.statuses{list-style:none;padding:0;margin:32px 0 0;border-top:1px solid var(--line)}
+.statuses li{
+  display:flex;gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);
+}
+.statuses .name{
+  font-weight:700;font-size:14px;letter-spacing:0.04em;text-transform:uppercase;
+  min-width:132px;flex:none;
+}
+.statuses .what{color:var(--dim);font-size:15px}
+
+/* ---- keyboard ---- */
+.keys{display:grid;gap:10px 20px;margin-top:32px}
+@media(min-width:640px){.keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.keyrow{display:flex;gap:14px;align-items:center;font-size:15px;color:var(--dim)}
+kbd{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:600;
+  color:var(--ink);background:var(--panel);border:1px solid var(--line);border-bottom-width:3px;
+  padding:4px 9px;letter-spacing:0.7px;min-width:52px;text-align:center;flex:none;
+}
+
+footer{padding:56px 0;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<section id="hero">
+  <div class="wrap">
+    <!-- The mark, inline so there is one copy of it and it stays sharp at any size. -->
+    <svg class="mark" viewBox="0 0 256 256" aria-label="Quest Keeper" role="img">
+      <rect width="256" height="256" fill="#16161A"/>
+      <g>
+        <rect x="22"  y="72" width="66" height="128" fill="#B52318"/>
+        <rect x="63"  y="172" width="25" height="28" fill="#16161A"/>
+        <rect x="31"  y="115" width="48" height="44" fill="#F2F2F0"/>
+        <rect x="96"  y="72" width="66" height="156" fill="#C97F19"/>
+        <rect x="137" y="200" width="25" height="28" fill="#16161A"/>
+        <rect x="105" y="126" width="48" height="53" fill="#F2F2F0"/>
+        <rect x="115" y="147" width="28" height="10" fill="#16161A"/>
+        <rect x="124" y="138" width="10" height="28" fill="#16161A"/>
+        <rect x="170" y="72" width="66" height="136" fill="#2F5FE0"/>
+        <rect x="211" y="180" width="25" height="28" fill="#16161A"/>
+        <rect x="179" y="118" width="48" height="46" fill="#F2F2F0"/>
+      </g>
+      <rect x="16" y="46" width="224" height="16" fill="#F2F2F0"/>
+    </svg>
+
+    <span class="badge mono">macOS &amp; iPhone</span>
+    <h1>The game library that<br>knows what you actually played.</h1>
+    <p class="lead">Quest Keeper holds thousands of games without turning into a spreadsheet.
+      It finds your cover art, logs a session in one tap, and never makes you type the same
+      thing twice.</p>
+
+    <img class="shot" src="screenshot-mac.png" alt="Quest Keeper on macOS: a game library with cover art, filters down the left and a keyboard guide on the right.">
+    <p class="shotnote mono">Quest Keeper on macOS</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>It fills in the covers itself.</h2>
+    <p>A library you cannot recognise at a glance is a list, not a library. Quest Keeper pulls
+      box art automatically — matching on what you typed, not on what you should have typed, so
+      "Froze Horizon 4" still finds Forza. When one source has nothing, it asks another.</p>
+    <div class="grid">
+      <div class="cell">
+        <span class="glyph">🔎</span>
+        <h3>Spelling you don't have to fix</h3>
+        <p>Fuzzy title matching, scored by how much of your search the candidate actually
+          covers — so a near-match wins and a coincidence doesn't.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">📚</span>
+        <h3>Import what you already own</h3>
+        <p>Bring in a Steam library or a CSV. Duplicates are caught on the way in, including
+          the same game spelled two different ways.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">🖼️</span>
+        <h3>List or covers, one click apart</h3>
+        <p>Names and status when you're organising; a wall of box art when you're deciding
+          what to play. Same games, same filters, different shape.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">☁️</span>
+        <h3>The same library everywhere</h3>
+        <p>iCloud sync between Mac and iPhone, continuously and without a Sync button to
+          remember to press.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>One tap to log a session.</h2>
+    <p>The moment you want to record playing something is the moment you least want to open an
+      app. The iPhone widget puts your recent games on the home screen — tap one, it's logged,
+      and the widget resets itself. Search from the widget for anything you haven't played
+      lately.</p>
+    <p>On the Mac it's a keystroke: <kbd>⌘L</kbd> logs the game you have selected, without
+      opening anything.</p>
+    <div class="grid">
+      <div class="cell">
+        <span class="glyph">⚡</span>
+        <h3>No app launch</h3>
+        <p>The widget writes the session itself and hands it over next time you open the app.
+          Nothing is lost if you never do.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">✏️</span>
+        <h3>Fix it later</h3>
+        <p>Every session can be edited or deleted. A quick log is a starting point, not a
+          commitment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Five honest answers to "what is this game to me?"</h2>
+    <p>Not a rating. Where the game actually stands with you — and Backlog empties itself,
+      because logging a session on a game proves you started it.</p>
+    <ul class="statuses">
+      <li><span class="name mono" style="color:var(--attention)">Backlog</span>
+          <span class="what">Games you want to play but haven't started yet</span></li>
+      <li><span class="name mono" style="color:var(--done)">Questing</span>
+          <span class="what">Games you're actively playing</span></li>
+      <li><span class="name mono" style="color:var(--progress)">Post-Game</span>
+          <span class="what">Main content is done, but you still have optional goals</span></li>
+      <li><span class="name mono">Trophy Case</span>
+          <span class="what">Games you've completed 100%</span></li>
+      <li><span class="name mono" style="color:var(--dim)">Abandoned</span>
+          <span class="what">Games you've given up on or decided not to play</span></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Built for a keyboard, not adapted to one.</h2>
+    <p>A list of several thousand rows that can only be driven with a mouse is not a library,
+      it's an endurance test. Every action has a key, and every key is published in a guide
+      that sits beside the list rather than hidden in a menu.</p>
+    <div class="keys">
+      <div class="keyrow"><kbd>↑ ↓</kbd><span>Move through games</span></div>
+      <div class="keyrow"><kbd>A–Z</kbd><span>Jump to that letter</span></div>
+      <div class="keyrow"><kbd>↩</kbd><span>Open the selected game</span></div>
+      <div class="keyrow"><kbd>⌘L</kbd><span>Log a session on it, right now</span></div>
+      <div class="keyrow"><kbd>⌘F</kbd><span>Search</span></div>
+      <div class="keyrow"><kbd>space</kbd><span>Turn a filter on or off</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Make it look like yours.</h2>
+    <p>A shelf of themes, each with its own mood rather than its own tint — and every one of
+      them checked for contrast, so nothing goes unreadable to make something else look good.
+      Turn on shuffle and the app picks a new one each launch, light or dark.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="mono" style="margin:0">Quest Keeper — a game library and play-session tracker for
+      macOS and iOS.</p>
+    <p style="margin:8px 0 0">Made by Eric Linder.</p>
+  </div>
+</footer>
+
+</body>
+</html>
