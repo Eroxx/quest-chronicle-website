@@ -51,11 +51,20 @@ p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
   font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;
 }
 .mark{display:block;width:76px;height:76px;margin-bottom:22px}
-.shot{
-  display:block;width:100%;max-width:1000px;margin:56px auto -1px;border:1px solid #2A2A34;
-  border-bottom:0;box-shadow:0 -20px 60px rgba(0,0,0,.35);
+.shots{
+  display:flex;align-items:flex-end;justify-content:center;gap:24px;
+  max-width:1000px;margin:56px auto -1px;
 }
+.shot{display:block;border:1px solid #2A2A34;border-bottom:0;box-shadow:0 -20px 60px rgba(0,0,0,.35)}
+.shot-mac{flex:1 1 780px;max-width:800px;width:100%}
+.shot-iphone{flex:0 0 170px;width:170px}
 .shotnote{text-align:center;font-size:12px;color:#6E6E7C;padding:0 0 14px}
+@media(max-width:700px){
+  .shots{flex-direction:column;align-items:center;margin:56px auto 0;gap:28px}
+  .shot{border-bottom:1px solid #2A2A34;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+  .shot-mac{max-width:480px}
+  .shot-iphone{width:auto;max-width:200px}
+}
 
 /* ---- feature grid ---- */
 .grid{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);margin-top:40px}
@@ -93,6 +102,36 @@ p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
 @media(max-width:700px){
   .pipeline{grid-template-columns:1fr 1fr;row-gap:28px}
   .pipeline-track,.pipeline-track-fill{display:none}
+}
+
+/* ---- skins ---- */
+.skins{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:2px;
+  background:var(--line);border:1px solid var(--line);margin-top:40px}
+.skin{background:var(--panel);padding:24px}
+.skin h3{margin-bottom:4px;font-size:15px}
+.skin p{font-size:14px;margin-bottom:0}
+.swatch{display:flex;gap:6px;margin-bottom:16px}
+.chip{width:22px;height:22px;border:1px solid var(--line);flex:none}
+.chip-paper{background:var(--sk-paper)}
+.chip-panel{background:var(--sk-panel)}
+.chip-ink{background:var(--sk-ink)}
+.chip-accent{background:var(--sk-accent)}
+[data-skin="system"]{--sk-paper:var(--bg);--sk-panel:var(--panel);--sk-ink:var(--ink);--sk-accent:var(--accent)}
+[data-skin="terminal"]{--sk-paper:#F2EDE0;--sk-panel:#FAF5EB;--sk-ink:#006600;--sk-accent:#006600}
+[data-skin="steampunk"]{--sk-paper:#E8D9BA;--sk-panel:#F2E6CC;--sk-ink:#3D210D;--sk-accent:#6B471A}
+[data-skin="cyberpunk"]{--sk-paper:#DEE3F7;--sk-panel:#EDF0FF;--sk-ink:#1A0D38;--sk-accent:#CC0D85}
+[data-skin="anime"]{--sk-paper:#FCEBED;--sk-panel:#FFF7F7;--sk-ink:#4D1A33;--sk-accent:#852EC7}
+[data-skin="scifi"]{--sk-paper:#EDF2F7;--sk-panel:#FAFCFF;--sk-ink:#0F263D;--sk-accent:#3385B8}
+[data-skin="arcade"]{--sk-paper:#D6D9E0;--sk-panel:#EBEDF2;--sk-ink:#0F0F14;--sk-accent:#D11424}
+[data-skin="handheld"]{--sk-paper:#C2CC82;--sk-panel:#ABBA70;--sk-ink:#0F210F;--sk-accent:#304224}
+@media (prefers-color-scheme:dark){
+  [data-skin="terminal"]{--sk-paper:#0A0F0A;--sk-panel:#121A12;--sk-ink:#5CF26B;--sk-accent:#3DB852}
+  [data-skin="steampunk"]{--sk-paper:#1C140D;--sk-panel:#2B2114;--sk-ink:#E6C78C;--sk-accent:#B8852E}
+  [data-skin="cyberpunk"]{--sk-paper:#0E0B17;--sk-panel:#1B1429;--sk-ink:#1AF2E0;--sk-accent:#F22699}
+  [data-skin="anime"]{--sk-paper:#1A1426;--sk-panel:#292138;--sk-ink:#F7E6F2;--sk-accent:#EB7AA8}
+  [data-skin="scifi"]{--sk-paper:#080F1A;--sk-panel:#0F1B2B;--sk-ink:#B8E6FF;--sk-accent:#339ED9}
+  [data-skin="arcade"]{--sk-paper:#0D0C12;--sk-panel:#1C1B25;--sk-ink:#FFED4D;--sk-accent:#F22938}
+  [data-skin="handheld"]{--sk-paper:#242B17;--sk-panel:#333D21;--sk-ink:#CCE099;--sk-accent:#ADCC66}
 }
 
 /* ---- keyboard ---- */
@@ -138,8 +177,11 @@ footer a{color:var(--accent)}
       not a chore. It tracks the details for you — finds your cover art, logs a session in one
       tap, and never makes you type the same thing twice.</p>
 
-    <img class="shot" src="screenshot-mac.png" alt="Quest Keeper on macOS: a game library with cover art, filters down the left and a keyboard guide on the right.">
-    <p class="shotnote mono">Quest Keeper on macOS</p>
+    <div class="shots">
+      <img class="shot shot-mac" src="screenshot-mac.png" alt="Quest Keeper on macOS: a game library with cover art, filters down the left and a keyboard guide on the right.">
+      <img class="shot shot-iphone" src="screenshot-iphone.png" alt="Quest Keeper on iPhone: the games library, filterable by console, genre and status, with the same details as the Mac.">
+    </div>
+    <p class="shotnote mono">Quest Keeper on macOS &amp; iPhone</p>
   </div>
 </section>
 
@@ -262,6 +304,72 @@ footer a{color:var(--accent)}
     <p>A shelf of themes, each with its own mood rather than its own tint — and every one of
       them checked for contrast, so nothing goes unreadable to make something else look good.
       Turn on shuffle and the app picks a new one each launch, light or dark.</p>
+    <div class="skins">
+      <div class="skin" data-skin="system">
+        <div class="swatch">
+          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
+          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+        </div>
+        <h3 class="mono">Classic</h3>
+        <p>The original look. Follows light/dark.</p>
+      </div>
+      <div class="skin" data-skin="terminal">
+        <div class="swatch">
+          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
+          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+        </div>
+        <h3 class="mono">Green Terminal</h3>
+        <p>Phosphor on paper, or on glass.</p>
+      </div>
+      <div class="skin" data-skin="steampunk">
+        <div class="swatch">
+          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
+          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+        </div>
+        <h3 class="mono">Steampunk</h3>
+        <p>Brass, oxblood and aged parchment.</p>
+      </div>
+      <div class="skin" data-skin="cyberpunk">
+        <div class="swatch">
+          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
+          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+        </div>
+        <h3 class="mono">Cyberpunk</h3>
+        <p>Neon signage after the rain.</p>
+      </div>
+      <div class="skin" data-skin="anime">
+        <div class="swatch">
+          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
+          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+        </div>
+        <h3 class="mono">Anime</h3>
+        <p>Sakura, sky and clean line art.</p>
+      </div>
+      <div class="skin" data-skin="scifi">
+        <div class="swatch">
+          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
+          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+        </div>
+        <h3 class="mono">Sci-Fi</h3>
+        <p>Cold instrumentation, amber warnings.</p>
+      </div>
+      <div class="skin" data-skin="arcade">
+        <div class="swatch">
+          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
+          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+        </div>
+        <h3 class="mono">Arcade</h3>
+        <p>Cabinet glass in a dark room.</p>
+      </div>
+      <div class="skin" data-skin="handheld">
+        <div class="swatch">
+          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
+          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+        </div>
+        <h3 class="mono">Handheld</h3>
+        <p>Four shades of green, like it's 1989.</p>
+      </div>
+    </div>
   </div>
 </section>
 
