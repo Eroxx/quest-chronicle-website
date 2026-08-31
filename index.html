@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quest Keeper — the game library that knows what you actually played</title>
+<title>Quest Chronicle — the game library that knows what you actually played</title>
 <meta name="description" content="A game library and play-session tracker for Mac and iPhone. Finds your cover art, logs a session in one tap, and keeps thousands of games in order.">
 
-<meta property="og:title" content="Quest Keeper">
+<meta property="og:title" content="Quest Chronicle">
 <meta property="og:description" content="The game library that knows what you actually played. Mac and iPhone.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="og-image.png">
+<meta property="og:image" content="https://eroxx.github.io/quest-keeper-website/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://eroxx.github.io/quest-keeper-website/">
+<meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
@@ -127,15 +131,60 @@ p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
   .pipeline-track,.pipeline-track-fill{display:none}
 }
 
-/* ---- skins ---- */
-.skins{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2px;
+/* ---- eyebrow ---- */
+.eyebrow{
+  font-size:12px;font-weight:700;letter-spacing:0.11em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 12px;
+}
+
+/* ---- skins ----
+   Each card carries both grounds and shows one. The checkbox is the whole
+   mechanism: it opens on the reader's own colour scheme and a click swaps it,
+   so the "hand-authored twice" claim is something you can check rather than
+   take on trust — and the page still ships no JavaScript. */
+.skins{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:2px;
   background:var(--line);border:1px solid var(--line);margin-top:40px}
-.skin{background:var(--panel);padding:0}
-.skin img{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)}
-.skin .meta{padding:16px 18px 18px}
-.skin h3{margin-bottom:3px;font-size:14px;letter-spacing:0.03em;text-transform:uppercase}
-.skin p{font-size:13.5px;margin-bottom:0}
+.skin{background:var(--panel);position:relative}
+.skin .flip{position:absolute;opacity:0;width:0;height:0}
+.skin label{display:block;cursor:pointer}
+.shotwrap{display:block;position:relative;border-bottom:1px solid var(--line)}
+.skin img{display:block;width:100%;height:auto}
+.skin .g-dark{display:none}
+.flip:checked ~ label .g-light{display:none}
+.flip:checked ~ label .g-dark{display:block}
+.cue-to-light{display:none}
+.flip:checked ~ label .cue-to-dark{display:none}
+.flip:checked ~ label .cue-to-light{display:inline}
+@media (prefers-color-scheme: dark){
+  .skin .g-light{display:none}
+  .skin .g-dark{display:block}
+  .flip:checked ~ label .g-light{display:block}
+  .flip:checked ~ label .g-dark{display:none}
+  .cue-to-dark{display:none}
+  .cue-to-light{display:inline}
+  .flip:checked ~ label .cue-to-dark{display:inline}
+  .flip:checked ~ label .cue-to-light{display:none}
+}
+.flipcue{
+  position:absolute;right:8px;bottom:8px;
+  font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;
+  padding:4px 8px;border-radius:2px;
+  background:rgba(10,10,14,.78);color:#F2F2F0;border:1px solid rgba(255,255,255,.18);
+  opacity:0;transition:opacity .14s ease;
+}
+.skin:hover .flipcue,.flip:focus-visible ~ label .flipcue{opacity:1}
+.flip:focus-visible ~ label .shotwrap{outline:2px solid var(--accent);outline-offset:-2px}
+.skin .meta{display:block;padding:15px 18px 17px}
+.skinname{display:block;font-size:14px;font-weight:700;letter-spacing:0.03em;
+  text-transform:uppercase;color:var(--ink);margin-bottom:3px}
+.skinblurb{display:block;font-size:13.5px;color:var(--dim);line-height:1.45}
 .skinnote{margin-top:22px;font-size:13px}
+@media (hover: none){ .flipcue{opacity:1} }
+
+/* ---- privacy ---- */
+.privacy{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);margin-top:40px}
+@media(min-width:760px){.privacy{grid-template-columns:repeat(3,1fr)}}
+.privacy .cell{background:var(--panel);padding:26px}
 
 /* ---- keyboard ---- */
 .keys{display:grid;gap:10px 20px;margin-top:32px}
@@ -156,7 +205,7 @@ footer a{color:var(--accent)}
 <section id="hero">
   <div class="wrap">
     <!-- The mark, inline so there is one copy of it and it stays sharp at any size. -->
-    <svg class="mark" viewBox="0 0 256 256" aria-label="Quest Keeper" role="img">
+    <svg class="mark" viewBox="0 0 256 256" aria-label="Quest Chronicle" role="img">
       <rect width="256" height="256" fill="#16161A"/>
       <g>
         <rect x="22"  y="72" width="66" height="128" fill="#B52318"/>
@@ -176,26 +225,27 @@ footer a{color:var(--accent)}
 
     <span class="badge mono">macOS &amp; iPhone</span>
     <h1>The game library that<br>knows what you actually played.</h1>
-    <p class="lead">Quest Keeper can hold thousands of games and still feel like your library,
+    <p class="lead">Quest Chronicle can hold thousands of games and still feel like your library,
       not a chore. It tracks the details for you — finds your cover art, logs a session in one
       tap, and never makes you type the same thing twice.</p>
 
     <div class="shots">
       <a class="shotlink shot-mac" href="screenshot-mac.png" target="_blank" rel="noopener">
-        <img class="shot" src="screenshot-mac.png" alt="Quest Keeper on macOS: a game library with cover art, filters down the left and a keyboard guide on the right.">
+        <img class="shot" src="screenshot-mac.png" alt="Quest Chronicle on macOS: a game library with cover art, filters down the left and a keyboard guide on the right.">
       </a>
       <a class="phone" href="screenshot-iphone.png" target="_blank" rel="noopener">
-        <img class="shot" src="screenshot-iphone.png" alt="Quest Keeper on iPhone: the games library, filterable by console, genre and status, with the same details as the Mac.">
+        <img class="shot" src="screenshot-iphone.png" alt="Quest Chronicle on iPhone: the games library, filterable by console, genre and status, with the same details as the Mac.">
       </a>
     </div>
-    <p class="shotnote mono">Quest Keeper on macOS &amp; iPhone — click either to see it full size</p>
+    <p class="shotnote mono">Quest Chronicle on macOS &amp; iPhone — click either to see it full size</p>
   </div>
 </section>
 
 <section>
   <div class="wrap">
+    <p class="eyebrow mono">Your library</p>
     <h2>It fills in the covers itself.</h2>
-    <p>A library you cannot recognise at a glance is a list, not a library. Quest Keeper pulls
+    <p>A library you cannot recognise at a glance is a list, not a library. Quest Chronicle pulls
       box art automatically — matching on what you typed, not on what you should have typed, so
       "Froze Horizon 4" still finds Forza. When one source has nothing, it asks another.</p>
     <div class="grid">
@@ -229,114 +279,7 @@ footer a{color:var(--accent)}
 
 <section>
   <div class="wrap">
-    <h2>One tap to log a session.</h2>
-    <p>The moment you want to record playing something is the moment you least want to open an
-      app. The iPhone widget puts your recent games on the home screen — tap one, it's logged,
-      and the widget resets itself. Search from the widget for anything you haven't played
-      lately.</p>
-    <p>On the Mac it's a keystroke: <kbd>⌘L</kbd> logs the game you have selected, without
-      opening anything.</p>
-    <div class="grid">
-      <div class="cell">
-        <span class="glyph">⚡</span>
-        <h3>No app launch</h3>
-        <p>The widget writes the session itself and hands it over next time you open the app.
-          Nothing is lost if you never do.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">✏️</span>
-        <h3>Fix it later</h3>
-        <p>Every session can be edited or deleted. A quick log is a starting point, not a
-          commitment.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>Lists that keep themselves.</h2>
-    <p>A regular list is one you fill yourself. A <strong>Smart List</strong> is one you
-      describe — <span class="mono">Console is Switch</span>, <span class="mono">Status is
-      Backlog</span>, <span class="mono">Genre is Roguelike/lite</span> — and it goes and finds
-      them. Match all the rules or any of them, and watch the count update as you build it, so
-      you know a list is worth making before you make it.</p>
-    <p>Because the rules do the picking, the list never goes stale. Import forty games tonight
-      and every one that fits is in the list by morning, without you touching it.</p>
-    <div class="grid">
-      <div class="cell">
-        <span class="glyph">🧮</span>
-        <h3>Rules, not upkeep</h3>
-        <p>Field, operator, value — stacked as deep as you like. The list re-runs itself
-          whenever your library changes.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">👁️</span>
-        <h3>See the answer first</h3>
-        <p>A live count sits under the rules while you edit them. No saving a list to find out
-          it matched nothing.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>The numbers you'd actually ask for.</h2>
-    <p>Achievements is one screen that answers the questions a big library raises. How much of
-      it have I finished. Which console is the backlog really on. What am I paying a
-      subscription for and never playing. How often do I go back to something I've already
-      played.</p>
-    <div class="grid">
-      <div class="cell">
-        <span class="glyph">📊</span>
-        <h3>Status breakdown</h3>
-        <p>The whole library split across the five statuses, with counts and percentages — the
-          honest shape of your backlog.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🎮</span>
-        <h3>Backlog by console</h3>
-        <p>Which machine the unplayed games are actually sitting on, multi-platform games
-          counted on each.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">💳</span>
-        <h3>Subscription shelf</h3>
-        <p>What's on Game Pass, what's on PS Plus, what's on both, and what you own outright.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🔁</span>
-        <h3>Sessions &amp; repeated plays</h3>
-        <p>A usage heatmap by week, month, quarter or year, and the games you keep coming back
-          to.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>Your consoles. Your genres. Your tags.</h2>
-    <p>The starting set is sensible — Steam, Xbox, Switch, PlayStation, PSVR, PSVR 2, Meta
-      Quest, iOS; Action-Adventure through Metroidvania — but none of it is fixed. Add a
-      console the app has never heard of, rename a genre to the word you actually use, drag any
-      of it into the order you want to read it in, and give each one its own icon and colour.</p>
-    <p>Tags are the free-form layer on top: <span class="mono">Boss Fight</span>,
-      <span class="mono">Crafting</span>, <span class="mono">Side Quest</span>,
-      <span class="mono">Multiplayer</span> — or whatever you'd rather sort by. Every one of
-      them is a filter, and every one of them is something a Smart List can be built on.</p>
-    <div class="shots" style="margin-top:44px">
-      <a class="phone" href="screenshot-tags.jpg" target="_blank" rel="noopener">
-        <img class="shot" src="screenshot-tags.jpg" alt="The Edit Tags screen on iPhone, showing custom tags with colours and drag handles." loading="lazy">
-      </a>
-    </div>
-    <p class="shotnote mono" style="color:var(--dim)">Tags are yours to name, colour and reorder</p>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
+    <p class="eyebrow mono">Where things stand</p>
     <h2>Five honest answers to "what is this game to me?"</h2>
     <p>Not a rating. Where the game actually stands with you — and Backlog empties itself,
       because logging a session on a game proves you started it.</p>
@@ -372,6 +315,98 @@ footer a{color:var(--accent)}
 
 <section>
   <div class="wrap">
+    <p class="eyebrow mono">Logging</p>
+    <h2>One tap to log a session.</h2>
+    <p>The moment you want to record playing something is the moment you least want to open an
+      app. The iPhone widget puts your recent games on the home screen — tap one, it's logged,
+      and the widget resets itself. Search from the widget for anything you haven't played
+      lately.</p>
+    <p>On the Mac it's a keystroke: <kbd>⌘L</kbd> logs the game you have selected, without
+      opening anything.</p>
+    <div class="grid">
+      <div class="cell">
+        <span class="glyph">⚡</span>
+        <h3>No app launch</h3>
+        <p>The widget writes the session itself and hands it over next time you open the app.
+          Nothing is lost if you never do.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">✏️</span>
+        <h3>Fix it later</h3>
+        <p>Every session can be edited or deleted. A quick log is a starting point, not a
+          commitment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow mono">Smart lists</p>
+    <h2>Lists that keep themselves.</h2>
+    <p>A regular list is one you fill yourself. A <strong>Smart List</strong> is one you
+      describe — <span class="mono">Console is Switch</span>, <span class="mono">Status is
+      Backlog</span>, <span class="mono">Genre is Roguelike/lite</span> — and it goes and finds
+      them. Match all the rules or any of them, and watch the count update as you build it, so
+      you know a list is worth making before you make it.</p>
+    <p>Because the rules do the picking, the list never goes stale. Import forty games tonight
+      and every one that fits is in the list by morning, without you touching it.</p>
+    <div class="grid">
+      <div class="cell">
+        <span class="glyph">🧮</span>
+        <h3>Rules, not upkeep</h3>
+        <p>Field, operator, value — stacked as deep as you like. The list re-runs itself
+          whenever your library changes.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">👁️</span>
+        <h3>See the answer first</h3>
+        <p>A live count sits under the rules while you edit them. No saving a list to find out
+          it matched nothing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow mono">Achievements</p>
+    <h2>The numbers you'd actually ask for.</h2>
+    <p>Achievements is one screen that answers the questions a big library raises. How much of
+      it have I finished. Which console is the backlog really on. What am I paying a
+      subscription for and never playing. How often do I go back to something I've already
+      played.</p>
+    <div class="grid">
+      <div class="cell">
+        <span class="glyph">📊</span>
+        <h3>Status breakdown</h3>
+        <p>The whole library split across the five statuses, with counts and percentages — the
+          honest shape of your backlog.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">🎮</span>
+        <h3>Backlog by console</h3>
+        <p>Which machine the unplayed games are actually sitting on, multi-platform games
+          counted on each.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">💳</span>
+        <h3>Subscription shelf</h3>
+        <p>What's on Game Pass, what's on PS Plus, what's on both, and what you own outright.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">🔁</span>
+        <h3>Sessions &amp; repeated plays</h3>
+        <p>A usage heatmap by week, month, quarter or year, and the games you keep coming back
+          to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow mono">Keyboard</p>
     <h2>Built for a keyboard, not adapted to one.</h2>
     <p>A list of several thousand rows that can only be driven with a mouse is not a library,
       it's an endurance test. Every action has a key, and every key is published in a guide
@@ -389,23 +424,149 @@ footer a{color:var(--accent)}
 
 <section>
   <div class="wrap">
+    <p class="eyebrow mono">Make it yours</p>
+    <h2>Your consoles. Your genres. Your tags.</h2>
+    <p>The starting set is sensible — Steam, Xbox, Switch, PlayStation, PSVR, PSVR 2, Meta
+      Quest, iOS; Action-Adventure through Metroidvania — but none of it is fixed. Add a
+      console the app has never heard of, rename a genre to the word you actually use, drag any
+      of it into the order you want to read it in, and give each one its own icon and colour.</p>
+    <p>Tags are the free-form layer on top: <span class="mono">Boss Fight</span>,
+      <span class="mono">Crafting</span>, <span class="mono">Side Quest</span>,
+      <span class="mono">Multiplayer</span> — or whatever you'd rather sort by. Every one of
+      them is a filter, and every one of them is something a Smart List can be built on.</p>
+    <div class="shots" style="margin-top:44px">
+      <a class="phone" href="screenshot-tags.jpg" target="_blank" rel="noopener">
+        <img class="shot" src="screenshot-tags.jpg" alt="The Edit Tags screen on iPhone, showing custom tags with colours and drag handles." loading="lazy">
+      </a>
+    </div>
+    <p class="shotnote mono" style="color:var(--dim)">Tags are yours to name, colour and reorder</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow mono">Themes</p>
     <h2>Make it look like yours.</h2>
     <p>Eight themes, each with its own mood rather than its own tint. Every one is
       hand-authored twice — a light ground and a dark one — so picking a look never takes
       your Appearance setting away from you, and every one is checked for contrast, so
       nothing goes unreadable to make something else look good.</p>
-    <p>These are real screenshots of the same screen. They follow your own light/dark
-      setting right here on this page, which is exactly what they do in the app.</p>
+    <p>These are real screenshots of the same screen. Each card opens on whichever ground
+      matches your own light/dark setting — <strong>click any one to see its other half.</strong></p>
     <div class="skins">
       <div class="skin">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-classic-dark.jpg">
-          <img src="themes/theme-classic-light.jpg" alt="The Achievements screen in the Classic theme." loading="lazy" width="720" height="666">
-        </picture>
-        <div class="meta">
-          <h3 class="mono">Classic</h3>
-          <p>The original look — every screen exactly as macOS and iOS draw it.</p>
-        </div>
+        <input type="checkbox" id="flip-classic" class="flip">
+        <label for="flip-classic">
+          <span class="shotwrap">
+            <img class="g-light" src="themes/theme-classic-light.jpg" alt="The Achievements screen in the Classic theme, light ground." loading="lazy" width="720" height="666">
+            <img class="g-dark" src="themes/theme-classic-dark.jpg" alt="The Achievements screen in the Classic theme, dark ground." loading="lazy" width="720" height="666">
+            <span class="flipcue mono" aria-hidden="true">◐ <span class="cue-to-dark">dark</span><span class="cue-to-light">light</span></span>
+          </span>
+          <span class="meta">
+            <span class="skinname mono">Classic</span>
+            <span class="skinblurb">The original look — every screen exactly as macOS and iOS draw it.</span>
+          </span>
+        </label>
+      </div>
+      <div class="skin">
+        <input type="checkbox" id="flip-terminal" class="flip">
+        <label for="flip-terminal">
+          <span class="shotwrap">
+            <img class="g-light" src="themes/theme-terminal-light.jpg" alt="The Achievements screen in the Green Terminal theme, light ground." loading="lazy" width="720" height="666">
+            <img class="g-dark" src="themes/theme-terminal-dark.jpg" alt="The Achievements screen in the Green Terminal theme, dark ground." loading="lazy" width="720" height="666">
+            <span class="flipcue mono" aria-hidden="true">◐ <span class="cue-to-dark">dark</span><span class="cue-to-light">light</span></span>
+          </span>
+          <span class="meta">
+            <span class="skinname mono">Green Terminal</span>
+            <span class="skinblurb">Phosphor on paper, or on glass.</span>
+          </span>
+        </label>
+      </div>
+      <div class="skin">
+        <input type="checkbox" id="flip-steampunk" class="flip">
+        <label for="flip-steampunk">
+          <span class="shotwrap">
+            <img class="g-light" src="themes/theme-steampunk-light.jpg" alt="The Achievements screen in the Steampunk theme, light ground." loading="lazy" width="720" height="666">
+            <img class="g-dark" src="themes/theme-steampunk-dark.jpg" alt="The Achievements screen in the Steampunk theme, dark ground." loading="lazy" width="720" height="666">
+            <span class="flipcue mono" aria-hidden="true">◐ <span class="cue-to-dark">dark</span><span class="cue-to-light">light</span></span>
+          </span>
+          <span class="meta">
+            <span class="skinname mono">Steampunk</span>
+            <span class="skinblurb">Brass, oxblood and aged parchment.</span>
+          </span>
+        </label>
+      </div>
+      <div class="skin">
+        <input type="checkbox" id="flip-cyberpunk" class="flip">
+        <label for="flip-cyberpunk">
+          <span class="shotwrap">
+            <img class="g-light" src="themes/theme-cyberpunk-light.jpg" alt="The Achievements screen in the Cyberpunk theme, light ground." loading="lazy" width="720" height="666">
+            <img class="g-dark" src="themes/theme-cyberpunk-dark.jpg" alt="The Achievements screen in the Cyberpunk theme, dark ground." loading="lazy" width="720" height="666">
+            <span class="flipcue mono" aria-hidden="true">◐ <span class="cue-to-dark">dark</span><span class="cue-to-light">light</span></span>
+          </span>
+          <span class="meta">
+            <span class="skinname mono">Cyberpunk</span>
+            <span class="skinblurb">Neon signage after the rain.</span>
+          </span>
+        </label>
+      </div>
+      <div class="skin">
+        <input type="checkbox" id="flip-anime" class="flip">
+        <label for="flip-anime">
+          <span class="shotwrap">
+            <img class="g-light" src="themes/theme-anime-light.jpg" alt="The Achievements screen in the Anime theme, light ground." loading="lazy" width="720" height="666">
+            <img class="g-dark" src="themes/theme-anime-dark.jpg" alt="The Achievements screen in the Anime theme, dark ground." loading="lazy" width="720" height="666">
+            <span class="flipcue mono" aria-hidden="true">◐ <span class="cue-to-dark">dark</span><span class="cue-to-light">light</span></span>
+          </span>
+          <span class="meta">
+            <span class="skinname mono">Anime</span>
+            <span class="skinblurb">Sakura, sky and clean line art.</span>
+          </span>
+        </label>
+      </div>
+      <div class="skin">
+        <input type="checkbox" id="flip-scifi" class="flip">
+        <label for="flip-scifi">
+          <span class="shotwrap">
+            <img class="g-light" src="themes/theme-scifi-light.jpg" alt="The Achievements screen in the Sci-Fi theme, light ground." loading="lazy" width="720" height="666">
+            <img class="g-dark" src="themes/theme-scifi-dark.jpg" alt="The Achievements screen in the Sci-Fi theme, dark ground." loading="lazy" width="720" height="666">
+            <span class="flipcue mono" aria-hidden="true">◐ <span class="cue-to-dark">dark</span><span class="cue-to-light">light</span></span>
+          </span>
+          <span class="meta">
+            <span class="skinname mono">Sci-Fi</span>
+            <span class="skinblurb">Cold instrumentation, amber warnings.</span>
+          </span>
+        </label>
+      </div>
+      <div class="skin">
+        <input type="checkbox" id="flip-arcade" class="flip">
+        <label for="flip-arcade">
+          <span class="shotwrap">
+            <img class="g-light" src="themes/theme-arcade-light.jpg" alt="The Achievements screen in the Arcade theme, light ground." loading="lazy" width="720" height="666">
+            <img class="g-dark" src="themes/theme-arcade-dark.jpg" alt="The Achievements screen in the Arcade theme, dark ground." loading="lazy" width="720" height="666">
+            <span class="flipcue mono" aria-hidden="true">◐ <span class="cue-to-dark">dark</span><span class="cue-to-light">light</span></span>
+          </span>
+          <span class="meta">
+            <span class="skinname mono">Arcade</span>
+            <span class="skinblurb">Cabinet glass in a dark room.</span>
+          </span>
+        </label>
+      </div>
+      <div class="skin">
+        <input type="checkbox" id="flip-handheld" class="flip">
+        <label for="flip-handheld">
+          <span class="shotwrap">
+            <img class="g-light" src="themes/theme-handheld-light.jpg" alt="The Achievements screen in the Handheld theme, light ground." loading="lazy" width="720" height="666">
+            <img class="g-dark" src="themes/theme-handheld-dark.jpg" alt="The Achievements screen in the Handheld theme, dark ground." loading="lazy" width="720" height="666">
+            <span class="flipcue mono" aria-hidden="true">◐ <span class="cue-to-dark">dark</span><span class="cue-to-light">light</span></span>
+          </span>
+          <span class="meta">
+            <span class="skinname mono">Handheld</span>
+            <span class="skinblurb">Four shades of green, like it's 1989.</span>
+          </span>
+        </label>
+      </div>
+    </div>
       </div>
       <div class="skin">
         <picture>
@@ -484,11 +645,39 @@ footer a{color:var(--accent)}
   </div>
 </section>
 
+<section>
+  <div class="wrap">
+    <p class="eyebrow mono">Privacy</p>
+    <h2>Your library is nobody else's business.</h2>
+    <p>Quest Chronicle keeps your games on your own devices and syncs them through your own
+      iCloud account. There is no Quest Chronicle server, because there is nothing it would
+      need one for.</p>
+    <div class="privacy">
+      <div class="cell">
+        <span class="glyph">🚪</span>
+        <h3>No account</h3>
+        <p>Open it and start. No sign-up, no email, no password to forget.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">🙈</span>
+        <h3>No tracking</h3>
+        <p>No analytics, no telemetry, no third-party SDKs watching what you play.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">📤</span>
+        <h3>Yours to take</h3>
+        <p>Export the whole library to CSV whenever you like. It was always your data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
-    <p class="mono" style="margin:0">Quest Keeper — a game library and play-session tracker for
+    <p class="mono" style="margin:0">Quest Chronicle — a game library and play-session tracker for
       macOS and iOS.</p>
-    <p style="margin:8px 0 0">Made by Eric Linder.</p>
+    <p style="margin:8px 0 0">Made by Eric Linder. ·
+      <a href="mailto:eric.linder@gmail.com">Get in touch</a></p>
   </div>
 </footer>
 
