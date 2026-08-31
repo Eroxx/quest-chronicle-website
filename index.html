@@ -75,6 +75,26 @@ p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
 }
 .statuses .what{color:var(--dim);font-size:15px}
 
+/* ---- status pipeline ---- */
+.pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:40px}
+.pipeline-track{position:absolute;top:19px;left:6%;right:6%;height:2px;background:var(--line);z-index:0}
+.pipeline-track-fill{position:absolute;top:0;left:0;height:100%;width:100%;
+  background:linear-gradient(90deg,var(--attention),var(--done),var(--progress),var(--accent));}
+.stage{position:relative;z-index:1;padding:0 14px}
+.stage-dot{
+  width:38px;height:38px;border-radius:50%;background:var(--panel);
+  border:2px solid var(--stage-color,var(--line));font-size:16px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+}
+.stage h3{margin-bottom:6px;font-size:14px;letter-spacing:0.04em;text-transform:uppercase}
+.stage p{font-size:14px;margin-bottom:0}
+.aside-status{margin-top:32px;font-size:13px}
+.aside-status .name{font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--dim)}
+@media(max-width:700px){
+  .pipeline{grid-template-columns:1fr 1fr;row-gap:28px}
+  .pipeline-track,.pipeline-track-fill{display:none}
+}
+
 /* ---- keyboard ---- */
 .keys{display:grid;gap:10px 20px;margin-top:32px}
 @media(min-width:640px){.keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -189,18 +209,33 @@ footer a{color:var(--accent)}
     <h2>Five honest answers to "what is this game to me?"</h2>
     <p>Not a rating. Where the game actually stands with you — and Backlog empties itself,
       because logging a session on a game proves you started it.</p>
-    <ul class="statuses">
-      <li><span class="name mono" style="color:var(--attention)">Backlog</span>
-          <span class="what">Games you want to play but haven't started yet</span></li>
-      <li><span class="name mono" style="color:var(--done)">Questing</span>
-          <span class="what">Games you're actively playing</span></li>
-      <li><span class="name mono" style="color:var(--progress)">Post-Game</span>
-          <span class="what">Main content is done, but you still have optional goals</span></li>
-      <li><span class="name mono">Trophy Case</span>
-          <span class="what">Games you've completed 100%</span></li>
-      <li><span class="name mono" style="color:var(--dim)">Abandoned</span>
-          <span class="what">Games you've given up on or decided not to play</span></li>
-    </ul>
+    <div class="pipeline">
+      <div class="pipeline-track"><div class="pipeline-track-fill"></div></div>
+      <div class="stage" style="--stage-color:var(--attention)">
+        <div class="stage-dot">🗂️</div>
+        <h3 class="mono" style="color:var(--attention)">Backlog</h3>
+        <p>Games you want to play but haven't started yet.</p>
+      </div>
+      <div class="stage" style="--stage-color:var(--done)">
+        <div class="stage-dot">⚔️</div>
+        <h3 class="mono" style="color:var(--done)">Questing</h3>
+        <p>Games you're actively playing.</p>
+      </div>
+      <div class="stage" style="--stage-color:var(--progress)">
+        <div class="stage-dot">🏁</div>
+        <h3 class="mono" style="color:var(--progress)">Post-Game</h3>
+        <p>Main content is done, but you still have optional goals.</p>
+      </div>
+      <div class="stage" style="--stage-color:var(--accent)">
+        <div class="stage-dot">🏆</div>
+        <h3 class="mono" style="color:var(--accent)">Trophy Case</h3>
+        <p>Games you've completed 100%.</p>
+      </div>
+    </div>
+
+    <p class="aside-status">
+      <span class="name mono">Abandoned</span> — games you've given up on or decided not to play. Off to the side, not part of the run.
+    </p>
   </div>
 </section>
 
