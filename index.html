@@ -51,19 +51,42 @@ p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
   font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;
 }
 .mark{display:block;width:76px;height:76px;margin-bottom:22px}
+/* Both shots sit on one baseline and are centred as a pair. The phone gets a real
+   bezel because a bare screenshot of a phone screen doesn't read as a phone. */
 .shots{
-  display:flex;align-items:flex-end;justify-content:center;gap:24px;
-  max-width:1000px;margin:56px auto -1px;
+  display:flex;align-items:center;justify-content:center;gap:32px;
+  max-width:1040px;margin:56px auto 0;padding:0 0 8px;
 }
-.shot{display:block;border:1px solid #2A2A34;border-bottom:0;box-shadow:0 -20px 60px rgba(0,0,0,.35)}
-.shot-mac{flex:1 1 780px;max-width:800px;width:100%}
-.shot-iphone{flex:0 0 170px;width:170px}
-.shotnote{text-align:center;font-size:12px;color:#6E6E7C;padding:0 0 14px}
-@media(max-width:700px){
-  .shots{flex-direction:column;align-items:center;margin:56px auto 0;gap:28px}
-  .shot{border-bottom:1px solid #2A2A34;box-shadow:0 8px 30px rgba(0,0,0,.35)}
-  .shot-mac{max-width:480px}
-  .shot-iphone{width:auto;max-width:200px}
+.shot{display:block;width:100%;height:auto}
+.shotlink{
+  display:block;border:1px solid #2A2A34;box-shadow:0 18px 50px rgba(0,0,0,.45);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.shotlink:hover,.shotlink:focus-visible{
+  transform:translateY(-3px);box-shadow:0 26px 64px rgba(0,0,0,.55);
+}
+.shotlink:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.shot-mac{flex:0 1 760px;min-width:0}
+/* The phone bezel: a dark cushion with a notch, drawn in CSS so there is no
+   second image to keep in sync. */
+.phone{
+  flex:0 0 208px;width:208px;position:relative;padding:11px;
+  background:#0A0A0E;border:1px solid #33333F;border-radius:30px;
+  box-shadow:0 18px 50px rgba(0,0,0,.5);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.phone::before{
+  content:"";position:absolute;top:11px;left:50%;transform:translateX(-50%);
+  width:76px;height:15px;background:#0A0A0E;border-radius:0 0 11px 11px;z-index:2;
+}
+.phone:hover,.phone:focus-visible{transform:translateY(-3px);box-shadow:0 26px 64px rgba(0,0,0,.6)}
+.phone:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.phone .shot{border-radius:20px}
+.shotnote{text-align:center;font-size:12px;color:#6E6E7C;padding:22px 0 26px}
+@media(max-width:760px){
+  .shots{flex-direction:column;gap:30px;padding-bottom:0}
+  .shot-mac{flex:0 1 auto;max-width:520px;width:100%}
+  .phone{flex:0 0 auto}
 }
 
 /* ---- feature grid ---- */
@@ -105,34 +128,14 @@ p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
 }
 
 /* ---- skins ---- */
-.skins{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:2px;
+.skins{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2px;
   background:var(--line);border:1px solid var(--line);margin-top:40px}
-.skin{background:var(--panel);padding:24px}
-.skin h3{margin-bottom:4px;font-size:15px}
-.skin p{font-size:14px;margin-bottom:0}
-.swatch{display:flex;gap:6px;margin-bottom:16px}
-.chip{width:22px;height:22px;border:1px solid var(--line);flex:none}
-.chip-paper{background:var(--sk-paper)}
-.chip-panel{background:var(--sk-panel)}
-.chip-ink{background:var(--sk-ink)}
-.chip-accent{background:var(--sk-accent)}
-[data-skin="system"]{--sk-paper:var(--bg);--sk-panel:var(--panel);--sk-ink:var(--ink);--sk-accent:var(--accent)}
-[data-skin="terminal"]{--sk-paper:#F2EDE0;--sk-panel:#FAF5EB;--sk-ink:#006600;--sk-accent:#006600}
-[data-skin="steampunk"]{--sk-paper:#E8D9BA;--sk-panel:#F2E6CC;--sk-ink:#3D210D;--sk-accent:#6B471A}
-[data-skin="cyberpunk"]{--sk-paper:#DEE3F7;--sk-panel:#EDF0FF;--sk-ink:#1A0D38;--sk-accent:#CC0D85}
-[data-skin="anime"]{--sk-paper:#FCEBED;--sk-panel:#FFF7F7;--sk-ink:#4D1A33;--sk-accent:#852EC7}
-[data-skin="scifi"]{--sk-paper:#EDF2F7;--sk-panel:#FAFCFF;--sk-ink:#0F263D;--sk-accent:#3385B8}
-[data-skin="arcade"]{--sk-paper:#D6D9E0;--sk-panel:#EBEDF2;--sk-ink:#0F0F14;--sk-accent:#D11424}
-[data-skin="handheld"]{--sk-paper:#C2CC82;--sk-panel:#ABBA70;--sk-ink:#0F210F;--sk-accent:#304224}
-@media (prefers-color-scheme:dark){
-  [data-skin="terminal"]{--sk-paper:#0A0F0A;--sk-panel:#121A12;--sk-ink:#5CF26B;--sk-accent:#3DB852}
-  [data-skin="steampunk"]{--sk-paper:#1C140D;--sk-panel:#2B2114;--sk-ink:#E6C78C;--sk-accent:#B8852E}
-  [data-skin="cyberpunk"]{--sk-paper:#0E0B17;--sk-panel:#1B1429;--sk-ink:#1AF2E0;--sk-accent:#F22699}
-  [data-skin="anime"]{--sk-paper:#1A1426;--sk-panel:#292138;--sk-ink:#F7E6F2;--sk-accent:#EB7AA8}
-  [data-skin="scifi"]{--sk-paper:#080F1A;--sk-panel:#0F1B2B;--sk-ink:#B8E6FF;--sk-accent:#339ED9}
-  [data-skin="arcade"]{--sk-paper:#0D0C12;--sk-panel:#1C1B25;--sk-ink:#FFED4D;--sk-accent:#F22938}
-  [data-skin="handheld"]{--sk-paper:#242B17;--sk-panel:#333D21;--sk-ink:#CCE099;--sk-accent:#ADCC66}
-}
+.skin{background:var(--panel);padding:0}
+.skin img{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)}
+.skin .meta{padding:16px 18px 18px}
+.skin h3{margin-bottom:3px;font-size:14px;letter-spacing:0.03em;text-transform:uppercase}
+.skin p{font-size:13.5px;margin-bottom:0}
+.skinnote{margin-top:22px;font-size:13px}
 
 /* ---- keyboard ---- */
 .keys{display:grid;gap:10px 20px;margin-top:32px}
@@ -178,10 +181,14 @@ footer a{color:var(--accent)}
       tap, and never makes you type the same thing twice.</p>
 
     <div class="shots">
-      <img class="shot shot-mac" src="screenshot-mac.png" alt="Quest Keeper on macOS: a game library with cover art, filters down the left and a keyboard guide on the right.">
-      <img class="shot shot-iphone" src="screenshot-iphone.png" alt="Quest Keeper on iPhone: the games library, filterable by console, genre and status, with the same details as the Mac.">
+      <a class="shotlink shot-mac" href="screenshot-mac.png" target="_blank" rel="noopener">
+        <img class="shot" src="screenshot-mac.png" alt="Quest Keeper on macOS: a game library with cover art, filters down the left and a keyboard guide on the right.">
+      </a>
+      <a class="phone" href="screenshot-iphone.png" target="_blank" rel="noopener">
+        <img class="shot" src="screenshot-iphone.png" alt="Quest Keeper on iPhone: the games library, filterable by console, genre and status, with the same details as the Mac.">
+      </a>
     </div>
-    <p class="shotnote mono">Quest Keeper on macOS &amp; iPhone</p>
+    <p class="shotnote mono">Quest Keeper on macOS &amp; iPhone — click either to see it full size</p>
   </div>
 </section>
 
@@ -248,6 +255,88 @@ footer a{color:var(--accent)}
 
 <section>
   <div class="wrap">
+    <h2>Lists that keep themselves.</h2>
+    <p>A regular list is one you fill yourself. A <strong>Smart List</strong> is one you
+      describe — <span class="mono">Console is Switch</span>, <span class="mono">Status is
+      Backlog</span>, <span class="mono">Genre is Roguelike/lite</span> — and it goes and finds
+      them. Match all the rules or any of them, and watch the count update as you build it, so
+      you know a list is worth making before you make it.</p>
+    <p>Because the rules do the picking, the list never goes stale. Import forty games tonight
+      and every one that fits is in the list by morning, without you touching it.</p>
+    <div class="grid">
+      <div class="cell">
+        <span class="glyph">🧮</span>
+        <h3>Rules, not upkeep</h3>
+        <p>Field, operator, value — stacked as deep as you like. The list re-runs itself
+          whenever your library changes.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">👁️</span>
+        <h3>See the answer first</h3>
+        <p>A live count sits under the rules while you edit them. No saving a list to find out
+          it matched nothing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The numbers you'd actually ask for.</h2>
+    <p>Achievements is one screen that answers the questions a big library raises. How much of
+      it have I finished. Which console is the backlog really on. What am I paying a
+      subscription for and never playing. How often do I go back to something I've already
+      played.</p>
+    <div class="grid">
+      <div class="cell">
+        <span class="glyph">📊</span>
+        <h3>Status breakdown</h3>
+        <p>The whole library split across the five statuses, with counts and percentages — the
+          honest shape of your backlog.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">🎮</span>
+        <h3>Backlog by console</h3>
+        <p>Which machine the unplayed games are actually sitting on, multi-platform games
+          counted on each.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">💳</span>
+        <h3>Subscription shelf</h3>
+        <p>What's on Game Pass, what's on PS Plus, what's on both, and what you own outright.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">🔁</span>
+        <h3>Sessions &amp; repeated plays</h3>
+        <p>A usage heatmap by week, month, quarter or year, and the games you keep coming back
+          to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Your consoles. Your genres. Your tags.</h2>
+    <p>The starting set is sensible — Steam, Xbox, Switch, PlayStation, PSVR, PSVR 2, Meta
+      Quest, iOS; Action-Adventure through Metroidvania — but none of it is fixed. Add a
+      console the app has never heard of, rename a genre to the word you actually use, drag any
+      of it into the order you want to read it in, and give each one its own icon and colour.</p>
+    <p>Tags are the free-form layer on top: <span class="mono">Boss Fight</span>,
+      <span class="mono">Crafting</span>, <span class="mono">Side Quest</span>,
+      <span class="mono">Multiplayer</span> — or whatever you'd rather sort by. Every one of
+      them is a filter, and every one of them is something a Smart List can be built on.</p>
+    <div class="shots" style="margin-top:44px">
+      <a class="phone" href="screenshot-tags.jpg" target="_blank" rel="noopener">
+        <img class="shot" src="screenshot-tags.jpg" alt="The Edit Tags screen on iPhone, showing custom tags with colours and drag handles." loading="lazy">
+      </a>
+    </div>
+    <p class="shotnote mono" style="color:var(--dim)">Tags are yours to name, colour and reorder</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
     <h2>Five honest answers to "what is this game to me?"</h2>
     <p>Not a rating. Where the game actually stands with you — and Backlog empties itself,
       because logging a session on a game proves you started it.</p>
@@ -301,75 +390,97 @@ footer a{color:var(--accent)}
 <section>
   <div class="wrap">
     <h2>Make it look like yours.</h2>
-    <p>A shelf of themes, each with its own mood rather than its own tint — and every one of
-      them checked for contrast, so nothing goes unreadable to make something else look good.
-      Turn on shuffle and the app picks a new one each launch, light or dark.</p>
+    <p>Eight themes, each with its own mood rather than its own tint. Every one is
+      hand-authored twice — a light ground and a dark one — so picking a look never takes
+      your Appearance setting away from you, and every one is checked for contrast, so
+      nothing goes unreadable to make something else look good.</p>
+    <p>These are real screenshots of the same screen. They follow your own light/dark
+      setting right here on this page, which is exactly what they do in the app.</p>
     <div class="skins">
-      <div class="skin" data-skin="system">
-        <div class="swatch">
-          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
-          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+      <div class="skin">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-classic-dark.jpg">
+          <img src="themes/theme-classic-light.jpg" alt="The Achievements screen in the Classic theme." loading="lazy" width="720" height="666">
+        </picture>
+        <div class="meta">
+          <h3 class="mono">Classic</h3>
+          <p>The original look — every screen exactly as macOS and iOS draw it.</p>
         </div>
-        <h3 class="mono">Classic</h3>
-        <p>The original look. Follows light/dark.</p>
       </div>
-      <div class="skin" data-skin="terminal">
-        <div class="swatch">
-          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
-          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+      <div class="skin">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-terminal-dark.jpg">
+          <img src="themes/theme-terminal-light.jpg" alt="The Achievements screen in the Green Terminal theme." loading="lazy" width="720" height="666">
+        </picture>
+        <div class="meta">
+          <h3 class="mono">Green Terminal</h3>
+          <p>Phosphor on paper, or on glass.</p>
         </div>
-        <h3 class="mono">Green Terminal</h3>
-        <p>Phosphor on paper, or on glass.</p>
       </div>
-      <div class="skin" data-skin="steampunk">
-        <div class="swatch">
-          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
-          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+      <div class="skin">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-steampunk-dark.jpg">
+          <img src="themes/theme-steampunk-light.jpg" alt="The Achievements screen in the Steampunk theme." loading="lazy" width="720" height="666">
+        </picture>
+        <div class="meta">
+          <h3 class="mono">Steampunk</h3>
+          <p>Brass, oxblood and aged parchment.</p>
         </div>
-        <h3 class="mono">Steampunk</h3>
-        <p>Brass, oxblood and aged parchment.</p>
       </div>
-      <div class="skin" data-skin="cyberpunk">
-        <div class="swatch">
-          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
-          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+      <div class="skin">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-cyberpunk-dark.jpg">
+          <img src="themes/theme-cyberpunk-light.jpg" alt="The Achievements screen in the Cyberpunk theme." loading="lazy" width="720" height="666">
+        </picture>
+        <div class="meta">
+          <h3 class="mono">Cyberpunk</h3>
+          <p>Neon signage after the rain.</p>
         </div>
-        <h3 class="mono">Cyberpunk</h3>
-        <p>Neon signage after the rain.</p>
       </div>
-      <div class="skin" data-skin="anime">
-        <div class="swatch">
-          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
-          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+      <div class="skin">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-anime-dark.jpg">
+          <img src="themes/theme-anime-light.jpg" alt="The Achievements screen in the Anime theme." loading="lazy" width="720" height="666">
+        </picture>
+        <div class="meta">
+          <h3 class="mono">Anime</h3>
+          <p>Sakura, sky and clean line art.</p>
         </div>
-        <h3 class="mono">Anime</h3>
-        <p>Sakura, sky and clean line art.</p>
       </div>
-      <div class="skin" data-skin="scifi">
-        <div class="swatch">
-          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
-          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+      <div class="skin">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-scifi-dark.jpg">
+          <img src="themes/theme-scifi-light.jpg" alt="The Achievements screen in the Sci-Fi theme." loading="lazy" width="720" height="666">
+        </picture>
+        <div class="meta">
+          <h3 class="mono">Sci-Fi</h3>
+          <p>Cold instrumentation, amber warnings.</p>
         </div>
-        <h3 class="mono">Sci-Fi</h3>
-        <p>Cold instrumentation, amber warnings.</p>
       </div>
-      <div class="skin" data-skin="arcade">
-        <div class="swatch">
-          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
-          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+      <div class="skin">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-arcade-dark.jpg">
+          <img src="themes/theme-arcade-light.jpg" alt="The Achievements screen in the Arcade theme." loading="lazy" width="720" height="666">
+        </picture>
+        <div class="meta">
+          <h3 class="mono">Arcade</h3>
+          <p>Cabinet glass in a dark room.</p>
         </div>
-        <h3 class="mono">Arcade</h3>
-        <p>Cabinet glass in a dark room.</p>
       </div>
-      <div class="skin" data-skin="handheld">
-        <div class="swatch">
-          <span class="chip chip-paper"></span><span class="chip chip-panel"></span>
-          <span class="chip chip-ink"></span><span class="chip chip-accent"></span>
+      <div class="skin">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="themes/theme-handheld-dark.jpg">
+          <img src="themes/theme-handheld-light.jpg" alt="The Achievements screen in the Handheld theme." loading="lazy" width="720" height="666">
+        </picture>
+        <div class="meta">
+          <h3 class="mono">Handheld</h3>
+          <p>Four shades of green, like it's 1989.</p>
         </div>
-        <h3 class="mono">Handheld</h3>
-        <p>Four shades of green, like it's 1989.</p>
       </div>
     </div>
+    <p class="skinnote">Can't choose? Turn on <strong>shuffle</strong> and the app picks one
+      for you on a schedule — changing when you next open it, never while you're in the middle
+      of using it.</p>
   </div>
 </section>
 
