@@ -151,6 +151,21 @@ figcaption{margin-top:10px;font-size:12.5px;color:var(--dim);letter-spacing:0.01
    on click anyway. */
 .split figure img{max-height:600px;object-fit:cover;object-position:top}
 
+/* ---- tour ----
+   Four destinations, four screenshots. The app has exactly four places you can
+   be; showing all four is a better explanation of its shape than any paragraph. */
+.tour{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);margin-top:40px}
+@media(min-width:860px){.tour{grid-template-columns:1fr 1fr}}
+.stop{background:var(--panel);padding:0}
+.stop img{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)}
+.stop .meta{padding:18px 20px 20px}
+.stop h3{margin-bottom:5px;font-size:15px}
+.stop p{font-size:14px;margin-bottom:0}
+.stop .num{
+  font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--accent);display:block;margin-bottom:6px;
+}
+
 /* ---- eyebrow ---- */
 .eyebrow{
   font-size:12px;font-weight:700;letter-spacing:0.11em;text-transform:uppercase;
@@ -325,12 +340,6 @@ footer a{color:var(--accent)}
       an app. The iPhone widget puts your recent games on the home screen: tap one, it's
       logged. On the Mac it's <kbd>⌘L</kbd> — no window, no dialog. Everything lands in a
       feed you can correct later.</p>
-    <figure>
-      <a href="shot-activity.jpg" target="_blank" rel="noopener">
-        <img src="shot-activity.jpg" alt="The Activity feed: a dated list of sessions and status changes, newest first." loading="lazy">
-      </a>
-      <figcaption>Activity — every session and status change, newest first</figcaption>
-    </figure>
   </div>
 </section>
 
@@ -341,23 +350,60 @@ footer a{color:var(--accent)}
     <p>A regular list you fill yourself. A <strong>Smart List</strong> you describe —
       <span class="mono">Console is Switch</span>, <span class="mono">Status is Backlog</span>
       — and it goes and finds them, then keeps finding them. Import forty games tonight and
-      every one that fits is in the list by morning. A live count sits under the rules while
-      you build them, so you know a list is worth making before you make it.</p>
+      every one that fits is in the list by morning.</p>
+    <figure>
+      <a href="shot-smartlist.jpg" target="_blank" rel="noopener">
+        <img src="shot-smartlist.jpg" alt="The Smart List builder: a Console-is-Switch rule with a live preview reading 375 games match." loading="lazy">
+      </a>
+      <figcaption>The count updates as you build the rules — you know it's worth making before you make it</figcaption>
+    </figure>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <p class="eyebrow mono">Achievements</p>
-    <h2>The numbers you'd actually ask for.</h2>
-    <p>How much of it have I finished. Which console is the backlog <em>really</em> on. What
-      am I paying a subscription for and never playing. One screen, no configuring.</p>
-    <figure>
-      <a href="shot-stats.jpg" target="_blank" rel="noopener">
-        <img src="shot-stats.jpg" alt="The Achievements screen: quick stats, a status breakdown, the subscription shelf and backlog by console." loading="lazy">
-      </a>
-      <figcaption>Achievements — status breakdown, subscription shelf, backlog by console, usage heatmap</figcaption>
-    </figure>
+    <p class="eyebrow mono">The whole app</p>
+    <h2>Four places, and that's the whole app.</h2>
+    <p>No nested preferences, no modes to learn. A sidebar with four destinations, and
+      everything lives in one of them.</p>
+    <div class="tour">
+      <div class="stop">
+        <a href="tour-games.jpg" target="_blank" rel="noopener"><img src="tour-games.jpg" alt="The Games screen: filters down the left, cover art in the middle, game detail on the right." loading="lazy"></a>
+        <div class="meta">
+          <span class="num mono">Games</span>
+          <h3>The library</h3>
+          <p>Filter by console, genre, status, subscription or played-ness. List or covers.
+            Pick one and its whole record opens beside it.</p>
+        </div>
+      </div>
+      <div class="stop">
+        <a href="tour-activity.jpg" target="_blank" rel="noopener"><img src="tour-activity.jpg" alt="The Activity screen: logged sessions with notes, newest first." loading="lazy"></a>
+        <div class="meta">
+          <span class="num mono">Activity</span>
+          <h3>What you actually played</h3>
+          <p>Every session and status change in one feed, with whatever note you left.
+            Delete a mistaken one and it's gone.</p>
+        </div>
+      </div>
+      <div class="stop">
+        <a href="tour-achievements.jpg" target="_blank" rel="noopener"><img src="tour-achievements.jpg" alt="The Achievements screen: quick stats, status breakdown, subscription shelf and backlog by console." loading="lazy"></a>
+        <div class="meta">
+          <span class="num mono">Achievements</span>
+          <h3>The numbers you'd actually ask for</h3>
+          <p>How much you've finished, which console the backlog is really on, what your
+            subscriptions are earning, and what you keep coming back to.</p>
+        </div>
+      </div>
+      <div class="stop">
+        <a href="tour-lists.jpg" target="_blank" rel="noopener"><img src="tour-lists.jpg" alt="The Lists screen showing a Smart List badged SMART with a live count of 375 games." loading="lazy"></a>
+        <div class="meta">
+          <span class="num mono">Lists</span>
+          <h3>Your own groupings</h3>
+          <p>Hand-picked, or described once and left to keep itself. A Smart List shows its
+            live count right on the row.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
