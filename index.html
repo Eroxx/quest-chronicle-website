@@ -131,6 +131,21 @@ p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
   .pipeline-track,.pipeline-track-fill{display:none}
 }
 
+/* ---- figures ----
+   A screenshot is the argument; the caption is the footnote. Full-bleed inside
+   the column, one hairline, click to open full size. */
+figure{margin:32px 0 0}
+figure img{display:block;width:100%;height:auto;border:1px solid var(--line)}
+figure a{display:block;transition:transform .15s ease}
+figure a:hover{transform:translateY(-2px)}
+figure a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+figcaption{margin-top:10px;font-size:12.5px;color:var(--dim);letter-spacing:0.01em}
+.split{display:grid;gap:28px;align-items:start;margin-top:32px}
+@media(min-width:820px){.split{grid-template-columns:0.9fr 1.1fr}
+  .split.narrow{grid-template-columns:1.1fr 0.9fr}}
+.split figure{margin:0}
+.split .words p:last-child{margin-bottom:0}
+
 /* ---- eyebrow ---- */
 .eyebrow{
   font-size:12px;font-weight:700;letter-spacing:0.11em;text-transform:uppercase;
@@ -245,34 +260,20 @@ footer a{color:var(--accent)}
   <div class="wrap">
     <p class="eyebrow mono">Your library</p>
     <h2>It fills in the covers itself.</h2>
-    <p>A library you cannot recognise at a glance is a list, not a library. Quest Chronicle pulls
-      box art automatically — matching on what you typed, not on what you should have typed, so
-      "Froze Horizon 4" still finds Forza. When one source has nothing, it asks another.</p>
-    <div class="grid">
-      <div class="cell">
-        <span class="glyph">🔎</span>
-        <h3>Spelling you don't have to fix</h3>
-        <p>Fuzzy title matching, scored by how much of your search the candidate actually
-          covers — so a near-match wins and a coincidence doesn't.</p>
+    <div class="split">
+      <div class="words">
+        <p>Type a title, however you actually spell it, and the box art turns up. Fuzzy
+          matching means "Froze Horizon 4" still finds Forza; when one source has nothing,
+          it asks another.</p>
+        <p>Names and status when you're organising. A wall of art when you're deciding what
+          to play. One click apart.</p>
       </div>
-      <div class="cell">
-        <span class="glyph">📚</span>
-        <h3>Import what you already own</h3>
-        <p>Bring in a Steam library or a CSV. Duplicates are caught on the way in, including
-          the same game spelled two different ways.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🖼️</span>
-        <h3>List or covers, one click apart</h3>
-        <p>Names and status when you're organising; a wall of box art when you're deciding
-          what to play. Same games, same filters, different shape.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">☁️</span>
-        <h3>The same library everywhere</h3>
-        <p>iCloud sync between Mac and iPhone, continuously and without a Sync button to
-          remember to press.</p>
-      </div>
+      <figure>
+        <a href="shot-covers.jpg" target="_blank" rel="noopener">
+          <img src="shot-covers.jpg" alt="The cover view: a grid of real box art, each with its title underneath." loading="lazy">
+        </a>
+        <figcaption>Covers view — 3,497 games, art fetched automatically</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -317,26 +318,16 @@ footer a{color:var(--accent)}
   <div class="wrap">
     <p class="eyebrow mono">Logging</p>
     <h2>One tap to log a session.</h2>
-    <p>The moment you want to record playing something is the moment you least want to open an
-      app. The iPhone widget puts your recent games on the home screen — tap one, it's logged,
-      and the widget resets itself. Search from the widget for anything you haven't played
-      lately.</p>
-    <p>On the Mac it's a keystroke: <kbd>⌘L</kbd> logs the game you have selected, without
-      opening anything.</p>
-    <div class="grid">
-      <div class="cell">
-        <span class="glyph">⚡</span>
-        <h3>No app launch</h3>
-        <p>The widget writes the session itself and hands it over next time you open the app.
-          Nothing is lost if you never do.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">✏️</span>
-        <h3>Fix it later</h3>
-        <p>Every session can be edited or deleted. A quick log is a starting point, not a
-          commitment.</p>
-      </div>
-    </div>
+    <p>The moment you want to record playing something is the moment you least want to open
+      an app. The iPhone widget puts your recent games on the home screen: tap one, it's
+      logged. On the Mac it's <kbd>⌘L</kbd> — no window, no dialog. Everything lands in a
+      feed you can correct later.</p>
+    <figure>
+      <a href="shot-activity.jpg" target="_blank" rel="noopener">
+        <img src="shot-activity.jpg" alt="The Activity feed: a dated list of sessions and status changes, newest first." loading="lazy">
+      </a>
+      <figcaption>Activity — every session and status change, newest first</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -344,27 +335,11 @@ footer a{color:var(--accent)}
   <div class="wrap">
     <p class="eyebrow mono">Smart lists</p>
     <h2>Lists that keep themselves.</h2>
-    <p>A regular list is one you fill yourself. A <strong>Smart List</strong> is one you
-      describe — <span class="mono">Console is Switch</span>, <span class="mono">Status is
-      Backlog</span>, <span class="mono">Genre is Roguelike/lite</span> — and it goes and finds
-      them. Match all the rules or any of them, and watch the count update as you build it, so
-      you know a list is worth making before you make it.</p>
-    <p>Because the rules do the picking, the list never goes stale. Import forty games tonight
-      and every one that fits is in the list by morning, without you touching it.</p>
-    <div class="grid">
-      <div class="cell">
-        <span class="glyph">🧮</span>
-        <h3>Rules, not upkeep</h3>
-        <p>Field, operator, value — stacked as deep as you like. The list re-runs itself
-          whenever your library changes.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">👁️</span>
-        <h3>See the answer first</h3>
-        <p>A live count sits under the rules while you edit them. No saving a list to find out
-          it matched nothing.</p>
-      </div>
-    </div>
+    <p>A regular list you fill yourself. A <strong>Smart List</strong> you describe —
+      <span class="mono">Console is Switch</span>, <span class="mono">Status is Backlog</span>
+      — and it goes and finds them, then keeps finding them. Import forty games tonight and
+      every one that fits is in the list by morning. A live count sits under the rules while
+      you build them, so you know a list is worth making before you make it.</p>
   </div>
 </section>
 
@@ -372,35 +347,14 @@ footer a{color:var(--accent)}
   <div class="wrap">
     <p class="eyebrow mono">Achievements</p>
     <h2>The numbers you'd actually ask for.</h2>
-    <p>Achievements is one screen that answers the questions a big library raises. How much of
-      it have I finished. Which console is the backlog really on. What am I paying a
-      subscription for and never playing. How often do I go back to something I've already
-      played.</p>
-    <div class="grid">
-      <div class="cell">
-        <span class="glyph">📊</span>
-        <h3>Status breakdown</h3>
-        <p>The whole library split across the five statuses, with counts and percentages — the
-          honest shape of your backlog.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🎮</span>
-        <h3>Backlog by console</h3>
-        <p>Which machine the unplayed games are actually sitting on, multi-platform games
-          counted on each.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">💳</span>
-        <h3>Subscription shelf</h3>
-        <p>What's on Game Pass, what's on PS Plus, what's on both, and what you own outright.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🔁</span>
-        <h3>Sessions &amp; repeated plays</h3>
-        <p>A usage heatmap by week, month, quarter or year, and the games you keep coming back
-          to.</p>
-      </div>
-    </div>
+    <p>How much of it have I finished. Which console is the backlog <em>really</em> on. What
+      am I paying a subscription for and never playing. One screen, no configuring.</p>
+    <figure>
+      <a href="shot-stats.jpg" target="_blank" rel="noopener">
+        <img src="shot-stats.jpg" alt="The Achievements screen: quick stats, a status breakdown, the subscription shelf and backlog by console." loading="lazy">
+      </a>
+      <figcaption>Achievements — status breakdown, subscription shelf, backlog by console, usage heatmap</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -408,16 +362,18 @@ footer a{color:var(--accent)}
   <div class="wrap">
     <p class="eyebrow mono">Keyboard</p>
     <h2>Built for a keyboard, not adapted to one.</h2>
-    <p>A list of several thousand rows that can only be driven with a mouse is not a library,
-      it's an endurance test. Every action has a key, and every key is published in a guide
-      that sits beside the list rather than hidden in a menu.</p>
-    <div class="keys">
-      <div class="keyrow"><kbd>↑ ↓</kbd><span>Move through games</span></div>
-      <div class="keyrow"><kbd>A–Z</kbd><span>Jump to that letter</span></div>
-      <div class="keyrow"><kbd>↩</kbd><span>Open the selected game</span></div>
-      <div class="keyrow"><kbd>⌘L</kbd><span>Log a session on it, right now</span></div>
-      <div class="keyrow"><kbd>⌘F</kbd><span>Search</span></div>
-      <div class="keyrow"><kbd>space</kbd><span>Turn a filter on or off</span></div>
+    <div class="split narrow">
+      <div class="words">
+        <p>Several thousand rows you can only reach with a mouse is not a library, it's an
+          endurance test. Every action has a key — and the full guide sits beside the list
+          rather than hidden in a menu.</p>
+      </div>
+      <figure>
+        <a href="shot-keys.jpg" target="_blank" rel="noopener">
+          <img src="shot-keys.jpg" alt="The keyboard guide shown in the app beside the library, listing every shortcut." loading="lazy">
+        </a>
+        <figcaption>The guide is in the app, not the manual</figcaption>
+      </figure>
     </div>
   </div>
 </section>
@@ -426,20 +382,21 @@ footer a{color:var(--accent)}
   <div class="wrap">
     <p class="eyebrow mono">Make it yours</p>
     <h2>Your consoles. Your genres. Your tags.</h2>
-    <p>The starting set is sensible — Steam, Xbox, Switch, PlayStation, PSVR, PSVR 2, Meta
-      Quest, iOS; Action-Adventure through Metroidvania — but none of it is fixed. Add a
-      console the app has never heard of, rename a genre to the word you actually use, drag any
-      of it into the order you want to read it in, and give each one its own icon and colour.</p>
-    <p>Tags are the free-form layer on top: <span class="mono">Boss Fight</span>,
-      <span class="mono">Crafting</span>, <span class="mono">Side Quest</span>,
-      <span class="mono">Multiplayer</span> — or whatever you'd rather sort by. Every one of
-      them is a filter, and every one of them is something a Smart List can be built on.</p>
-    <div class="shots" style="margin-top:44px">
-      <a class="phone" href="screenshot-tags.jpg" target="_blank" rel="noopener">
-        <img class="shot" src="screenshot-tags.jpg" alt="The Edit Tags screen on iPhone, showing custom tags with colours and drag handles." loading="lazy">
-      </a>
+    <div class="split">
+      <div class="words">
+        <p>Steam through Meta Quest, Action-Adventure through Metroidvania — sensible to start
+          with, none of it fixed. Add a console the app has never heard of, rename a genre to
+          the word you actually use, reorder any of it, give each its own icon and colour.</p>
+        <p>Tags are the free-form layer on top. Every one is a filter, and every one is
+          something a Smart List can be built on.</p>
+      </div>
+      <figure>
+        <a href="screenshot-tags.jpg" target="_blank" rel="noopener">
+          <img src="screenshot-tags.jpg" alt="The Edit Tags screen on iPhone: custom tags with colours and drag handles." loading="lazy">
+        </a>
+        <figcaption>Tags are yours to name, colour and reorder</figcaption>
+      </figure>
     </div>
-    <p class="shotnote mono" style="color:var(--dim)">Tags are yours to name, colour and reorder</p>
   </div>
 </section>
 
@@ -447,12 +404,10 @@ footer a{color:var(--accent)}
   <div class="wrap">
     <p class="eyebrow mono">Themes</p>
     <h2>Make it look like yours.</h2>
-    <p>Eight themes, each with its own mood rather than its own tint. Every one is
-      hand-authored twice — a light ground and a dark one — so picking a look never takes
-      your Appearance setting away from you, and every one is checked for contrast, so
-      nothing goes unreadable to make something else look good.</p>
-    <p>These are real screenshots of the same screen. Each card opens on whichever ground
-      matches your own light/dark setting — <strong>click any one to see its other half.</strong></p>
+    <p>Eight themes, each hand-authored twice — a light ground and a dark one — so picking a
+      look never takes your Appearance setting away from you.</p>
+    <p>Real screenshots of the same screen. Each opens on whichever ground matches your own
+      setting — <strong>click any one to see its other half.</strong></p>
     <div class="skins">
       <div class="skin">
         <input type="checkbox" id="flip-classic" class="flip">
@@ -584,25 +539,15 @@ footer a{color:var(--accent)}
   <div class="wrap">
     <p class="eyebrow mono">Privacy</p>
     <h2>Your library is nobody else's business.</h2>
-    <p>Quest Chronicle keeps your games on your own devices and syncs them through your own
-      iCloud account. There is no Quest Chronicle server, because there is nothing it would
-      need one for.</p>
+    <p>Your games stay on your devices and sync through your own iCloud account. There is no
+      Quest Chronicle server, because there is nothing it would need one for.</p>
     <div class="privacy">
-      <div class="cell">
-        <span class="glyph">🚪</span>
-        <h3>No account</h3>
-        <p>Open it and start. No sign-up, no email, no password to forget.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🙈</span>
-        <h3>No tracking</h3>
-        <p>No analytics, no telemetry, no third-party SDKs watching what you play.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">📤</span>
-        <h3>Yours to take</h3>
-        <p>Export the whole library to CSV whenever you like. It was always your data.</p>
-      </div>
+      <div class="cell"><span class="glyph">🚪</span><h3>No account</h3>
+        <p>Open it and start. No sign-up, no password to forget.</p></div>
+      <div class="cell"><span class="glyph">🙈</span><h3>No tracking</h3>
+        <p>No analytics, no telemetry, nothing watching what you play.</p></div>
+      <div class="cell"><span class="glyph">📤</span><h3>Yours to take</h3>
+        <p>Export the whole library to CSV whenever you like.</p></div>
     </div>
   </div>
 </section>
