@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quest Chronicle — Privacy Policy</title>
+<meta name="description" content="Quest Chronicle has no account, no analytics and no tracking. Your library lives on your device and in your own iCloud.">
+<meta property="og:title" content="Quest Chronicle — Privacy Policy">
+<meta property="og:description" content="Quest Chronicle has no account, no analytics and no tracking. Your library lives on your device and in your own iCloud.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+/* The app's identity is blocky — square corners on purpose, monospace for anything that is
+   data rather than prose. The site inherits that rather than inventing a softer version of it. */
+:root{
+  --bg:#F4F4F6; --panel:#FFFFFF; --ink:#16161A; --dim:#5C5C68; --line:#D8D8DE;
+  --accent:#2F5FE0; --done:#2E8B57; --attention:#C97F19; --danger:#B52318; --progress:#7D5CFF;
+  --ground:#16161A;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0E0E12; --panel:#17171D; --ink:#F2F2F0; --dim:#9A9AA6; --line:#2A2A34;
+         --accent:#7FA0FF; --done:#57C98A; --attention:#E8AC4A; --danger:#E5665A; --progress:#A98CFF; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+section{padding:88px 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+h1,h2,h3{margin:0 0 16px;letter-spacing:-0.02em;line-height:1.08}
+h1{font-size:clamp(34px,6vw,62px);font-weight:800}
+h2{font-size:clamp(26px,4vw,42px);font-weight:800}
+h3{font-size:19px;font-weight:700;letter-spacing:-0.01em}
+p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
+.lead{font-size:clamp(18px,2.2vw,22px);color:var(--dim);max-width:56ch}
+
+/* ---- hero ---- */
+#hero{background:var(--ground);color:#F2F2F0;border-top:0;padding:64px 0 0}
+#hero p{color:#A6A6B4}
+.badge{
+  display:inline-block;padding:5px 10px;border:1px solid #3A3A46;color:#A6A6B4;
+  font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;
+}
+.mark{display:block;width:76px;height:76px;margin-bottom:22px}
+.shot{
+  display:block;width:100%;max-width:1000px;margin:56px auto -1px;border:1px solid #2A2A34;
+  border-bottom:0;box-shadow:0 -20px 60px rgba(0,0,0,.35);
+}
+.shotnote{text-align:center;font-size:12px;color:#6E6E7C;padding:0 0 14px}
+
+/* ---- feature grid ---- */
+.grid{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);margin-top:40px}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+.cell{background:var(--panel);padding:28px}
+.cell p{font-size:15px;margin-bottom:0}
+.glyph{font-size:22px;line-height:1;margin-bottom:14px;display:block}
+
+/* ---- status list ---- */
+.statuses{list-style:none;padding:0;margin:32px 0 0;border-top:1px solid var(--line)}
+.statuses li{
+  display:flex;gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);
+}
+.statuses .name{
+  font-weight:700;font-size:14px;letter-spacing:0.04em;text-transform:uppercase;
+  min-width:132px;flex:none;
+}
+.statuses .what{color:var(--dim);font-size:15px}
+
+/* ---- keyboard ---- */
+.keys{display:grid;gap:10px 20px;margin-top:32px}
+@media(min-width:640px){.keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.keyrow{display:flex;gap:14px;align-items:center;font-size:15px;color:var(--dim)}
+kbd{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:600;
+  color:var(--ink);background:var(--panel);border:1px solid var(--line);border-bottom-width:3px;
+  padding:4px 9px;letter-spacing:0.7px;min-width:52px;text-align:center;flex:none;
+}
+
+footer{padding:56px 0;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+footer a{color:var(--accent)}
+</style>
+<style>
+  .doc h2{margin-top:32px}
+  .doc h3{margin-top:24px;font-size:1.05rem}
+  .doc li{margin:6px 0}
+  .doc table{width:100%;border-collapse:collapse;margin:16px 0}
+  .doc th,.doc td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .doc th{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+  .back{display:inline-block;margin-bottom:8px}
+</style>
+</head>
+<body>
+<section>
+  <div class="wrap doc">
+    <a class="back mono" href="index.html">&lsaquo; Quest Chronicle</a>
+    <h1>Privacy Policy</h1>
+    <p class="mono">Last updated 26 September 2026</p>
+
+    <p>Quest Chronicle has no account, no analytics, no advertising and no tracking of any kind.
+      There is no server run by the developer, and your library is never sent to him.</p>
+
+    <h2>Where your library lives</h2>
+    <ul>
+      <li><strong>On your device.</strong> Your games, play sessions, lists, tags, consoles and
+        genres are stored on the device you entered them on.</li>
+      <li><strong>In your own iCloud.</strong> If you are signed in to iCloud, the same data syncs
+        between your devices through Apple's CloudKit, in your private database. It is covered by
+        Apple's privacy policy, and the developer cannot read it.</li>
+      <li><strong>Cover images</strong> are files on your device, copied between your devices
+        through your iCloud Drive.</li>
+      <li><strong>CSV files</strong> you import or export are ordinary files you choose, read and
+        written only when you ask.</li>
+    </ul>
+
+    <h2>Connections you can turn on</h2>
+    <p>The app works with none of these. Each is optional, off until you set it up, and uses a key
+      or sign-in of your own that is stored in your device's Keychain. When one is on, the app
+      sends only what that service needs to answer: usually a game title, or your own account
+      identifier on that service.</p>
+
+    <table>
+      <tr><th>Service</th><th>What is sent</th><th>What comes back</th></tr>
+      <tr><td>SteamGridDB<br><span class="mono">steamgriddb.com</span></td>
+          <td>Game titles, with your own API key</td><td>Cover artwork</td></tr>
+      <tr><td>IGDB, through Twitch<br><span class="mono">api.igdb.com, id.twitch.tv</span></td>
+          <td>Game titles, with your own Client ID and Secret</td>
+          <td>How long games take, scores, cover artwork</td></tr>
+      <tr><td>HowLongToBeat<br><span class="mono">howlongtobeat.com</span></td>
+          <td>Game titles. Off unless you switch it on, and unofficial: it reads a page meant for
+            browsers and can stop working without notice</td>
+          <td>How long games take, cover artwork</td></tr>
+      <tr><td>Steam<br><span class="mono">api.steampowered.com</span></td>
+          <td>Your Steam ID and your own Steam Web API key</td>
+          <td>What you are playing and how long you have played it</td></tr>
+      <tr><td>Xbox, through OpenXBL<br><span class="mono">xbl.io</span></td>
+          <td>Your own OpenXBL key</td>
+          <td>What you are playing and when you last played each game</td></tr>
+    </table>
+
+    <p>OpenXBL is an independent service, not Microsoft. Using it means trusting that service with
+      your Xbox account, which is why the app says so where you set it up, and why nothing happens
+      until you choose to.</p>
+
+    <h2>What the app does not do</h2>
+    <ul>
+      <li>No analytics, crash reporting or advertising SDKs of any kind.</li>
+      <li>No location, contacts, photos, microphone, camera or health data.</li>
+      <li>No profile is built about you, and nothing is sold or shared.</li>
+      <li>Diagnostic logs stay on your device, and library content is redacted in release builds.</li>
+    </ul>
+
+    <h2>Children</h2>
+    <p>Quest Chronicle is not directed at children and collects nothing from anyone.</p>
+
+    <h2>Deleting your data</h2>
+    <p>Settings has controls to delete your games, your sessions, or everything. Removing the app
+      removes its local data; data in your iCloud is removed through Apple's own iCloud settings.
+      Disconnecting a service in Settings deletes its key from your Keychain.</p>
+
+    <h2>Contact</h2>
+    <p>Questions: <a href="mailto:eric.linder@gmail.com">eric.linder@gmail.com</a>, or the
+      <a href="https://discord.gg/dyfWpzsnQZ">Quest Chronicle Discord</a>.</p>
+
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <p class="mono" style="margin:0">Quest Chronicle — a game library and play-session tracker for
+      macOS and iOS.</p>
+    <p style="margin:8px 0 0">Made by Eric Linder. <a href="mailto:eric.linder@gmail.com">eric.linder@gmail.com</a></p>
+  </div>
+</footer>
+</body>
+</html>
