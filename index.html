@@ -4,14 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quest Chronicle — the game library that knows what you actually played</title>
-<meta name="description" content="A game library and play-session tracker for Mac and iPhone. Finds your cover art, logs a session in one tap, and keeps thousands of games in order.">
+<meta name="description" content="A game library and play-session tracker for Mac, iPhone and iPad. Connect Steam or Xbox and it logs your sessions while you play. Finds your cover art, and keeps thousands of games in order.">
 
 <meta property="og:title" content="Quest Chronicle">
-<meta property="og:description" content="The game library that knows what you actually played. Mac and iPhone.">
+<meta property="og:description" content="The game library that knows what you actually played. Mac, iPhone and iPad — and it logs your Steam and Xbox sessions for you.">
+<meta property="og:url" content="https://eroxx.github.io/quest-chronicle-website/">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:type" content="website">
 <meta property="og:image" content="og-image.png">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <style>
 /* The app's identity is blocky — square corners on purpose, monospace for anything that is
@@ -85,8 +88,26 @@ kbd{
   padding:4px 9px;letter-spacing:0.7px;min-width:52px;text-align:center;flex:none;
 }
 
+/* ---- a device beside its explanation ---- */
+.showcase{display:grid;gap:36px;align-items:center;margin-top:44px}
+@media(min-width:860px){
+  .showcase{grid-template-columns:1fr 1fr;gap:56px}
+  .showcase.flip .shotwrap{order:-1}
+}
+.showcase .shotwrap{margin:0}
+.showcase img{display:block;width:100%;height:auto}
+.showcase figcaption{margin-top:12px;font-size:12px;color:var(--dim);text-align:center}
+.wide{display:block;width:100%;max-width:980px;height:auto;margin:44px auto 0}
+
 footer{padding:56px 0;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
 footer a{color:var(--accent)}
+</style>
+<style>
+/* App Store badge (store.js). Apple: 40px minimum height, clear space a quarter of its height,
+   never recolored or altered. */
+[hidden]{display:none!important}
+.store-badge{display:inline-block;line-height:0;margin:11px 0}
+.store-badge img{height:44px;width:auto}
 </style>
 </head>
 <body>
@@ -112,15 +133,16 @@ footer a{color:var(--accent)}
       <rect x="16" y="46" width="224" height="16" fill="#F2F2F0"/>
     </svg>
 
-    <span class="badge mono">macOS &amp; iPhone</span>
+    <span class="badge mono">macOS, iPhone &amp; iPad</span>
     <h1>The game library that<br>knows what you actually played.</h1>
     <p class="lead">Quest Chronicle holds thousands of games without turning into a spreadsheet.
       It finds your cover art, logs a session in one tap, and never makes you type the same
       thing twice.</p>
     <p class="mono" data-store-soon style="margin:14px 0 0;color:var(--accent)">Coming soon to the App Store</p>
+    <a class="store-badge" data-store-live hidden href="#" aria-label="Download Quest Chronicle on the App Store"><picture><source srcset="img/app-store-badge-white.svg" media="(prefers-color-scheme: dark)"><img src="img/app-store-badge-black.svg" alt="Download on the App Store" width="132" height="44"></picture></a>
 
-    <img class="shot" src="screenshot-mac.png" alt="Quest Chronicle on macOS: a game library with cover art, filters down the left and a keyboard guide on the right.">
-    <p class="shotnote mono">Quest Chronicle on macOS</p>
+    <img class="shot" src="img/devices.webp" alt="Quest Chronicle on an iPad and an iPhone, showing the same game library with cover art, filters and statuses.">
+    <p class="shotnote mono">The same library on every device you own</p>
   </div>
 </section>
 
@@ -152,8 +174,73 @@ footer a{color:var(--accent)}
       <div class="cell">
         <span class="glyph">☁️</span>
         <h3>The same library everywhere</h3>
-        <p>iCloud sync between Mac and iPhone, continuously and without a Sync button to
-          remember to press.</p>
+        <p>iCloud sync between Mac, iPhone and iPad, continuously and without a Sync
+          button to remember to press.</p>
+      </div>
+    </div>
+    <div class="showcase">
+      <div>
+        <h3>Names when you are organising, box art when you are choosing</h3>
+        <p>The same games, the same filters, a different shape. One click apart, on every
+          device.</p>
+      </div>
+      <figure class="shotwrap">
+        <img src="img/iphone-covers.webp" alt="The cover grid on iPhone: a wall of game box art." loading="lazy" width="561" height="1145">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="sync">
+  <div class="wrap">
+    <h2>Connect Steam or Xbox and stop logging anything.</h2>
+    <p>Quest Chronicle checks every few minutes, and when it sees you have been playing
+      something in your library it writes the session itself — with how long it lasted. One
+      evening is one session, not six, however many times it looked.</p>
+    <p>It uses <strong>your</strong> key, kept on <strong>your</strong> device. There is no
+      account to make and no server of mine in the middle, which is also why there is nothing
+      to cancel.</p>
+    <div class="grid">
+      <div class="cell">
+        <span class="glyph">🎮</span>
+        <h3>Steam and Xbox</h3>
+        <p>Both take a couple of minutes to set up, and the app walks you through it with the
+          links you need. Everything else works without them.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">🎙️</span>
+        <h3>Or just say so</h3>
+        <p>"Hey Siri, log a session in Quest Chronicle." Name the game in the same breath, and
+          it never has to open.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">🔒</span>
+        <h3>Never a game you don't own</h3>
+        <p>It only logs titles already in your library, so a housemate borrowing the console
+          cannot quietly rewrite your history.</p>
+      </div>
+      <div class="cell">
+        <span class="glyph">✏️</span>
+        <h3>Still yours to correct</h3>
+        <p>Anything it logs can be edited or deleted like anything you logged by hand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ipad">
+  <div class="wrap">
+    <h2>On iPad, it runs the Mac's layout.</h2>
+    <div class="showcase flip">
+      <figure class="shotwrap">
+        <img src="img/ipad-library.webp" alt="Quest Chronicle on iPad: filters down the left, the library in the middle." loading="lazy" width="1100" height="1435">
+      </figure>
+      <div>
+        <p>Given the width, the iPad does not show the phone's app made larger. It shows the
+          desktop one: your filters down the side, the library in the middle, and the game you
+          picked beside it rather than on top of it.</p>
+        <p>Attach a keyboard and every shortcut below works there too. Split View and Stage
+          Manager both behave — the library narrows to the single-pane layout and keeps going.</p>
       </div>
     </div>
   </div>
@@ -167,7 +254,7 @@ footer a{color:var(--accent)}
       and the widget resets itself. Search from the widget for anything you haven't played
       lately.</p>
     <p>On the Mac it's a keystroke: <kbd>⌘L</kbd> logs the game you have selected, without
-      opening anything.</p>
+      opening anything. Or ask Siri, and nothing opens at all.</p>
     <div class="grid">
       <div class="cell">
         <span class="glyph">⚡</span>
@@ -205,6 +292,24 @@ footer a{color:var(--accent)}
   </div>
 </section>
 
+<section id="stats">
+  <div class="wrap">
+    <h2>Then it tells you what you actually do.</h2>
+    <div class="showcase">
+      <div>
+        <p>Every figure here is built out of sessions that happened, not out of a rating you
+          gave something once. What you finish and what you abandon. Which consoles and genres
+          really get played, as against the ones you keep buying for. How long it has been
+          since you touched something.</p>
+        <p>It is the part of a backlog app that usually flatters you. This one doesn't.</p>
+      </div>
+      <figure class="shotwrap">
+        <img src="img/iphone-stats.webp" alt="The Achievements screen: quick stats, a status breakdown and a per-console backlog." loading="lazy" width="561" height="1145">
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section>
   <div class="wrap">
     <h2>Built for a keyboard, not adapted to one.</h2>
@@ -228,13 +333,14 @@ footer a{color:var(--accent)}
     <p>A shelf of themes, each with its own mood rather than its own tint — and every one of
       them checked for contrast, so nothing goes unreadable to make something else look good.
       Turn on shuffle and the app picks a new one each launch, light or dark.</p>
+    <img class="wide" src="img/mac-library.webp" alt="Quest Chronicle on macOS in the Green Terminal theme: the library beside the keyboard guide." loading="lazy" width="1600" height="1093">
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <p class="mono" style="margin:0">Quest Chronicle — a game library and play-session tracker for
-      macOS and iOS.</p>
+      macOS, iPhone and iPad.</p>
     <p style="margin:8px 0 0">Made by Eric Linder.</p>
     <p class="mono" style="margin:8px 0 0">
       <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
@@ -244,5 +350,6 @@ footer a{color:var(--accent)}
   </div>
 </footer>
 
+<script src="store.js" defer></script>
 </body>
 </html>
