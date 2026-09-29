@@ -95,7 +95,9 @@ kbd{
   .showcase.flip .shotwrap{order:-1}
 }
 .showcase .shotwrap{margin:0}
-.showcase img{display:block;width:100%;height:auto}
+/* A phone screenshot is twice as tall as it is wide, so at column width it ran about a
+   thousand pixels and the section became a scroll. Cap the height and let the width follow. */
+.showcase img{display:block;width:100%;height:auto;max-height:600px;width:auto;margin:0 auto}
 .showcase figcaption{margin-top:12px;font-size:12px;color:var(--dim);text-align:center}
 .wide{display:block;width:100%;max-width:980px;height:auto;margin:44px auto 0}
 
