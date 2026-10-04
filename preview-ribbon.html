@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
 <title>Quest Chronicle — every game you own, every session you play</title>
 <meta name="description" content="A game library and play tracker for Mac, iPhone and iPad. Connect Steam or Xbox and it logs your sessions while you play. Finds your cover art, and keeps thousands of games in order.">
 
@@ -227,6 +228,31 @@ a{color:var(--action)}
 .lbCount{position:absolute;top:26px;left:20px;color:#9A9AA6;font:12px ui-monospace,Menlo,monospace}
 @media(max-width:640px){.lbNav{width:36px;height:36px;font-size:20px}}
 
+/* ------------------------------------------------------------- the ribbon
+   Two rows of real screenshots drifting in opposite directions: the eight
+   themes in light above, in dark below, each on a different screen. Each
+   track holds its set twice, so sliding it by half loops without a seam. */
+#hero{--rw:clamp(118px,13vw,178px)}
+.ribbon{margin:46px calc(var(--gut) * -1) 0;overflow:hidden;display:grid;gap:26px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+@media(min-width:1180px){.ribbon{margin-left:calc((100vw - 1120px) / -2 - var(--gut));margin-right:calc((100vw - 1120px) / -2 - var(--gut))}}
+.track{display:flex;width:max-content;animation:drift 110s linear infinite}
+.track.rev{animation-direction:reverse;animation-duration:125s}
+.ribbon:hover .track,.ribbon:focus-within .track{animation-play-state:paused}
+@keyframes drift{to{transform:translateX(-50%)}}
+.rib{flex:none;width:var(--rw);margin-right:24px;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:zoom-in;text-align:center}
+.rib img{display:block;width:100%;height:auto;aspect-ratio:1320/2868;border-radius:calc(var(--rw) * .13);
+  border:calc(var(--rw) * .028) solid #0B0B0E;background:#0B0B0E;box-shadow:0 14px 30px rgba(0,0,0,.28);
+  transition:transform .25s ease}
+.rib:hover img,.rib:focus-visible img{transform:translateY(-6px)}
+.rib:focus-visible{outline:none}
+.rib:focus-visible img{outline:3px solid var(--action);outline-offset:3px}
+.rib span{display:block;margin-top:10px;font:600 11px/1.3 ui-monospace,Menlo,monospace;letter-spacing:.04em;color:var(--dim)}
+.rib span b{display:block;color:var(--ink);font-weight:700}
+.ribbonNote{text-align:center;font-size:12.5px;color:var(--dim);margin:22px auto 0;max-width:none}
+@media (prefers-reduced-motion:reduce){.track{animation:none}.ribbon{overflow-x:auto}}
+
 footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-size:14px}
 /* Hidden only when JS is running. Unconditional, this left everything below the hero
    invisible to crawlers, reader mode and anyone with scripts off. */
@@ -265,18 +291,11 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
         </div>
     </div>
 
-    <div id="themes">
-      <div class="fanBar">
-        <span class="mono">Eight themes, each in light or dark. These are real screenshots.</span>
-        <div class="groundToggle" role="group" aria-label="Light or dark">
-          <button type="button" class="ground" data-ground="light" aria-pressed="false">☀︎ Light</button>
-          <button type="button" class="ground" data-ground="dark"  aria-pressed="false">☾ Dark</button>
-        </div>
-      </div>
-      <div class="fan stacked" id="fan" role="group" aria-label="The eight themes"></div>
-      <p class="fanCaption" aria-live="polite"><b id="fanName">Classic</b><span id="fanBlurb"></span>
-        <span class="hintLine mono">Pick a card to bring it forward, and again to see it full size. The page wears it too.</span></p>
+    <div class="ribbon" id="ribbon" aria-label="Quest Chronicle in its eight themes, light and dark">
+      <div class="track" id="trackLight"></div>
+      <div class="track rev" id="trackDark"></div>
     </div>
+    <p class="ribbonNote mono">Eight themes, each in light and dark. Real screenshots. Hover to pause, tap one to see it full size.</p>
 
     <p class="thesis">A library you have to keep up with is a chore.<br>
       One that keeps up with <em>you</em> is a record.</p>
@@ -598,55 +617,39 @@ function paint(){
   document.querySelectorAll(".card").forEach(c=>{
     c.setAttribute("aria-pressed", String(c.dataset.theme === theme.id));
     const img = c.querySelector("img");
-    const want = `img/screens/${c.dataset.theme}-${ground}.webp`;
+    const want = `img/themes/${c.dataset.theme}-${ground}.webp`;
     if(img.getAttribute("src") !== want) img.setAttribute("src", want);
   });
   document.querySelectorAll(".ground").forEach(b=>
     b.setAttribute("aria-pressed", String(b.dataset.ground === ground)));
-  document.getElementById("fanName").textContent = theme.name;
-  document.getElementById("fanBlurb").textContent = " " + SCREENS[theme.id] + ". " + theme.blurb;
   try{ localStorage.setItem("qc-theme", theme.id); localStorage.setItem("qc-ground", ground); }catch(e){}
 }
 function used(el){ el?.closest(".try")?.classList.add("used"); }
 function setTheme(t){ theme = t; paint(); }
 function setGround(g){ ground = g; paint(); }
 
-/* Each card is a different screen as well as a different theme, so the hand
-   shows the whole app, not one screen eight times. */
+/* The ribbon. Same order in both rows, but the dark row starts four themes
+   along, so a theme is never stacked over itself. */
 const SCREENS = {system:"Game library", terminal:"Achievements", steampunk:"Cover grid",
   cyberpunk:"Console statistics", anime:"Lists", scifi:"Genre statistics", arcade:"A game's page", handheld:"A smart list"};
-/* The hand of cards. Built in order, so a card on the right overlaps the one
-   on its left, as cards held in a hand do. */
-const fan = document.getElementById("fan");
-THEMES.forEach((t,i)=>{
-  const b = document.createElement("button");
-  b.type = "button"; b.className = "card"; b.dataset.theme = t.id;
-  b.style.setProperty("--i", String(i - (THEMES.length-1)/2));
-  b.setAttribute("aria-label", t.name + " theme");
-  b.setAttribute("aria-pressed","false");
-  const img = document.createElement("img");
-  img.alt = SCREENS[t.id] + " on iPhone, in the " + t.name + " theme.";
-  img.width = 440; img.height = 956; img.decoding = "async";
-  b.appendChild(img);
-  b.addEventListener("click",()=>{
-    if(theme === t) openLb(themeShots(), i); else setTheme(t);
+const ribbonList = [];
+function buildTrack(el, g, offset){
+  const order = THEMES.slice(offset).concat(THEMES.slice(0, offset));
+  for(let copy = 0; copy < 2; copy++) order.forEach(t=>{
+    const cap = `${t.name}, ${g}: ${SCREENS[t.id]}.`;
+    let at = ribbonList.findIndex(x=>x.cap === cap);
+    if(at < 0){ at = ribbonList.push({src:`img/screens/large/${t.id}-${g}.webp`, cap}) - 1; }
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "rib";
+    if(copy) { b.tabIndex = -1; b.setAttribute("aria-hidden","true"); }
+    b.setAttribute("aria-label", `${t.name} theme, ${g}, showing ${SCREENS[t.id]}. Open full size.`);
+    b.innerHTML = `<img src="img/screens/${t.id}-${g}.webp" width="440" height="956" alt="" decoding="async"><span><b>${t.name}</b>${SCREENS[t.id]}</span>`;
+    b.addEventListener("click", ()=>openLb(ribbonList, at));
+    el.appendChild(b);
   });
-  fan.appendChild(b);
-});
-fan.addEventListener("keydown",ev=>{
-  if(ev.key!=="ArrowLeft" && ev.key!=="ArrowRight") return;
-  ev.preventDefault(); ev.stopPropagation();
-  const i = THEMES.indexOf(theme) + (ev.key==="ArrowRight" ? 1 : -1);
-  const t = THEMES[(i + THEMES.length) % THEMES.length];
-  setTheme(t); fan.querySelector(`[data-theme="${t.id}"]`).focus();
-});
-/* Deal the hand as the page opens: the cards start squared up in a pile and
-   fan out once their pictures are in. Without motion they start fanned. */
-if(reduced) fan.classList.remove("stacked");
-else {
-  const deal = ()=>setTimeout(()=>fan.classList.remove("stacked"), 250);
-  if(document.readyState === "complete") deal(); else window.addEventListener("load", deal, {once:true});
 }
+buildTrack(document.getElementById("trackLight"), "light", 0);
+buildTrack(document.getElementById("trackDark"), "dark", 4);
 document.querySelectorAll(".ground").forEach(b=>
   b.addEventListener("click",()=>setGround(b.dataset.ground)));
 
@@ -768,8 +771,8 @@ const lb = document.getElementById("lb"), lbImg = document.getElementById("lbImg
       lbCap = document.getElementById("lbCap"), lbCount = document.getElementById("lbCount");
 let lbList = [], lbAt = 0, lbReturn = null;
 function themeShots(){
-  return THEMES.map(t=>({src:`img/screens/large/${t.id}-${ground}.webp`,
-    cap:`${t.name}, ${ground}: ${SCREENS[t.id]}. ${t.blurb}`}));
+  return THEMES.map(t=>({src:`img/themes/large/${t.id}-${ground}.webp`,
+    cap:`${t.name}, ${ground}. ${t.blurb}`}));
 }
 function showLb(){
   const it = lbList[lbAt];
