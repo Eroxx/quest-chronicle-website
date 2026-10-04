@@ -3,355 +3,499 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quest Chronicle — the game library that knows what you actually played</title>
-<meta name="description" content="A game library and play-session tracker for Mac, iPhone and iPad. Connect Steam or Xbox and it logs your sessions while you play. Finds your cover art, and keeps thousands of games in order.">
+<title>Quest Chronicle — every game you own, and an honest record of the ones you play</title>
+<meta name="description" content="A game library and play tracker for Mac, iPhone and iPad. Connect Steam or Xbox and it logs your sessions while you play. Finds your cover art, and keeps thousands of games in order.">
 
 <meta property="og:title" content="Quest Chronicle">
-<meta property="og:description" content="The game library that knows what you actually played. Mac, iPhone and iPad — and it logs your Steam and Xbox sessions for you.">
-<meta property="og:url" content="https://questchronicleapp.com/">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:description" content="Every game you own, and an honest record of the ones you actually play. Mac, iPhone and iPad.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="og-image.png">
+<meta property="og:url" content="https://questchronicleapp.com/">
+<meta property="og:image" content="https://questchronicleapp.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <style>
-/* The app's identity is blocky — square corners on purpose, monospace for anything that is
-   data rather than prose. The site inherits that rather than inventing a softer version of it. */
+/* ------------------------------------------------------------------ tokens
+   Every colour is a custom property so the theme switcher can repaint the
+   whole page by rewriting eight values — which is exactly what the app does
+   when you pick a skin. No literal hex below this block. */
 :root{
-  --bg:#F4F4F6; --panel:#FFFFFF; --ink:#16161A; --dim:#5C5C68; --line:#D8D8DE;
-  --accent:#2F5FE0; --done:#2E8B57; --attention:#C97F19; --danger:#B52318; --progress:#7D5CFF;
-  --ground:#16161A;
-}
-@media (prefers-color-scheme: dark){
-  :root{ --bg:#0E0E12; --panel:#17171D; --ink:#F2F2F0; --dim:#9A9AA6; --line:#2A2A34;
-         --accent:#7FA0FF; --done:#57C98A; --attention:#E8AC4A; --danger:#E5665A; --progress:#A98CFF; }
+  --paper:#0E0E12; --panel:#17171D; --ink:#F2F2F0; --dim:#9A9AA6;
+  --rule:#2A2A34;  --action:#7FA0FF; --alert:#E5665A;
+  --done:#57C98A;  --attention:#E8AC4A; --progress:#A98CFF;
+  --gut:24px; --r:0px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{animation:none!important;transition:none!important} }
+
 body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   -webkit-font-smoothing:antialiased;
+  transition:background .22s ease,color .22s ease;
 }
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-section{padding:88px 0;border-top:1px solid var(--line)}
-section:first-of-type{border-top:0}
-h1,h2,h3{margin:0 0 16px;letter-spacing:-0.02em;line-height:1.08}
-h1{font-size:clamp(34px,6vw,62px);font-weight:800}
-h2{font-size:clamp(26px,4vw,42px);font-weight:800}
-h3{font-size:19px;font-weight:700;letter-spacing:-0.01em}
-p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
-.lead{font-size:clamp(18px,2.2vw,22px);color:var(--dim);max-width:56ch}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--gut)}
+section{padding:92px 0;border-top:1px solid var(--rule)}
+h1,h2,h3{margin:0 0 16px;letter-spacing:-.02em;line-height:1.08}
+h1{font-size:clamp(36px,6.5vw,68px);font-weight:800}
+h2{font-size:clamp(27px,4vw,44px);font-weight:800}
+h3{font-size:19px;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:64ch}
+.lead{font-size:clamp(18px,2.2vw,22px);max-width:58ch}
+a{color:var(--action)}
+:focus-visible{outline:3px solid var(--action);outline-offset:3px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--action);margin-bottom:14px;display:block}
 
-/* ---- hero ---- */
-#hero{background:var(--ground);color:#F2F2F0;border-top:0;padding:64px 0 0}
-#hero p{color:#A6A6B4}
-.badge{
-  display:inline-block;padding:5px 10px;border:1px solid #3A3A46;color:#A6A6B4;
-  font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;
-}
-.mark{display:block;width:76px;height:76px;margin-bottom:22px}
-.shot{
-  display:block;width:100%;max-width:1000px;margin:56px auto -1px;border:1px solid #2A2A34;
-  border-bottom:0;box-shadow:0 -20px 60px rgba(0,0,0,.35);
-}
-.shotnote{text-align:center;font-size:12px;color:#6E6E7C;padding:0 0 14px}
+/* ------------------------------------------------------------------ hero */
+#hero{border-top:0;padding:40px 0 92px;overflow:hidden}
+.mark{display:block;width:70px;height:70px;margin-bottom:26px}
+.heroGrid{display:grid;gap:40px;align-items:center}
+@media(min-width:900px){.heroGrid{grid-template-columns:1.05fr .95fr;gap:52px}}
+.heroShot{width:100%;height:auto;display:block;filter:drop-shadow(0 24px 60px rgba(0,0,0,.45))}
+.cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:26px}
+.soon{display:inline-block;padding:11px 16px;border:1px solid var(--rule);color:var(--dim);
+      font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 
-/* ---- feature grid ---- */
-.grid{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);margin-top:40px}
-@media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
-.cell{background:var(--panel);padding:28px}
+/* ------------------------------------------------- the theme switcher */
+.themebar{margin-top:34px;padding-top:26px;border-top:1px solid var(--rule)}
+.themebar h3{font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.themebar .hint{font-size:14px;margin:0 0 16px}
+.swatches{display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0;list-style:none}
+.swatch{
+  display:flex;align-items:center;gap:9px;padding:8px 13px 8px 9px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--rule);color:var(--ink);
+  font:inherit;font-size:13px;font-weight:600;transition:border-color .16s ease,transform .16s ease;
+}
+.swatch:hover{transform:translateY(-1px)}
+.swatch[aria-pressed="true"]{border-color:var(--action);box-shadow:inset 0 0 0 1px var(--action)}
+.chips{display:flex;gap:3px}
+.chip{width:11px;height:18px;border-radius:2px;display:block}
+
+/* ------------------------------------------------------------- panels */
+.grid{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:42px}
+@media(min-width:780px){.grid{grid-template-columns:1fr 1fr}}
+.cell{background:var(--panel);padding:30px}
 .cell p{font-size:15px;margin-bottom:0}
-.glyph{font-size:22px;line-height:1;margin-bottom:14px;display:block}
+.glyph{font-size:23px;line-height:1;margin-bottom:14px;display:block}
 
-/* ---- status list ---- */
-.statuses{list-style:none;padding:0;margin:32px 0 0;border-top:1px solid var(--line)}
-.statuses li{
-  display:flex;gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);
-}
-.statuses .name{
-  font-weight:700;font-size:14px;letter-spacing:0.04em;text-transform:uppercase;
-  min-width:132px;flex:none;
-}
-.statuses .what{color:var(--dim);font-size:15px}
+.showcase{display:grid;gap:38px;align-items:center;margin-top:46px}
+@media(min-width:880px){.showcase{grid-template-columns:1fr 1fr;gap:58px}.showcase.flip .shotwrap{order:-1}}
+.shotwrap{margin:0}
+.showcase img{display:block;height:auto;max-height:620px;width:auto;max-width:100%;margin:0 auto}
+.wide{display:block;width:100%;max-width:1000px;height:auto;margin:46px auto 0}
 
-/* ---- keyboard ---- */
-.keys{display:grid;gap:10px 20px;margin-top:32px}
+/* ------------------------------------------- the status demo (clickable) */
+.statusDemo{display:grid;gap:30px;margin-top:42px}
+@media(min-width:820px){.statusDemo{grid-template-columns:auto 1fr;gap:44px;align-items:start}}
+.statusPicker{display:flex;flex-direction:column;gap:8px;padding:0;margin:0;list-style:none;min-width:230px}
+.statusBtn{
+  display:flex;align-items:baseline;gap:11px;width:100%;text-align:left;cursor:pointer;
+  padding:12px 15px;background:var(--panel);border:1px solid var(--rule);color:var(--ink);
+  font:inherit;font-size:14px;font-weight:700;transition:border-color .16s ease,transform .16s ease;
+}
+.statusBtn:hover{transform:translateX(2px)}
+.statusBtn[aria-pressed="true"]{border-color:currentColor}
+.statusBtn .dot{width:9px;height:9px;flex:none;border-radius:50%;background:currentColor;align-self:center}
+.statusBtn .nm{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;text-transform:uppercase;font-size:12px}
+.gameCard{background:var(--panel);border:1px solid var(--rule);padding:26px}
+.gameCard .title{font-size:21px;font-weight:800;margin:0 0 10px}
+.gameCard .pill{
+  display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;padding:5px 10px;border:1px solid currentColor;
+}
+.gameCard .meaning{margin:16px 0 0;font-size:15px;min-height:3.2em}
+.gameCard .foot{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;color:var(--dim)}
+
+/* ------------------------------------------------- the sync demo (plays) */
+.feed{background:var(--panel);border:1px solid var(--rule);padding:8px 0;margin-top:42px;max-width:620px}
+.ev{display:flex;gap:14px;align-items:flex-start;padding:15px 22px;border-bottom:1px solid var(--rule);
+    opacity:0;transform:translateY(7px)}
+.ev:last-child{border-bottom:0}
+.ev.in{animation:evIn .32s ease forwards}
+@keyframes evIn{to{opacity:1;transform:none}}
+.ev .ic{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:50%;
+        background:var(--panel);border:1px solid var(--rule);font-size:14px}
+.ev .nm{font-weight:700;font-size:15px}
+.ev .sub{font-size:13px;color:var(--dim);font-family:ui-monospace,Menlo,monospace}
+.ev .auto{color:var(--done)}
+.replay{margin-top:18px;background:none;border:1px solid var(--rule);color:var(--dim);
+        font:inherit;font-size:13px;font-weight:700;padding:9px 15px;cursor:pointer}
+.replay:hover{color:var(--ink);border-color:var(--action)}
+
+/* ------------------------------------------------------------ keyboard */
+.keys{display:grid;gap:11px 22px;margin-top:38px}
 @media(min-width:640px){.keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.keyrow{display:flex;gap:14px;align-items:center;font-size:15px;color:var(--dim)}
+.keyrow{display:flex;gap:15px;align-items:center;font-size:15px;color:var(--dim)}
 kbd{
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:600;
-  color:var(--ink);background:var(--panel);border:1px solid var(--line);border-bottom-width:3px;
-  padding:4px 9px;letter-spacing:0.7px;min-width:52px;text-align:center;flex:none;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:700;
+  color:var(--action);background:var(--panel);border:1px solid var(--rule);border-bottom-width:3px;
+  padding:5px 9px;letter-spacing:.7px;min-width:56px;text-align:center;flex:none;
+  transition:transform .1s ease,background .1s ease;
 }
+kbd.hit{transform:translateY(2px);border-bottom-width:1px;background:var(--action);color:var(--paper)}
 
-/* ---- a device beside its explanation ---- */
-.showcase{display:grid;gap:36px;align-items:center;margin-top:44px}
-@media(min-width:860px){
-  .showcase{grid-template-columns:1fr 1fr;gap:56px}
-  .showcase.flip .shotwrap{order:-1}
-}
-.showcase .shotwrap{margin:0}
-/* A phone screenshot is twice as tall as it is wide, so at column width it ran about a
-   thousand pixels and the section became a scroll. Cap the height and let the width follow. */
-.showcase img{display:block;width:100%;height:auto;max-height:600px;width:auto;margin:0 auto}
-.showcase figcaption{margin-top:12px;font-size:12px;color:var(--dim);text-align:center}
-.wide{display:block;width:100%;max-width:980px;height:auto;margin:44px auto 0}
+/* --------------------------------------------------------------- stats */
+.stats{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:42px}
+@media(min-width:680px){.stats{grid-template-columns:repeat(3,1fr)}}
+.stat{background:var(--panel);padding:30px;text-align:center}
+.stat .n{font-family:ui-monospace,Menlo,monospace;font-size:clamp(30px,5vw,46px);font-weight:800;
+         color:var(--action);font-variant-numeric:tabular-nums;display:block;line-height:1}
+.stat .l{display:block;margin-top:10px;font-size:14px;color:var(--dim)}
 
-footer{padding:56px 0;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
-footer a{color:var(--accent)}
-</style>
-<style>
-/* App Store badge (store.js). Apple: 40px minimum height, clear space a quarter of its height,
-   never recolored or altered. */
-[hidden]{display:none!important}
-.store-badge{display:inline-block;line-height:0;margin:11px 0}
-.store-badge img{height:44px;width:auto}
+footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-size:14px}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease}
+.reveal.on{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.ev{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 
 <section id="hero">
   <div class="wrap">
-    <!-- The mark, inline so there is one copy of it and it stays sharp at any size. -->
-    <svg class="mark" viewBox="0 0 256 256" aria-label="Quest Chronicle" role="img">
+    <svg class="mark" viewBox="0 0 256 256" role="img" aria-label="Quest Chronicle">
       <rect width="256" height="256" fill="#16161A"/>
-      <g>
-        <rect x="22"  y="72" width="66" height="128" fill="#B52318"/>
-        <rect x="63"  y="172" width="25" height="28" fill="#16161A"/>
-        <rect x="31"  y="115" width="48" height="44" fill="#F2F2F0"/>
-        <rect x="96"  y="72" width="66" height="156" fill="#C97F19"/>
-        <rect x="137" y="200" width="25" height="28" fill="#16161A"/>
-        <rect x="105" y="126" width="48" height="53" fill="#F2F2F0"/>
-        <rect x="115" y="147" width="28" height="10" fill="#16161A"/>
-        <rect x="124" y="138" width="10" height="28" fill="#16161A"/>
-        <rect x="170" y="72" width="66" height="136" fill="#2F5FE0"/>
-        <rect x="211" y="180" width="25" height="28" fill="#16161A"/>
-        <rect x="179" y="118" width="48" height="46" fill="#F2F2F0"/>
-      </g>
-      <rect x="16" y="46" width="224" height="16" fill="#F2F2F0"/>
+      <rect x="22"  y="72"  width="66" height="128" fill="#B52318"/>
+      <rect x="63"  y="172" width="25" height="28"  fill="#16161A"/>
+      <rect x="31"  y="115" width="48" height="44"  fill="#F2F2F0"/>
+      <rect x="96"  y="72"  width="66" height="156" fill="#C97F19"/>
+      <rect x="137" y="200" width="25" height="28"  fill="#16161A"/>
+      <rect x="105" y="126" width="48" height="53"  fill="#F2F2F0"/>
+      <rect x="170" y="72"  width="66" height="136" fill="#2F5FE0"/>
+      <rect x="211" y="180" width="25" height="28"  fill="#16161A"/>
+      <rect x="179" y="118" width="48" height="46"  fill="#F2F2F0"/>
+      <rect x="16"  y="46"  width="224" height="16" fill="#F2F2F0"/>
     </svg>
 
-    <span class="badge mono">macOS, iPhone &amp; iPad</span>
-    <h1>The game library that<br>knows what you actually played.</h1>
-    <p class="lead">Quest Chronicle holds thousands of games without turning into a spreadsheet.
-      It finds your cover art, logs a session in one tap, and never makes you type the same
-      thing twice.</p>
-    <p class="mono" data-store-soon style="margin:14px 0 0;color:var(--accent)">Coming soon to the App Store</p>
-    <a class="store-badge" data-store-live hidden href="#" aria-label="Download Quest Chronicle on the App Store"><picture><source srcset="img/app-store-badge-white.svg" media="(prefers-color-scheme: dark)"><img src="img/app-store-badge-black.svg" alt="Download on the App Store" width="132" height="44"></picture></a>
+    <div class="heroGrid">
+      <div>
+        <span class="eyebrow mono">macOS · iPhone · iPad</span>
+        <h1>Every game you own, and an honest record of the ones you play.</h1>
+        <p class="lead">Most backlog apps are a list you have to maintain. This one is built to be
+          told the truth once, and then keep up on its own.</p>
+        <div class="cta">
+          <span class="soon mono">Coming soon to the App&nbsp;Store</span>
+          <a href="#sync">See how it logs itself&nbsp;→</a>
+        </div>
+      </div>
+      <img class="heroShot" src="img/devices.webp" width="1800" height="1681"
+           alt="Quest Chronicle on an iPad and an iPhone, showing the same library of games with cover art.">
+    </div>
 
-    <img class="shot" src="img/devices.webp" alt="Quest Chronicle on an iPad and an iPhone, showing the same game library with cover art, filters and statuses.">
-    <p class="shotnote mono">The same library on every device you own</p>
+    <!-- The switcher is the feature, demonstrated. Picking a theme repaints
+         this page with the app's real palette for that skin. -->
+    <div class="themebar">
+      <h3 class="mono">Eight themes. Try them on this page.</h3>
+      <p class="hint">These are the app's real palettes, not an impression of them.</p>
+      <ul class="swatches" id="swatches"></ul>
+    </div>
   </div>
 </section>
 
 <section>
-  <div class="wrap">
+  <div class="wrap reveal">
+    <span class="eyebrow mono">The library</span>
     <h2>It fills in the covers itself.</h2>
     <p>A library you cannot recognise at a glance is a list, not a library. Quest Chronicle pulls
-      box art automatically — matching on what you typed, not on what you should have typed, so
-      "Froze Horizon 4" still finds Forza. When one source has nothing, it asks another.</p>
+      box art automatically, matching on what you typed rather than on what you should have typed,
+      so "Froze Horizon 4" still finds Forza. When one source has nothing, it asks another.</p>
     <div class="grid">
-      <div class="cell">
-        <span class="glyph">🔎</span>
-        <h3>Spelling you don't have to fix</h3>
-        <p>Fuzzy title matching, scored by how much of your search the candidate actually
-          covers — so a near-match wins and a coincidence doesn't.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">📚</span>
-        <h3>Import what you already own</h3>
-        <p>Bring in a Steam library or a CSV. Duplicates are caught on the way in, including
-          the same game spelled two different ways.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🖼️</span>
-        <h3>List or covers, one click apart</h3>
-        <p>Names and status when you're organising; a wall of box art when you're deciding
-          what to play. Same games, same filters, different shape.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">☁️</span>
-        <h3>The same library everywhere</h3>
-        <p>iCloud sync between Mac, iPhone and iPad, continuously and without a Sync
-          button to remember to press.</p>
-      </div>
+      <div class="cell"><span class="glyph">🔎</span><h3>Spelling you don't have to fix</h3>
+        <p>Fuzzy matching scored by how much of your search a candidate actually covers, so a
+          near-match wins and a coincidence doesn't.</p></div>
+      <div class="cell"><span class="glyph">📚</span><h3>Bring what you already own</h3>
+        <p>Import a whole library from a CSV. Duplicates are caught on the way in, including the
+          same game spelled two different ways.</p></div>
+      <div class="cell"><span class="glyph">🖼️</span><h3>List or covers, one tap apart</h3>
+        <p>Names and status while you're organising; a wall of box art when you're deciding what
+          to play. Same games, same filters, different shape.</p></div>
+      <div class="cell"><span class="glyph">☁️</span><h3>The same library everywhere</h3>
+        <p>iCloud sync between Mac, iPhone and iPad, continuously, with no Sync button to
+          remember to press.</p></div>
     </div>
     <div class="showcase">
       <div>
-        <h3>Names when you are organising, box art when you are choosing</h3>
-        <p>The same games, the same filters, a different shape. One click apart, on every
-          device.</p>
+        <h3>Thousands of games, without becoming a spreadsheet</h3>
+        <p>Filter by console, genre, status, subscription or tag. Jump to a letter with the A–Z
+          rail. It was built against a real library of nearly four thousand games.</p>
       </div>
       <figure class="shotwrap">
-        <img src="img/iphone-covers.webp" alt="The cover grid on iPhone: a wall of game box art." loading="lazy" width="561" height="1145">
+        <img src="img/iphone-covers.webp" width="561" height="1145" loading="lazy"
+             alt="The cover grid on iPhone: a wall of game box art.">
       </figure>
     </div>
   </div>
 </section>
 
+<section>
+  <div class="wrap reveal">
+    <span class="eyebrow mono">Where things stand</span>
+    <h2>Five honest answers to "what is this game to me?"</h2>
+    <p>Not a rating out of ten. Where the game actually stands with you. Pick one and see what it
+      means.</p>
+    <div class="statusDemo">
+      <ul class="statusPicker" id="statusPicker"></ul>
+      <div class="gameCard" id="gameCard">
+        <p class="title" id="gcTitle">Hollow Knight: Silksong</p>
+        <span class="pill" id="gcPill">QUESTING</span>
+        <p class="meaning" id="gcMeaning"></p>
+        <p class="foot" id="gcFoot"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="sync">
-  <div class="wrap">
+  <div class="wrap reveal">
+    <span class="eyebrow mono">The part nobody else does</span>
     <h2>Connect Steam or Xbox and stop logging anything.</h2>
-    <p>Quest Chronicle checks every few minutes, and when it sees you have been playing
-      something in your library it writes the session itself — with how long it lasted. One
-      evening is one session, not six, however many times it looked.</p>
-    <p>It uses <strong>your</strong> key, kept on <strong>your</strong> device. There is no
-      account to make and no server of mine in the middle, which is also why there is nothing
-      to cancel.</p>
+    <p>It checks every few minutes, and when it sees you've been playing something already in your
+      library it writes the session itself, with how long it lasted. One evening is one session,
+      however many times it looked.</p>
+    <p>It uses <strong>your</strong> key, kept on <strong>your</strong> device. No account to make,
+      no server of mine in the middle — which is also why there's nothing to cancel.</p>
+
+    <div class="feed" id="feed" aria-label="Example of sessions appearing on their own"></div>
+    <button class="replay" id="replay" type="button">Play it again</button>
+
     <div class="grid">
-      <div class="cell">
-        <span class="glyph">🎮</span>
-        <h3>Steam and Xbox</h3>
-        <p>Both take a couple of minutes to set up, and the app walks you through it with the
-          links you need. Everything else works without them.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🎙️</span>
-        <h3>Or just say so</h3>
-        <p>"Hey Siri, log a session in Quest Chronicle." Name the game in the same breath, and
-          it never has to open.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">🔒</span>
-        <h3>Never a game you don't own</h3>
-        <p>It only logs titles already in your library, so a housemate borrowing the console
-          cannot quietly rewrite your history.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">✏️</span>
-        <h3>Still yours to correct</h3>
-        <p>Anything it logs can be edited or deleted like anything you logged by hand.</p>
+      <div class="cell"><span class="glyph">🎙️</span><h3>Or just say so</h3>
+        <p>"Hey Siri, log a session in Quest Chronicle." Name the game in the same breath and the
+          app never has to open.</p></div>
+      <div class="cell"><span class="glyph">🔒</span><h3>Never a game you don't own</h3>
+        <p>It only logs titles already in your library, so a housemate borrowing the console can't
+          quietly rewrite your history.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <span class="eyebrow mono">What it adds up to</span>
+    <h2>Then it tells you what you actually do.</h2>
+    <p>Every figure is built out of sessions that happened, not out of a score you gave something
+      once. What you finish and what you abandon. Which consoles and genres really get played, as
+      against the ones you keep buying for.</p>
+    <div class="stats">
+      <div class="stat"><span class="n" data-to="3821">0</span><span class="l">games in the library it was built against</span></div>
+      <div class="stat"><span class="n" data-to="38" data-suffix="%">0</span><span class="l">of them finished, counted honestly</span></div>
+      <div class="stat"><span class="n" data-to="0" data-literal="∞">0</span><span class="l">accounts to make, servers to trust</span></div>
+    </div>
+    <div class="showcase flip">
+      <figure class="shotwrap">
+        <img src="img/ipad-stats.webp" width="1100" height="1435" loading="lazy"
+             alt="The statistics screen on iPad: quick stats, status breakdown, console backlog, usage heatmap and genre preferences.">
+      </figure>
+      <div>
+        <h3>The big screen gets the whole picture</h3>
+        <p>On iPad the statistics screen shows what the phone has to scroll for: the status
+          breakdown, the per-console backlog, a usage heatmap and your genre preferences, at once.</p>
       </div>
     </div>
   </div>
 </section>
 
 <section id="ipad">
-  <div class="wrap">
-    <h2>On iPad, it runs the Mac's layout.</h2>
-    <div class="showcase flip">
-      <figure class="shotwrap">
-        <img src="img/ipad-library.webp" alt="Quest Chronicle on iPad: filters down the left, the library in the middle." loading="lazy" width="1100" height="1435">
-      </figure>
-      <div>
-        <p>Given the width, the iPad does not show the phone's app made larger. It shows the
-          desktop one: your filters down the side, the library in the middle, and the game you
-          picked beside it rather than on top of it.</p>
-        <p>Attach a keyboard and every shortcut below works there too. Split View and Stage
-          Manager both behave — the library narrows to the single-pane layout and keeps going.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>One tap to log a session.</h2>
-    <p>The moment you want to record playing something is the moment you least want to open an
-      app. The iPhone widget puts your recent games on the home screen — tap one, it's logged,
-      and the widget resets itself. Search from the widget for anything you haven't played
-      lately.</p>
-    <p>On the Mac it's a keystroke: <kbd>⌘L</kbd> logs the game you have selected, without
-      opening anything. Or ask Siri, and nothing opens at all.</p>
-    <div class="grid">
-      <div class="cell">
-        <span class="glyph">⚡</span>
-        <h3>No app launch</h3>
-        <p>The widget writes the session itself and hands it over next time you open the app.
-          Nothing is lost if you never do.</p>
-      </div>
-      <div class="cell">
-        <span class="glyph">✏️</span>
-        <h3>Fix it later</h3>
-        <p>Every session can be edited or deleted. A quick log is a starting point, not a
-          commitment.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>Five honest answers to "what is this game to me?"</h2>
-    <p>Not a rating. Where the game actually stands with you — and Backlog empties itself,
-      because logging a session on a game proves you started it.</p>
-    <ul class="statuses">
-      <li><span class="name mono" style="color:var(--attention)">Backlog</span>
-          <span class="what">Games you want to play but haven't started yet</span></li>
-      <li><span class="name mono" style="color:var(--done)">Questing</span>
-          <span class="what">Games you're actively playing</span></li>
-      <li><span class="name mono" style="color:var(--progress)">Post-Game</span>
-          <span class="what">Main content is done, but you still have optional goals</span></li>
-      <li><span class="name mono">Trophy Case</span>
-          <span class="what">Games you've completed 100%</span></li>
-      <li><span class="name mono" style="color:var(--dim)">Abandoned</span>
-          <span class="what">Games you've given up on or decided not to play</span></li>
-    </ul>
-  </div>
-</section>
-
-<section id="stats">
-  <div class="wrap">
-    <h2>Then it tells you what you actually do.</h2>
+  <div class="wrap reveal">
+    <span class="eyebrow mono">On iPad</span>
+    <h2>It runs the Mac's layout, not the phone's.</h2>
     <div class="showcase">
-      <div>
-        <p>Every figure here is built out of sessions that happened, not out of a rating you
-          gave something once. What you finish and what you abandon. Which consoles and genres
-          really get played, as against the ones you keep buying for. How long it has been
-          since you touched something.</p>
-        <p>It is the part of a backlog app that usually flatters you. This one doesn't.</p>
-      </div>
       <figure class="shotwrap">
-        <img src="img/iphone-stats.webp" alt="The Achievements screen: quick stats, a status breakdown and a per-console backlog." loading="lazy" width="561" height="1145">
+        <img src="img/ipad-library.webp" width="1100" height="1435" loading="lazy"
+             alt="Quest Chronicle on iPad: filters down the left, the library in the middle.">
       </figure>
+      <div>
+        <p>Given the width, the iPad doesn't show the phone's app made larger. It shows the desktop
+          one: your filters down the side, the library in the middle, and the game you picked
+          beside it rather than on top of it.</p>
+        <p>Attach a keyboard and every shortcut below works there too. Split View and Stage Manager
+          both behave — the library narrows to the single-pane layout and keeps going.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <section>
-  <div class="wrap">
+  <div class="wrap reveal">
+    <span class="eyebrow mono">On the Mac</span>
     <h2>Built for a keyboard, not adapted to one.</h2>
-    <p>A list of several thousand rows that can only be driven with a mouse is not a library,
-      it's an endurance test. Every action has a key, and every key is published in a guide
-      that sits beside the list rather than hidden in a menu.</p>
-    <div class="keys">
-      <div class="keyrow"><kbd>↑ ↓</kbd><span>Move through games</span></div>
-      <div class="keyrow"><kbd>A–Z</kbd><span>Jump to that letter</span></div>
-      <div class="keyrow"><kbd>↩</kbd><span>Open the selected game</span></div>
-      <div class="keyrow"><kbd>⌘L</kbd><span>Log a session on it, right now</span></div>
-      <div class="keyrow"><kbd>⌘F</kbd><span>Search</span></div>
-      <div class="keyrow"><kbd>space</kbd><span>Turn a filter on or off</span></div>
+    <p>A list of several thousand rows you can only drive with a mouse isn't a library, it's an
+      endurance test. Every action has a key, and every key is published in a guide beside the
+      list rather than buried in a menu. <strong>Press one.</strong></p>
+    <div class="keys" id="keys">
+      <div class="keyrow"><kbd data-key="arrowdown">↑ ↓</kbd><span>Move through games</span></div>
+      <div class="keyrow"><kbd data-key="a">A–Z</kbd><span>Jump to that letter</span></div>
+      <div class="keyrow"><kbd data-key="enter">↩</kbd><span>Open the selected game</span></div>
+      <div class="keyrow"><kbd data-key="l">⌘L</kbd><span>Log a session on it, right now</span></div>
+      <div class="keyrow"><kbd data-key="f">⌘F</kbd><span>Search</span></div>
+      <div class="keyrow"><kbd data-key=" ">space</kbd><span>Turn a filter on or off</span></div>
     </div>
+    <img class="wide" src="img/mac-library.webp" width="1600" height="1093" loading="lazy"
+         alt="Quest Chronicle on macOS: the library beside the keyboard guide, in the Green Terminal theme.">
   </div>
 </section>
 
 <section>
-  <div class="wrap">
-    <h2>Make it look like yours.</h2>
-    <p>A shelf of themes, each with its own mood rather than its own tint — and every one of
-      them checked for contrast, so nothing goes unreadable to make something else look good.
-      Turn on shuffle and the app picks a new one each launch, light or dark.</p>
-    <img class="wide" src="img/mac-library.webp" alt="Quest Chronicle on macOS in the Green Terminal theme: the library beside the keyboard guide." loading="lazy" width="1600" height="1093">
+  <div class="wrap reveal">
+    <span class="eyebrow mono">Yours</span>
+    <h2>Your library, your iCloud, nobody else's business.</h2>
+    <p>No analytics, no crash reporting, no advertising, no profile built about you, nothing sold
+      or shared. Your games travel between your devices through your own Apple account and nowhere
+      else. Paid once, no subscription.</p>
+    <p><a href="privacy.html">The privacy policy</a> says the same thing at length, and it was
+      written by reading every network call in the source rather than from memory.</p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <p class="mono" style="margin:0">Quest Chronicle — a game library and play-session tracker for
-      macOS, iPhone and iPad.</p>
+    <p class="mono" style="margin:0">Quest Chronicle — a game library and play tracker for macOS, iPhone and iPad.</p>
     <p style="margin:8px 0 0">Made by Eric Linder.</p>
-    <p class="mono" style="margin:8px 0 0">
+    <p class="mono" style="margin:10px 0 0">
       <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
       <a href="support.html">Support</a> &nbsp;·&nbsp;
-      <a href="https://discord.gg/dyfWpzsnQZ"><svg style="width:15px;height:15px;vertical-align:-2px;margin-right:5px;color:#5865F2" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.6 1.3a18.4 18.4 0 0 0-5.6 0L8.6 3a19.7 19.7 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18.1a19.9 19.9 0 0 0 6 3l1.3-2.1a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4a12.9 12.9 0 0 1-2.1 1l1.3 2.1a19.8 19.8 0 0 0 6-3c.5-5.2-.8-9.7-3.5-13.7ZM8.3 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm7.4 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>Discord</a>
+      <a href="https://discord.gg/dyfWpzsnQZ">Discord</a>
     </p>
   </div>
 </footer>
 
-<script src="store.js" defer></script>
+<script>
+"use strict";
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------------------------------------------------------------- themes */
+const THEMES = [
+ {id:"system",   name:"Classic",       p:{paper:"#0E0E12",panel:"#17171D",ink:"#F2F2F0",dim:"#9A9AA6",rule:"#2A2A34",action:"#7FA0FF",alert:"#E5665A"}},
+ {id:"terminal", name:"Green Terminal",p:{paper:"#0A0F0A",panel:"#121A12",ink:"#5CF26B",dim:"#3D9E4C",rule:"#2E7A38",action:"#3DB852",alert:"#FF594C"}},
+ {id:"steampunk",name:"Steampunk",     p:{paper:"#1C140D",panel:"#2B2114",ink:"#E6C78C",dim:"#A88A5C",rule:"#B8852E",action:"#B8852E",alert:"#EB5C47"}},
+ {id:"cyberpunk",name:"Cyberpunk",     p:{paper:"#0E0B17",panel:"#1B1429",ink:"#1AF2E0",dim:"#947AC7",rule:"#F22699",action:"#F22699",alert:"#FF4059"}},
+ {id:"anime",    name:"Anime",         p:{paper:"#1A1426",panel:"#292138",ink:"#F7E6F2",dim:"#B8A3D1",rule:"#EB7AA8",action:"#EB7AA8",alert:"#FF6B80"}},
+ {id:"scifi",    name:"Sci-Fi",        p:{paper:"#080F1A",panel:"#0F1B2B",ink:"#B8E6FF",dim:"#7099B8",rule:"#339ED9",action:"#339ED9",alert:"#FF9426"}},
+ {id:"arcade",   name:"Arcade",        p:{paper:"#0D0C12",panel:"#1C1B25",ink:"#FFED4C",dim:"#B8AD73",rule:"#F22938",action:"#F22938",alert:"#F22938"}},
+ {id:"handheld", name:"Handheld",      p:{paper:"#242B17",panel:"#333D21",ink:"#CCE099",dim:"#94A86B",rule:"#708A47",action:"#ADCC66",alert:"#F2CC66"}}
+];
+const root = document.documentElement;
+function applyTheme(t){
+  const p = t.p;
+  root.style.setProperty("--paper",p.paper);
+  root.style.setProperty("--panel",p.panel);
+  root.style.setProperty("--ink",p.ink);
+  root.style.setProperty("--dim",p.dim);
+  root.style.setProperty("--rule",p.rule);
+  root.style.setProperty("--action",p.action);
+  root.style.setProperty("--alert",p.alert);
+  document.querySelectorAll(".swatch").forEach(b=>
+    b.setAttribute("aria-pressed", String(b.dataset.theme === t.id)));
+  try{ localStorage.setItem("qc-theme", t.id); }catch(e){}
+}
+const swatches = document.getElementById("swatches");
+THEMES.forEach(t=>{
+  const li = document.createElement("li");
+  const b  = document.createElement("button");
+  b.type = "button"; b.className = "swatch"; b.dataset.theme = t.id;
+  b.setAttribute("aria-pressed","false");
+  b.innerHTML = '<span class="chips" aria-hidden="true">'
+    + ['paper','action','ink'].map(k=>`<span class="chip" style="background:${t.p[k]}"></span>`).join("")
+    + `</span>${t.name}`;
+  b.addEventListener("click",()=>applyTheme(t));
+  li.appendChild(b); swatches.appendChild(li);
+});
+let saved = null;
+try{ saved = localStorage.getItem("qc-theme"); }catch(e){}
+applyTheme(THEMES.find(t=>t.id===saved) || THEMES[0]);
+
+/* ---------------------------------------------------------------- status */
+const STATUSES = [
+ {k:"Backlog",     c:"--attention",t:"Alan Wake II",              m:"Games you want to play but haven't started yet.",                 f:"Backlog empties itself: log a session and the game moves on by itself, because playing it proves you started."},
+ {k:"Questing",    c:"--done",     t:"Hollow Knight: Silksong",   m:"Games you're actively playing.",                                  f:"This is where the console sync puts things without being asked."},
+ {k:"Post-Game",   c:"--progress", t:"Dave the Diver",            m:"The main content is done, but you still have optional goals.",    f:"Counts as finished in your completion rate. So does Trophy Case."},
+ {k:"Trophy Case", c:"--ink",      t:"Outer Wilds",               m:"Games you've completed one hundred per cent.",                    f:"The only status you have to award yourself."},
+ {k:"Abandoned",   c:"--dim",      t:"Halo Infinite",             m:"Games you've given up on, or decided not to play.",               f:"Left out of completion rates entirely. Quitting isn't failing, and it isn't finishing either."}
+];
+const picker=document.getElementById("statusPicker"), card=document.getElementById("gameCard");
+const gcT=document.getElementById("gcTitle"), gcP=document.getElementById("gcPill"),
+      gcM=document.getElementById("gcMeaning"), gcF=document.getElementById("gcFoot");
+function showStatus(s){
+  const col = `var(${s.c})`;
+  gcT.textContent=s.t; gcP.textContent=s.k.toUpperCase();
+  gcP.style.color=col; card.style.borderColor=col;
+  gcM.textContent=s.m; gcF.textContent=s.f;
+  picker.querySelectorAll("button").forEach(b=>
+    b.setAttribute("aria-pressed", String(b.dataset.k===s.k)));
+}
+STATUSES.forEach(s=>{
+  const li=document.createElement("li"), b=document.createElement("button");
+  b.type="button"; b.className="statusBtn"; b.dataset.k=s.k;
+  b.style.color=`var(${s.c})`; b.setAttribute("aria-pressed","false");
+  b.innerHTML=`<span class="dot" aria-hidden="true"></span><span class="nm">${s.k}</span>`;
+  b.addEventListener("click",()=>showStatus(s));
+  li.appendChild(b); picker.appendChild(li);
+});
+showStatus(STATUSES[1]);
+
+/* ------------------------------------------------------------ sync feed */
+const EVENTS=[
+ {g:"Hades II",                i:"🎮", s:"Logged session · 2h 15m", auto:true},
+ {g:"Balatro",                 i:"🎮", s:"Logged session · 48m",    auto:true},
+ {g:"Hollow Knight: Silksong", i:"🎮", s:"Logged session · 1h 32m", auto:false},
+ {g:"Hades II",                i:"🎮", s:"Moved to Questing",       auto:false}
+];
+const feed=document.getElementById("feed");
+let timers=[];
+function playFeed(){
+  timers.forEach(clearTimeout); timers=[]; feed.innerHTML="";
+  EVENTS.forEach((e,i)=>{
+    const row=document.createElement("div"); row.className="ev";
+    row.innerHTML=`<span class="ic" aria-hidden="true">${e.i}</span><div>
+        <div class="nm">${e.g}</div>
+        <div class="sub">${e.s}${e.auto?' · <span class="auto">logged automatically from Steam</span>':""}</div>
+      </div>`;
+    feed.appendChild(row);
+    if(reduced){ row.classList.add("in"); }
+    else timers.push(setTimeout(()=>row.classList.add("in"), 260*i + 120));
+  });
+}
+document.getElementById("replay").addEventListener("click",playFeed);
+
+/* --------------------------------------------------- keycaps you can press */
+const caps=[...document.querySelectorAll("kbd[data-key]")];
+function hit(cap){ cap.classList.add("hit"); setTimeout(()=>cap.classList.remove("hit"),150); }
+caps.forEach(c=>{ c.tabIndex=0; c.addEventListener("click",()=>hit(c)); });
+window.addEventListener("keydown",ev=>{
+  const t=ev.target;
+  if(t && (t.tagName==="INPUT"||t.tagName==="TEXTAREA")) return;
+  const k=ev.key.toLowerCase();
+  const cap=caps.find(c=>c.dataset.key===k)
+        || (/^[a-z]$/.test(k) ? caps.find(c=>c.dataset.key==="a") : null)
+        || (k==="arrowup"||k==="arrowdown" ? caps.find(c=>c.dataset.key==="arrowdown") : null);
+  if(cap) hit(cap);
+});
+
+/* ---------------------------------------- reveals + counters on scroll */
+const io=new IntersectionObserver((entries,obs)=>{
+  entries.forEach(en=>{
+    if(!en.isIntersecting) return;
+    en.target.classList.add("on");
+    if(en.target.id==="sync" || en.target.querySelector?.("#feed")) playFeed();
+    en.target.querySelectorAll?.(".n[data-to]").forEach(n=>{
+      if(n.dataset.done) return; n.dataset.done="1";
+      if(n.dataset.literal){ n.textContent=n.dataset.literal; return; }
+      const to=+n.dataset.to, sfx=n.dataset.suffix||"";
+      if(reduced){ n.textContent=to.toLocaleString()+sfx; return; }
+      const t0=performance.now(), dur=900;
+      (function step(now){
+        const k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3);
+        n.textContent=Math.round(to*e).toLocaleString()+sfx;
+        if(k<1) requestAnimationFrame(step);
+      })(performance.now());
+    });
+    obs.unobserve(en.target);
+  });
+},{threshold:.18});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
 </body>
 </html>
