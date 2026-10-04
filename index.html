@@ -54,11 +54,14 @@ a{color:var(--action)}
 .eyebrow{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--action);margin-bottom:14px;display:block}
 
 /* ------------------------------------------------------------------ hero */
-#hero{border-top:0;padding:40px 0 92px;overflow:hidden}
-.mark{display:block;width:70px;height:70px;margin-bottom:26px}
-.heroGrid{display:grid;gap:40px;align-items:center}
-@media(min-width:900px){.heroGrid{grid-template-columns:1.22fr .78fr;gap:48px}}
-.heroShot{width:100%;height:auto;display:block;filter:drop-shadow(0 24px 60px rgba(0,0,0,.45))}
+#hero{border-top:0;padding:30px 0 80px;overflow:hidden}
+.mark{display:block;width:58px;height:58px;margin-bottom:20px}
+.heroText{text-align:center;max-width:860px;margin:0 auto}
+.heroText .lead{margin:0 auto}
+.heroText .cta{justify-content:center}
+#hero .mark{margin:0 auto 18px}
+.fanBar{display:flex;justify-content:center;align-items:center;gap:12px 20px;flex-wrap:wrap;margin-top:34px;
+  font-size:13px;color:var(--dim);text-align:center}
 .cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:26px}
 .soon{display:inline-block;padding:11px 16px;border:1px solid var(--rule);color:var(--dim);
       font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
@@ -84,11 +87,9 @@ a{color:var(--action)}
 }
 .ground + .ground{border-left:1px solid var(--rule)}
 .ground[aria-pressed="true"]{background:var(--action);color:var(--paper)}
-.fanHead{display:flex;justify-content:space-between;align-items:end;gap:20px 32px;flex-wrap:wrap}
-.fanHead p{margin-bottom:0}
-#themes{--cw:clamp(104px,17.5vw,205px);overflow:hidden}
+#themes{--cw:clamp(104px,17.5vw,215px);overflow:hidden;padding-top:10px}
 .fan{--step:6.2deg;
-     position:relative;height:calc(var(--cw) * 2.17 * 1.16);margin:46px auto 0;max-width:1000px}
+     position:relative;height:calc(var(--cw) * 2.17 * 1.16);margin:18px auto 0;max-width:1000px}
 @media(max-width:640px){.fan{--step:3.4deg}}
 .card{
   position:absolute;left:50%;bottom:0;width:var(--cw);margin-left:calc(var(--cw) / -2);
@@ -145,33 +146,7 @@ a{color:var(--action)}
 .gameCard .meaning{margin:20px 0 0;font-size:19px;line-height:1.45;color:var(--ink);min-height:2.9em}
 .gameCard .foot{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;color:var(--dim)}
 
-/* ------------------------------------------------- the sync demo (plays) */
-.feed{background:var(--panel);border:1px solid var(--rule);padding:8px 0;margin-top:42px;max-width:620px}
-.ev{display:flex;gap:14px;align-items:flex-start;padding:15px 22px;border-bottom:1px solid var(--rule)}
-.js .ev{opacity:0;transform:translateY(7px)}
-.ev:last-child{border-bottom:0}
-.ev.in{animation:evIn .32s ease forwards}
-@keyframes evIn{to{opacity:1;transform:none}}
-.ev .ic{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:50%;
-        background:var(--panel);border:1px solid var(--rule);font-size:14px}
-.ev .nm{font-weight:700;font-size:15px}
-.ev .sub{font-size:13px;color:var(--dim);font-family:ui-monospace,Menlo,monospace}
-.ev .auto{color:var(--done)}
-.replay{margin-top:18px;background:var(--panel);border:1px solid var(--action);color:var(--action);
-        font:inherit;font-size:13px;font-weight:700;padding:9px 15px;cursor:pointer}
-.replay:hover{background:var(--action);color:var(--paper)}
 
-/* ------------------------------------------------------------ keyboard */
-.keys{display:grid;gap:11px 22px;margin-top:38px}
-@media(min-width:640px){.keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.keyrow{display:flex;gap:15px;align-items:center;font-size:15px;color:var(--dim)}
-kbd{
-  cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:700;
-  color:var(--action);background:var(--panel);border:1px solid var(--rule);border-bottom-width:3px;
-  padding:5px 9px;letter-spacing:.7px;min-width:56px;text-align:center;flex:none;
-  transition:transform .1s ease,background .1s ease;
-}
-kbd.hit{transform:translateY(2px);border-bottom-width:1px;background:var(--action);color:var(--paper)}
 
 /* --------------------------------------------------------------- stats */
 .stats{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:42px}
@@ -199,36 +174,9 @@ kbd.hit{transform:translateY(2px);border-bottom-width:1px;background:var(--actio
 @keyframes pulse{0%{box-shadow:0 0 0 0 var(--paper)}80%,100%{box-shadow:0 0 0 7px transparent}}
 .touchOnly{display:none}
 @media (hover:none){.touchOnly{display:inline}.mouseOnly{display:none}}
-.legend{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:30px 0 0;font-size:15px;max-width:none}
-.legend .tryTag{position:static;transform:none}
-.try .statusDemo,.try .feed,.try .keys{margin-top:0}
-.try.narrow{max-width:680px}
-.swatch:active,.statusBtn:active,.ground:active,.replay:active{transform:scale(.97)}
-.keyrow{cursor:pointer}
-.keyrow:hover kbd{border-color:var(--action)}
+.try .statusDemo{margin-top:0}
+.statusBtn:active,.ground:active{transform:scale(.97)}
 
-/* -------------------------------------------------------- logging by hand */
-.logDemo{display:grid;gap:24px;align-items:start}
-@media(min-width:820px){.logDemo{grid-template-columns:auto minmax(0,1fr);gap:36px}}
-.widget{width:min(100%,338px);aspect-ratio:338/158;background:var(--panel);border:1px solid var(--rule);
-  border-radius:24px;padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
-  box-shadow:0 16px 40px rgba(0,0,0,.22)}
-.tile{position:relative;border:0;border-radius:12px;cursor:pointer;padding:8px 7px;text-align:left;
-  display:flex;flex-direction:column;justify-content:flex-end;color:#fff;overflow:hidden;
-  font:inherit;font-size:clamp(9.5px,2.7vw,11px);font-weight:700;line-height:1.2;transition:transform .12s ease;hyphens:auto}
-.tile:hover{transform:translateY(-2px)}
-.tile:active{transform:scale(.95)}
-.tile .st{font:600 clamp(7px,2vw,9px)/1 ui-monospace,Menlo,monospace;letter-spacing:.03em;text-transform:uppercase;opacity:.85;margin-top:4px}
-.tile .ok{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.55);
-  font-size:22px;opacity:0;transition:opacity .2s ease}
-.tile.done .ok{opacity:1}
-.widgetCap{font-size:12px;color:var(--dim);margin:10px 0 0;font-family:ui-monospace,Menlo,monospace}
-.logFeed{background:var(--panel);border:1px solid var(--rule);min-height:158px}
-.logFeed .hd{padding:11px 16px;border-bottom:1px solid var(--rule);font:700 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
-.logFeed .row{padding:10px 16px;border-bottom:1px solid color-mix(in srgb,var(--rule) 60%,transparent);font-size:14px;color:var(--ink);animation:evIn .3s ease both}
-.logFeed .row small{display:block;font:12px ui-monospace,Menlo,monospace;color:var(--dim)}
-.logFeed .row small b{color:var(--done);font-weight:600}
-.logFeed .empty{padding:16px;color:var(--dim);font-size:14px}
 
 /* ---------------------------------------------------------------- lists */
 .screens{display:grid;gap:22px;margin-top:44px;grid-template-columns:repeat(2,minmax(0,1fr));max-width:820px}
@@ -254,6 +202,30 @@ kbd.hit{transform:translateY(2px);border-bottom-width:1px;background:var(--actio
 .result li{padding:9px 18px;border-top:1px solid color-mix(in srgb,var(--rule) 60%,transparent);font-size:14.5px;color:var(--ink)}
 .result li small{display:block;color:var(--dim);font:11.5px ui-monospace,Menlo,monospace;margin-top:2px}
 .result .none{padding:20px 18px;color:var(--dim);font-size:14px}
+
+/* ------------------------------------------------- screenshots, full size
+   Every screenshot is a button that opens it large. The corner badge says so
+   on every device, because a phone has no hover to discover it with. */
+.zoom{position:relative;display:block;width:fit-content;max-width:100%;margin:0 auto;padding:0;
+  border:0;background:none;color:inherit;font:inherit;cursor:zoom-in}
+.zoom::after{content:"";position:absolute;right:10px;bottom:10px;width:34px;height:34px;border-radius:50%;
+  background:rgba(10,10,14,.7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7'/%3E%3C/svg%3E") center/15px no-repeat;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);opacity:.85;transition:opacity .15s ease,transform .15s ease}
+.zoom:hover::after,.zoom:focus-visible::after{opacity:1;transform:scale(1.1)}
+.zoom img{display:block}
+.cap{font-size:13px;color:var(--dim);text-align:center;margin-top:12px}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(6,6,9,.93);display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:56px 14px 18px}
+.lb[hidden]{display:none}
+.lb figure{margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;height:100%}
+.lb img{max-width:100%;max-height:calc(100vh - 140px);width:auto;height:auto;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.lb figcaption{color:#D8D8DE;font-size:14px;line-height:1.45;margin-top:14px;text-align:center;max-width:70ch}
+.lbNav,.lbClose{background:rgba(255,255,255,.13);border:0;color:#fff;width:46px;height:46px;border-radius:50%;
+  font-size:26px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.lbNav:hover,.lbClose:hover{background:rgba(255,255,255,.24)}
+.lbClose{position:absolute;top:12px;right:14px;font-size:18px}
+.lbCount{position:absolute;top:26px;left:20px;color:#9A9AA6;font:12px ui-monospace,Menlo,monospace}
+@media(max-width:640px){.lbNav{width:36px;height:36px;font-size:20px}}
 
 footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-size:14px}
 /* Hidden only when JS is running. Unconditional, this left everything below the hero
@@ -281,8 +253,7 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       <rect x="16"  y="46"  width="224" height="16" fill="#F2F2F0"/>
     </svg>
 
-    <div class="heroGrid">
-      <div>
+    <div class="heroText">
         <span class="eyebrow mono">macOS · iPhone · iPad</span>
         <h1><span class="ln">Every game you own.</span><span class="ln">Every session you play.</span></h1>
         <p class="lead">Every console, one library. Quest Chronicle keeps your whole collection
@@ -292,36 +263,24 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
           <span class="soon mono">Coming soon to the App&nbsp;Store</span>
           <a href="#sync">See how it logs itself&nbsp;→</a>
         </div>
+    </div>
+
+    <div id="themes">
+      <div class="fanBar">
+        <span class="mono">Eight themes, each in light or dark. These are real screenshots.</span>
+        <div class="groundToggle" role="group" aria-label="Light or dark">
+          <button type="button" class="ground" data-ground="light" aria-pressed="false">☀︎ Light</button>
+          <button type="button" class="ground" data-ground="dark"  aria-pressed="false">☾ Dark</button>
+        </div>
       </div>
-      <img class="heroShot" src="img/devices.webp" width="1800" height="1681"
-           alt="Quest Chronicle on an iPad and an iPhone, showing the same library of games with cover art.">
+      <div class="fan stacked" id="fan" role="group" aria-label="The eight themes"></div>
+      <p class="fanCaption" aria-live="polite"><b id="fanName">Classic</b><span id="fanBlurb"></span>
+        <span class="hintLine mono">Pick a card to bring it forward, and again to see it full size. The page wears it too.</span></p>
     </div>
 
     <p class="thesis">A library you have to keep up with is a chore.<br>
       One that keeps up with <em>you</em> is a record.</p>
 
-    <p class="legend"><span class="tryTag" aria-hidden="true"><span class="pulse"></span>Try it</span>
-      Anything in a dashed frame on this page is live. There are five of them.</p>
-  </div>
-</section>
-
-<section id="themes" class="band">
-  <div class="wrap">
-    <div class="fanHead">
-      <div>
-        <span class="eyebrow mono">Eight themes</span>
-        <h2>Pick a look. Then pick light or dark.</h2>
-        <p>Every theme is its own palette, not a tint of one design, and light or dark is a
-          separate choice, exactly as it is in the app. These are real screenshots.</p>
-      </div>
-      <div class="groundToggle" role="group" aria-label="Light or dark">
-        <button type="button" class="ground" data-ground="light" aria-pressed="false">☀︎ Light</button>
-        <button type="button" class="ground" data-ground="dark"  aria-pressed="false">☾ Dark</button>
-      </div>
-    </div>
-    <div class="fan stacked" id="fan" role="group" aria-label="The eight themes"></div>
-    <p class="fanCaption" aria-live="polite"><b id="fanName">Classic</b><span id="fanBlurb"></span>
-      <span class="hintLine mono">Pick a card to see it up close. The page wears it too.</span></p>
   </div>
 </section>
 
@@ -346,6 +305,11 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
         <p>iCloud sync between Mac, iPhone and iPad, continuously, with no Sync button to
           remember to press.</p></div>
     </div>
+    <figure class="shotwrap">
+      <img class="wide" src="img/devices.webp" width="1800" height="1681" loading="lazy"
+           alt="Quest Chronicle on an iPad and an iPhone, showing the same library of games with cover art.">
+      <figcaption class="cap">One library on every device, synced through your own iCloud.</figcaption>
+    </figure>
     <div class="showcase">
       <div>
         <h3>Thousands of games, without becoming a spreadsheet</h3>
@@ -436,17 +400,17 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       without opening the app at all. Add a line about what happened if you want to. You don't
       have to.</p>
 
-    <div class="try">
-      <span class="tryTag"><span class="pulse" aria-hidden="true"></span>Try it<span class="how">Log a session</span></span>
-      <div class="logDemo">
-        <div>
-          <div class="widget" id="widget" role="group" aria-label="A Home Screen widget with four games"></div>
-          <p class="widgetCap">The iPhone widget, drawn for this page. Tap a game.</p>
-        </div>
-        <div class="logFeed" aria-live="polite">
-          <div class="hd">Activity</div>
-          <div id="logRows"><div class="empty">Nothing logged yet. Tap a game.</div></div>
-        </div>
+    <div class="showcase">
+      <figure class="shotwrap">
+        <img src="img/iphone-gamepage.webp" width="660" height="1265" loading="lazy"
+             alt="A game's page on iPhone: the Beat Saber cover, its status and consoles, and a large Log Session button.">
+      </figure>
+      <div>
+        <h3>The biggest button on every game</h3>
+        <p>Open a game and Log Session is the first thing your thumb finds. Tap it, add a note if
+          you want one, done.</p>
+        <p>Or skip the app entirely: the iPhone widget logs a game in one tap from your Home
+          Screen, and Siri does it from a sentence.</p>
       </div>
     </div>
 
@@ -477,11 +441,6 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
     <p>It uses <strong>your</strong> key, kept on <strong>your</strong> device. No account to make,
       no server in the middle — which is also why there's nothing to cancel.</p>
 
-    <div class="try narrow">
-      <span class="tryTag"><span class="pulse" aria-hidden="true"></span>Live demo<span class="how">Plays by itself</span></span>
-      <div class="feed" id="feed" aria-label="Example of sessions appearing on their own"></div>
-      <button class="replay" id="replay" type="button">↻ Play it again</button>
-    </div>
 
     <div class="grid">
       <div class="cell"><span class="glyph">🎙️</span><h3>Or just say so</h3>
@@ -548,19 +507,11 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
     <p>A list of several thousand rows you can only drive with a mouse isn't a library, it's an
       endurance test. Every action has a key, and every key is published in a guide beside the
       list rather than buried in a menu.</p>
-    <div class="try">
-    <span class="tryTag"><span class="pulse" aria-hidden="true"></span>Try it<span class="how"><span class="mouseOnly">Press a key on your keyboard</span><span class="touchOnly">Tap a key</span></span></span>
-    <div class="keys" id="keys">
-      <div class="keyrow"><kbd data-key="arrowdown">↑ ↓</kbd><span>Move through games</span></div>
-      <div class="keyrow"><kbd data-key="a">A–Z</kbd><span>Jump to that letter</span></div>
-      <div class="keyrow"><kbd data-key="enter">↩</kbd><span>Open the selected game</span></div>
-      <div class="keyrow"><kbd data-key="l">⌘L</kbd><span>Log a session on it, right now</span></div>
-      <div class="keyrow"><kbd data-key="f">⌘F</kbd><span>Search</span></div>
-      <div class="keyrow"><kbd data-key=" ">space</kbd><span>Turn a filter on or off</span></div>
-    </div>
-    </div>
-    <img class="wide" src="img/mac-library.webp" width="1600" height="1093" loading="lazy"
-         alt="Quest Chronicle on macOS: the library beside the keyboard guide, in the Green Terminal theme.">
+    <figure class="shotwrap">
+      <img class="wide" src="img/mac-library.webp" width="1600" height="1093" loading="lazy"
+           alt="Quest Chronicle on macOS: the library beside the keyboard guide, in the Green Terminal theme.">
+      <figcaption class="cap">The guide on the right lists every key for the screen you're on.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -587,6 +538,14 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
     </p>
   </div>
 </footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Screenshot, full size" hidden>
+  <span class="lbCount" id="lbCount"></span>
+  <button class="lbClose" id="lbClose" type="button" aria-label="Close">✕</button>
+  <button class="lbNav" id="lbPrev" type="button" aria-label="Previous screenshot">‹</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button class="lbNav" id="lbNext" type="button" aria-label="Next screenshot">›</button>
+</div>
 
 <script>
 "use strict";
@@ -665,7 +624,9 @@ THEMES.forEach((t,i)=>{
   img.alt = "The Quest Chronicle library on iPhone in the " + t.name + " theme.";
   img.width = 440; img.height = 956; img.decoding = "async";
   b.appendChild(img);
-  b.addEventListener("click",()=>setTheme(t));
+  b.addEventListener("click",()=>{
+    if(theme === t) openLb(themeShots(), i); else setTheme(t);
+  });
   fan.appendChild(b);
 });
 fan.addEventListener("keydown",ev=>{
@@ -675,12 +636,13 @@ fan.addEventListener("keydown",ev=>{
   const t = THEMES[(i + THEMES.length) % THEMES.length];
   setTheme(t); fan.querySelector(`[data-theme="${t.id}"]`).focus();
 });
-/* Deal the hand when it scrolls into view: the cards start squared up in a
-   pile and fan out. Without motion, or without the observer, they start fanned. */
-if(reduced || !("IntersectionObserver" in window)) fan.classList.remove("stacked");
-else new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){
-  setTimeout(()=>fan.classList.remove("stacked"), 80); o.disconnect(); }
-},{threshold:.35}).observe(fan);
+/* Deal the hand as the page opens: the cards start squared up in a pile and
+   fan out once their pictures are in. Without motion they start fanned. */
+if(reduced) fan.classList.remove("stacked");
+else {
+  const deal = ()=>setTimeout(()=>fan.classList.remove("stacked"), 250);
+  if(document.readyState === "complete") deal(); else window.addEventListener("load", deal, {once:true});
+}
 document.querySelectorAll(".ground").forEach(b=>
   b.addEventListener("click",()=>setGround(b.dataset.ground)));
 
@@ -720,44 +682,7 @@ STATUSES.forEach(s=>{
 });
 showStatus(STATUSES[1]);
 
-/* ------------------------------------------------------------ sync feed */
-const EVENTS=[
- {g:"Hades II",                i:"🎮", s:"Logged session · 2h 15m", auto:true},
- {g:"Balatro",                 i:"🎮", s:"Logged session · 48m",    auto:true},
- {g:"Hollow Knight: Silksong", i:"🎮", s:"Logged session · 1h 32m", auto:true, src:"Xbox"},
- {g:"Hades II",                i:"🎮", s:"Moved to Questing",       auto:false}
-];
-const feed=document.getElementById("feed");
-let timers=[];
-function playFeed(){
-  timers.forEach(clearTimeout); timers=[]; feed.innerHTML="";
-  EVENTS.forEach((e,i)=>{
-    const row=document.createElement("div"); row.className="ev";
-    row.innerHTML=`<span class="ic" aria-hidden="true">${e.i}</span><div>
-        <div class="nm">${e.g}</div>
-        <div class="sub">${e.s}${e.auto?' · <span class="auto">logged automatically from '+(e.src||"Steam")+'</span>':""}</div>
-      </div>`;
-    feed.appendChild(row);
-    if(reduced){ row.classList.add("in"); }
-    else timers.push(setTimeout(()=>row.classList.add("in"), 260*i + 120));
-  });
-}
-document.getElementById("replay").addEventListener("click",()=>{ playFeed(); used(feed); });
 
-/* --------------------------------------------------- keycaps you can press */
-const caps=[...document.querySelectorAll("kbd[data-key]")];
-function hit(cap){ cap.classList.add("hit"); setTimeout(()=>cap.classList.remove("hit"),150); used(cap); }
-caps.forEach(c=>{ c.tabIndex=0; c.closest(".keyrow").addEventListener("click",()=>hit(c)); });
-window.addEventListener("keydown",ev=>{
-  const t=ev.target;
-  if(t && (t.tagName==="INPUT"||t.tagName==="TEXTAREA")) return;
-  if(t && t.closest && t.closest("#fan")) return;
-  const k=ev.key.toLowerCase();
-  const cap=caps.find(c=>c.dataset.key===k)
-        || (/^[a-z]$/.test(k) ? caps.find(c=>c.dataset.key==="a") : null)
-        || (k==="arrowup"||k==="arrowdown" ? caps.find(c=>c.dataset.key==="arrowdown") : null);
-  if(cap) hit(cap);
-});
 
 /* ------------------------------------------------- build a smart list
    The demo library the app's own screenshots are taken from, and the app's
@@ -833,33 +758,57 @@ function runRules(){
 }
 runRules();
 
-/* ------------------------------------------------------ the widget, drawn
-   One tap logs a session. A game still in the Backlog moves to Questing on its
-   first session, as it does in the app. */
-const TILES = [
- {g:"Hades II", s:"Questing", c:"#7A2E1D"},
- {g:"Balatro", s:"Questing", c:"#1F5E4B"},
- {g:"Sea of Stars", s:"Backlog", c:"#2C3F87"},
- {g:"Blue Prince", s:"Questing", c:"#5E7A1F"}
-];
-const widget = document.getElementById("widget"), logRows = document.getElementById("logRows");
-TILES.forEach(t=>{
+
+/* ------------------------------------------------ screenshots, full size */
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lbImg"),
+      lbCap = document.getElementById("lbCap"), lbCount = document.getElementById("lbCount");
+let lbList = [], lbAt = 0, lbReturn = null;
+function themeShots(){
+  return THEMES.map(t=>({src:`img/themes/large/${t.id}-${ground}.webp`,
+    cap:`${t.name}, ${ground}. ${t.blurb}`}));
+}
+function showLb(){
+  const it = lbList[lbAt];
+  lbImg.src = it.src; lbImg.alt = it.cap; lbCap.textContent = it.cap;
+  lbCount.textContent = lbList.length > 1 ? `${lbAt+1} / ${lbList.length}` : "";
+  document.getElementById("lbPrev").style.visibility =
+  document.getElementById("lbNext").style.visibility = lbList.length > 1 ? "visible" : "hidden";
+}
+function openLb(list, at){
+  lbList = list; lbAt = at; lbReturn = document.activeElement;
+  showLb(); lb.hidden = false; root.style.overflow = "hidden";
+  document.getElementById("lbClose").focus();
+}
+function closeLb(){ lb.hidden = true; root.style.overflow = ""; lbReturn?.focus?.(); }
+function stepLb(d){ lbAt = (lbAt + d + lbList.length) % lbList.length; showLb(); }
+document.getElementById("lbClose").addEventListener("click", closeLb);
+document.getElementById("lbPrev").addEventListener("click", ()=>stepLb(-1));
+document.getElementById("lbNext").addEventListener("click", ()=>stepLb(1));
+lb.addEventListener("click", e=>{ if(e.target === lb || e.target.tagName === "FIGURE") closeLb(); });
+document.addEventListener("keydown", e=>{
+  if(lb.hidden) return;
+  if(e.key === "Escape") closeLb();
+  else if(e.key === "ArrowRight") stepLb(1);
+  else if(e.key === "ArrowLeft") stepLb(-1);
+  else return;
+  e.preventDefault(); e.stopPropagation();
+}, true);
+let touchX = null;
+lb.addEventListener("touchstart", e=>{ touchX = e.touches[0].clientX; }, {passive:true});
+lb.addEventListener("touchend", e=>{
+  if(touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX; touchX = null;
+  if(Math.abs(dx) > 50) stepLb(dx < 0 ? 1 : -1);
+});
+/* Every other screenshot on the page, in reading order, as one set. */
+const pageShots = [...document.querySelectorAll(".shotwrap img, .screens img")];
+const pageList = pageShots.map(img=>({src: img.getAttribute("src"), cap: img.alt}));
+pageShots.forEach((img,i)=>{
   const b = document.createElement("button");
-  b.type = "button"; b.className = "tile"; b.style.background = t.c;
-  b.setAttribute("aria-label", "Log a session of " + t.g);
-  b.innerHTML = `<span>${t.g}</span><span class="st">${t.s}</span><span class="ok" aria-hidden="true">✓</span>`;
-  b.addEventListener("click",()=>{
-    used(widget);
-    logRows.querySelector(".empty")?.remove();
-    const moved = t.s === "Backlog";
-    if(moved){ t.s = "Questing"; b.querySelector(".st").textContent = "Questing"; }
-    const row = document.createElement("div"); row.className = "row";
-    row.innerHTML = `${t.g}<small>Logged session · just now${moved ? ' · <b>moved to Questing</b>' : ""}</small>`;
-    logRows.prepend(row);
-    while(logRows.children.length > 4) logRows.lastElementChild.remove();
-    b.classList.add("done"); setTimeout(()=>b.classList.remove("done"), 700);
-  });
-  widget.appendChild(b);
+  b.type = "button"; b.className = "zoom";
+  b.setAttribute("aria-label", "See this screenshot full size");
+  img.replaceWith(b); b.appendChild(img);
+  b.addEventListener("click", ()=>openLb(pageList, i));
 });
 
 /* ---------------------------------------- reveals + counters on scroll */
@@ -867,7 +816,6 @@ const io=new IntersectionObserver((entries,obs)=>{
   entries.forEach(en=>{
     if(!en.isIntersecting) return;
     en.target.classList.add("on");
-    if(en.target.id==="sync" || en.target.querySelector?.("#feed")) playFeed();
     en.target.querySelectorAll?.(".n[data-to]").forEach(n=>{
       if(n.dataset.done) return; n.dataset.done="1";
       if(n.dataset.literal){ n.textContent=n.dataset.literal; return; }
