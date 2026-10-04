@@ -70,7 +70,7 @@ a{color:var(--action)}
   padding:30px 0 0;border-top:1px solid var(--rule);
 }
 .thesis em{font-style:normal;color:var(--action)}
-.themebar{margin-top:34px;padding-top:26px;border-top:1px solid var(--rule)}
+.themebar{margin-top:34px}
 .themebar h3{font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
 .themebar .hint{font-size:14px;margin:0 0 16px}
 .themebar .blurb{color:var(--action);font-weight:600}
@@ -141,16 +141,16 @@ a{color:var(--action)}
 .ev .nm{font-weight:700;font-size:15px}
 .ev .sub{font-size:13px;color:var(--dim);font-family:ui-monospace,Menlo,monospace}
 .ev .auto{color:var(--done)}
-.replay{margin-top:18px;background:none;border:1px solid var(--rule);color:var(--dim);
+.replay{margin-top:18px;background:var(--panel);border:1px solid var(--action);color:var(--action);
         font:inherit;font-size:13px;font-weight:700;padding:9px 15px;cursor:pointer}
-.replay:hover{color:var(--ink);border-color:var(--action)}
+.replay:hover{background:var(--action);color:var(--paper)}
 
 /* ------------------------------------------------------------ keyboard */
 .keys{display:grid;gap:11px 22px;margin-top:38px}
 @media(min-width:640px){.keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .keyrow{display:flex;gap:15px;align-items:center;font-size:15px;color:var(--dim)}
 kbd{
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:700;
+  cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:700;
   color:var(--action);background:var(--panel);border:1px solid var(--rule);border-bottom-width:3px;
   padding:5px 9px;letter-spacing:.7px;min-width:56px;text-align:center;flex:none;
   transition:transform .1s ease,background .1s ease;
@@ -164,6 +164,32 @@ kbd.hit{transform:translateY(2px);border-bottom-width:1px;background:var(--actio
 .stat .n{font-family:ui-monospace,Menlo,monospace;font-size:clamp(30px,5vw,46px);font-weight:800;
          color:var(--action);font-variant-numeric:tabular-nums;display:block;line-height:1}
 .stat .l{display:block;margin-top:10px;font-size:14px;color:var(--dim)}
+
+/* ------------------------------------- "you can play with this" frames
+   One visual language for every live element on the page: a dashed frame
+   in the theme's action colour, with a solid tag sitting on its top edge
+   that says what to do. Static panels are solid-bordered, so the two never
+   read alike. The tag's dot pulses until that frame has been used once. */
+.try{position:relative;margin-top:46px;padding:34px 24px 24px;
+     border:1.5px dashed color-mix(in srgb,var(--action) 70%,transparent)}
+.tryTag{position:absolute;top:0;left:18px;transform:translateY(-50%);
+  display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  background:var(--action);color:var(--paper);padding:7px 11px 7px 10px;
+  font:700 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}
+.tryTag .how{opacity:.86;font-weight:600}
+.tryTag .how::before{content:"·";margin-right:8px}
+.pulse{width:7px;height:7px;flex:none;border-radius:50%;background:var(--paper);animation:pulse 1.7s ease-out infinite}
+.try.used .pulse{animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 var(--paper)}80%,100%{box-shadow:0 0 0 7px transparent}}
+.touchOnly{display:none}
+@media (hover:none){.touchOnly{display:inline}.mouseOnly{display:none}}
+.legend{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:30px 0 0;font-size:15px;max-width:none}
+.legend .tryTag{position:static;transform:none}
+.try .statusDemo,.try .feed,.try .keys{margin-top:0}
+.try.narrow{max-width:680px}
+.swatch:active,.statusBtn:active,.ground:active,.replay:active{transform:scale(.97)}
+.keyrow{cursor:pointer}
+.keyrow:hover kbd{border-color:var(--action)}
 
 footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-size:14px}
 /* Hidden only when JS is running. Unconditional, this left everything below the hero
@@ -212,8 +238,12 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
 
     <!-- The switcher is the feature, demonstrated. Picking a theme repaints
          this page with the app's real palette for that skin. -->
-    <div class="themebar">
-      <h3 class="mono">Eight themes, light or dark. Try them on this page.</h3>
+    <p class="legend"><span class="tryTag" aria-hidden="true"><span class="pulse"></span>Try it</span>
+      Anything in a dashed frame is live. There are four on this page, and this is the first.</p>
+
+    <div class="themebar try">
+      <span class="tryTag"><span class="pulse" aria-hidden="true"></span>Try it<span class="how">Repaint this page</span></span>
+      <h3 class="mono">Eight themes, light or dark.</h3>
       <p class="hint">The app's real palettes, not an impression of them — and the theme and the
         light/dark choice are separate, exactly as they are in the app.
         <span id="themeBlurb" class="blurb"></span></p>
@@ -267,6 +297,8 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
     <h2>Five honest answers to "what is this game to me?"</h2>
     <p>Not a rating out of ten. Where the game actually stands with you. Pick one and see what it
       means.</p>
+    <div class="try">
+    <span class="tryTag"><span class="pulse" aria-hidden="true"></span>Try it<span class="how">Pick a status</span></span>
     <div class="statusDemo">
       <ul class="statusPicker" id="statusPicker"></ul>
       <div class="gameCard" id="gameCard">
@@ -275,6 +307,7 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
         <p class="meaning" id="gcMeaning"></p>
         <p class="foot" id="gcFoot"></p>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -289,8 +322,11 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
     <p>It uses <strong>your</strong> key, kept on <strong>your</strong> device. No account to make,
       no server in the middle — which is also why there's nothing to cancel.</p>
 
-    <div class="feed" id="feed" aria-label="Example of sessions appearing on their own"></div>
-    <button class="replay" id="replay" type="button">Play it again</button>
+    <div class="try narrow">
+      <span class="tryTag"><span class="pulse" aria-hidden="true"></span>Live demo<span class="how">Plays by itself</span></span>
+      <div class="feed" id="feed" aria-label="Example of sessions appearing on their own"></div>
+      <button class="replay" id="replay" type="button">↻ Play it again</button>
+    </div>
 
     <div class="grid">
       <div class="cell"><span class="glyph">🎙️</span><h3>Or just say so</h3>
@@ -356,7 +392,9 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
     <h2>Built for a keyboard, not adapted to one.</h2>
     <p>A list of several thousand rows you can only drive with a mouse isn't a library, it's an
       endurance test. Every action has a key, and every key is published in a guide beside the
-      list rather than buried in a menu. <strong>Press one.</strong></p>
+      list rather than buried in a menu.</p>
+    <div class="try">
+    <span class="tryTag"><span class="pulse" aria-hidden="true"></span>Try it<span class="how"><span class="mouseOnly">Press a key on your keyboard</span><span class="touchOnly">Tap a key</span></span></span>
     <div class="keys" id="keys">
       <div class="keyrow"><kbd data-key="arrowdown">↑ ↓</kbd><span>Move through games</span></div>
       <div class="keyrow"><kbd data-key="a">A–Z</kbd><span>Jump to that letter</span></div>
@@ -364,6 +402,7 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       <div class="keyrow"><kbd data-key="l">⌘L</kbd><span>Log a session on it, right now</span></div>
       <div class="keyrow"><kbd data-key="f">⌘F</kbd><span>Search</span></div>
       <div class="keyrow"><kbd data-key=" ">space</kbd><span>Turn a filter on or off</span></div>
+    </div>
     </div>
     <img class="wide" src="img/mac-library.webp" width="1600" height="1093" loading="lazy"
          alt="Quest Chronicle on macOS: the library beside the keyboard guide, in the Green Terminal theme.">
@@ -455,8 +494,9 @@ function paint(){
   if(blurb) blurb.textContent = theme.name + ". " + theme.blurb;
   try{ localStorage.setItem("qc-theme", theme.id); localStorage.setItem("qc-ground", ground); }catch(e){}
 }
-function setTheme(t){ theme = t; paint(); }
-function setGround(g){ ground = g; paint(); }
+function used(el){ el?.closest(".try")?.classList.add("used"); }
+function setTheme(t){ theme = t; paint(); used(swatches); }
+function setGround(g){ ground = g; paint(); used(swatches); }
 
 const swatches = document.getElementById("swatches");
 THEMES.forEach(t=>{
@@ -502,7 +542,7 @@ STATUSES.forEach(s=>{
   b.type="button"; b.className="statusBtn"; b.dataset.k=s.k;
   b.style.color=`var(${s.c})`; b.setAttribute("aria-pressed","false");
   b.innerHTML=`<span class="dot" aria-hidden="true"></span><span class="nm">${s.k}</span>`;
-  b.addEventListener("click",()=>showStatus(s));
+  b.addEventListener("click",()=>{ showStatus(s); used(picker); });
   li.appendChild(b); picker.appendChild(li);
 });
 showStatus(STATUSES[1]);
@@ -529,12 +569,12 @@ function playFeed(){
     else timers.push(setTimeout(()=>row.classList.add("in"), 260*i + 120));
   });
 }
-document.getElementById("replay").addEventListener("click",playFeed);
+document.getElementById("replay").addEventListener("click",()=>{ playFeed(); used(feed); });
 
 /* --------------------------------------------------- keycaps you can press */
 const caps=[...document.querySelectorAll("kbd[data-key]")];
-function hit(cap){ cap.classList.add("hit"); setTimeout(()=>cap.classList.remove("hit"),150); }
-caps.forEach(c=>{ c.tabIndex=0; c.addEventListener("click",()=>hit(c)); });
+function hit(cap){ cap.classList.add("hit"); setTimeout(()=>cap.classList.remove("hit"),150); used(cap); }
+caps.forEach(c=>{ c.tabIndex=0; c.closest(".keyrow").addEventListener("click",()=>hit(c)); });
 window.addEventListener("keydown",ev=>{
   const t=ev.target;
   if(t && (t.tagName==="INPUT"||t.tagName==="TEXTAREA")) return;
