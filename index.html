@@ -522,7 +522,7 @@ function playFeed(){
     const row=document.createElement("div"); row.className="ev";
     row.innerHTML=`<span class="ic" aria-hidden="true">${e.i}</span><div>
         <div class="nm">${e.g}</div>
-        <div class="sub">${e.s}${e.auto?' · <span class="auto">logged automatically from ${e.src||"Steam"}</span>':""}</div>
+        <div class="sub">${e.s}${e.auto?' · <span class="auto">logged automatically from '+(e.src||"Steam")+'</span>':""}</div>
       </div>`;
     feed.appendChild(row);
     if(reduced){ row.classList.add("in"); }
