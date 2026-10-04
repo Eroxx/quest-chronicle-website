@@ -15,6 +15,7 @@
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script>document.documentElement.classList.add("js")</script>
 
 <style>
 /* ------------------------------------------------------------------ tokens
@@ -40,8 +41,10 @@ body{
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .wrap{max-width:1120px;margin:0 auto;padding:0 var(--gut)}
 section{padding:92px 0;border-top:1px solid var(--rule)}
+section.band{background:color-mix(in srgb,var(--paper) 55%,var(--panel))}
 h1,h2,h3{margin:0 0 16px;letter-spacing:-.02em;line-height:1.08}
-h1{font-size:clamp(36px,6.5vw,68px);font-weight:800}
+h1{font-size:clamp(34px,5.2vw,58px);font-weight:800;text-wrap:balance}
+h1 .ln{display:block}
 h2{font-size:clamp(27px,4vw,44px);font-weight:800}
 h3{font-size:19px;font-weight:700;letter-spacing:-.01em}
 p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:64ch}
@@ -54,7 +57,7 @@ a{color:var(--action)}
 #hero{border-top:0;padding:40px 0 92px;overflow:hidden}
 .mark{display:block;width:70px;height:70px;margin-bottom:26px}
 .heroGrid{display:grid;gap:40px;align-items:center}
-@media(min-width:900px){.heroGrid{grid-template-columns:1.05fr .95fr;gap:52px}}
+@media(min-width:900px){.heroGrid{grid-template-columns:1.22fr .78fr;gap:48px}}
 .heroShot{width:100%;height:auto;display:block;filter:drop-shadow(0 24px 60px rgba(0,0,0,.45))}
 .cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:26px}
 .soon{display:inline-block;padding:11px 16px;border:1px solid var(--rule);color:var(--dim);
@@ -78,7 +81,9 @@ a{color:var(--action)}
 }
 .ground + .ground{border-left:1px solid var(--rule)}
 .ground[aria-pressed="true"]{background:var(--action);color:var(--paper)}
-.swatches{display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0;list-style:none}
+.swatches{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;margin:0;list-style:none}
+@media(min-width:640px){.swatches{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.swatches .swatch{width:100%}
 .swatch{
   display:flex;align-items:center;gap:9px;padding:8px 13px 8px 9px;cursor:pointer;
   background:var(--panel);border:1px solid var(--rule);color:var(--ink);
@@ -115,19 +120,19 @@ a{color:var(--action)}
 .statusBtn[aria-pressed="true"]{border-color:currentColor}
 .statusBtn .dot{width:9px;height:9px;flex:none;border-radius:50%;background:currentColor;align-self:center}
 .statusBtn .nm{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;text-transform:uppercase;font-size:12px}
-.gameCard{background:var(--panel);border:1px solid var(--rule);padding:26px}
-.gameCard .title{font-size:21px;font-weight:800;margin:0 0 10px}
+.gameCard{background:var(--panel);border:1px solid var(--rule);border-left-width:6px;padding:30px 32px;transition:border-color .2s ease}
+.gameCard .title{font-size:clamp(22px,3vw,30px);font-weight:800;margin:0 0 14px;color:var(--ink);letter-spacing:-.01em}
 .gameCard .pill{
   display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;
   letter-spacing:.07em;text-transform:uppercase;padding:5px 10px;border:1px solid currentColor;
 }
-.gameCard .meaning{margin:16px 0 0;font-size:15px;min-height:3.2em}
+.gameCard .meaning{margin:20px 0 0;font-size:19px;line-height:1.45;color:var(--ink);min-height:2.9em}
 .gameCard .foot{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;color:var(--dim)}
 
 /* ------------------------------------------------- the sync demo (plays) */
 .feed{background:var(--panel);border:1px solid var(--rule);padding:8px 0;margin-top:42px;max-width:620px}
-.ev{display:flex;gap:14px;align-items:flex-start;padding:15px 22px;border-bottom:1px solid var(--rule);
-    opacity:0;transform:translateY(7px)}
+.ev{display:flex;gap:14px;align-items:flex-start;padding:15px 22px;border-bottom:1px solid var(--rule)}
+.js .ev{opacity:0;transform:translateY(7px)}
 .ev:last-child{border-bottom:0}
 .ev.in{animation:evIn .32s ease forwards}
 @keyframes evIn{to{opacity:1;transform:none}}
@@ -161,8 +166,10 @@ kbd.hit{transform:translateY(2px);border-bottom-width:1px;background:var(--actio
 .stat .l{display:block;margin-top:10px;font-size:14px;color:var(--dim)}
 
 footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-size:14px}
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease}
-.reveal.on{opacity:1;transform:none}
+/* Hidden only when JS is running. Unconditional, this left everything below the hero
+   invisible to crawlers, reader mode and anyone with scripts off. */
+.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease}
+.js .reveal.on{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.ev{opacity:1;transform:none}}
 </style>
 </head>
@@ -187,7 +194,7 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
     <div class="heroGrid">
       <div>
         <span class="eyebrow mono">macOS · iPhone · iPad</span>
-        <h1>Every game you own.<br>Every session you play.</h1>
+        <h1><span class="ln">Every game you own.</span><span class="ln">Every session you play.</span></h1>
         <p class="lead">Every console, one library. Quest Chronicle keeps your whole collection
           in order and keeps an honest record of what you actually play — not just what you
           meant to.</p>
@@ -254,7 +261,7 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
   </div>
 </section>
 
-<section>
+<section class="band">
   <div class="wrap reveal">
     <span class="eyebrow mono">Where things stand</span>
     <h2>Five honest answers to "what is this game to me?"</h2>
@@ -296,7 +303,7 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
   </div>
 </section>
 
-<section>
+<section class="band">
   <div class="wrap reveal">
     <span class="eyebrow mono">What it adds up to</span>
     <h2>Then it tells you what you actually do.</h2>
@@ -343,7 +350,7 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
   </div>
 </section>
 
-<section>
+<section class="band">
   <div class="wrap reveal">
     <span class="eyebrow mono">On the Mac</span>
     <h2>Built for a keyboard, not adapted to one.</h2>
