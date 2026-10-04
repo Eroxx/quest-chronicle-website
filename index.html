@@ -400,7 +400,7 @@ const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------------------------------------------------------------- themes */
 const THEMES = [
- {id:"system",   name:"Classic",       blurb:"The default: plain, and out of the way.",
+ {id:"system",   name:"Classic",       blurb:"The default, plain and out of the way.",
   light:{paper:"#F4F4F6",panel:"#FFFFFF",ink:"#16161A",dim:"#5C5C68",rule:"#D8D8DE",action:"#2F5FE0",alert:"#B52318"},
   dark: {paper:"#0E0E12",panel:"#17171D",ink:"#F2F2F0",dim:"#9A9AA6",rule:"#2A2A34",action:"#7FA0FF",alert:"#E5665A"}},
  {id:"terminal", name:"Green Terminal",blurb:"Phosphor on paper, or on glass.",
@@ -452,7 +452,7 @@ function paint(){
   document.querySelectorAll(".ground").forEach(b=>
     b.setAttribute("aria-pressed", String(b.dataset.ground === ground)));
   const blurb = document.getElementById("themeBlurb");
-  if(blurb) blurb.textContent = theme.name + ": " + theme.blurb;
+  if(blurb) blurb.textContent = theme.name + ". " + theme.blurb;
   try{ localStorage.setItem("qc-theme", theme.id); localStorage.setItem("qc-ground", ground); }catch(e){}
 }
 function setTheme(t){ theme = t; paint(); }
