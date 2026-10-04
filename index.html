@@ -228,6 +228,8 @@ a{color:var(--action)}
 .chipline i{font-style:normal;font:12px/1.2 ui-monospace,Menlo,monospace;padding:5px 8px;color:var(--ink);
   border:1px solid color-mix(in srgb,var(--action) 35%,var(--rule));background:color-mix(in srgb,var(--action) 7%,var(--panel))}
 @media(min-width:900px){.grid.three{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:780px){.grid.one{grid-template-columns:1fr;max-width:620px}}
+.screen{border:1px solid var(--rule);border-radius:16px}
 
 footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-size:14px}
 /* Hidden only when JS is running. Unconditional, this left everything below the hero
@@ -404,7 +406,7 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
 
     <div class="showcase">
       <figure class="shotwrap">
-        <img src="img/iphone-gamepage.webp" width="660" height="1265" loading="lazy"
+        <img class="screen" src="img/iphone-gamepage.webp" width="660" height="1075" loading="lazy"
              alt="A game's page on iPhone: the Beat Saber cover, its status and consoles, and a large Log Session button.">
       </figure>
       <div>
@@ -444,13 +446,10 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       no server in the middle — which is also why there's nothing to cancel.</p>
 
 
-    <div class="grid">
+    <div class="grid one">
       <div class="cell"><span class="glyph">🎙️</span><h3>Or just say so</h3>
         <p>"Hey Siri, log Hades in Quest Chronicle." Name the game in the same breath and the
           app never has to open.</p></div>
-      <div class="cell"><span class="glyph">🔒</span><h3>Never a game you don't own</h3>
-        <p>It only logs titles already in your library, so a housemate borrowing the console can't
-          quietly rewrite your history.</p></div>
     </div>
   </div>
 </section>
