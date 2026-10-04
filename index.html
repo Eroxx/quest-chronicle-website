@@ -61,6 +61,12 @@ a{color:var(--action)}
       font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 
 /* ------------------------------------------------- the theme switcher */
+.thesis{
+  margin:54px 0 0;max-width:none;color:var(--ink);
+  font-size:clamp(21px,3.1vw,33px);font-weight:700;line-height:1.3;letter-spacing:-.015em;
+  padding:30px 0 0;border-top:1px solid var(--rule);
+}
+.thesis em{font-style:normal;color:var(--action)}
 .themebar{margin-top:34px;padding-top:26px;border-top:1px solid var(--rule)}
 .themebar h3{font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
 .themebar .hint{font-size:14px;margin:0 0 16px}
@@ -182,8 +188,9 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       <div>
         <span class="eyebrow mono">macOS · iPhone · iPad</span>
         <h1>Every game you own, and an honest record of the ones you play.</h1>
-        <p class="lead">Most backlog apps are a list you have to maintain. This one is built to be
-          told the truth once, and then keep up on its own.</p>
+        <p class="lead">You own more games than you can name, across more consoles than you can
+          count. Quest Chronicle holds every one of them in a single place — and quietly keeps
+          score of the ones you actually play.</p>
         <div class="cta">
           <span class="soon mono">Coming soon to the App&nbsp;Store</span>
           <a href="#sync">See how it logs itself&nbsp;→</a>
@@ -192,6 +199,9 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       <img class="heroShot" src="img/devices.webp" width="1800" height="1681"
            alt="Quest Chronicle on an iPad and an iPhone, showing the same library of games with cover art.">
     </div>
+
+    <p class="thesis">A library you have to keep up with is a chore.<br>
+      One that keeps up with <em>you</em> is a record.</p>
 
     <!-- The switcher is the feature, demonstrated. Picking a theme repaints
          this page with the app's real palette for that skin. -->
