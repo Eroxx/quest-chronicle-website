@@ -254,6 +254,21 @@ a{color:var(--action)}
 .ribbonNote{text-align:center;font-size:12.5px;color:var(--dim);margin:22px auto 0;max-width:none}
 @media (prefers-reduced-motion:reduce){.track{animation:none}.ribbon{overflow-x:auto}}
 
+/* --------------------------------------------- what a smart list can use
+   The numbers and the actual lists in one panel, in the app's own words, so
+   "9 fields" is something you can read rather than take on trust. */
+.ruleFacts{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:42px}
+@media(min-width:860px){.ruleFacts{grid-template-columns:1.25fr 1.25fr .9fr}}
+.fact{background:var(--panel);padding:28px}
+.fact .n{font-family:ui-monospace,Menlo,monospace;font-size:clamp(30px,5vw,46px);font-weight:800;color:var(--action);
+  font-variant-numeric:tabular-nums;display:block;line-height:1}
+.fact .n.word{font-size:clamp(26px,3.4vw,38px);white-space:nowrap}
+.fact .l{display:block;margin-top:8px;font-size:14px;color:var(--dim)}
+.chipline{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.chipline i{font-style:normal;font:12px/1.2 ui-monospace,Menlo,monospace;padding:5px 8px;color:var(--ink);
+  border:1px solid color-mix(in srgb,var(--action) 35%,var(--rule));background:color-mix(in srgb,var(--action) 7%,var(--panel))}
+@media(min-width:900px){.grid.three{grid-template-columns:repeat(3,1fr)}}
+
 footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-size:14px}
 /* Hidden only when JS is running. Unconditional, this left everything below the hero
    invisible to crawlers, reader mode and anyone with scripts off. */
@@ -348,22 +363,23 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
 <section class="band">
   <div class="wrap reveal">
     <span class="eyebrow mono">Where things stand</span>
-    <h2>Games move along on their own.</h2>
-    <p>Five statuses instead of a score out of ten. Log a session and a game leaves the Backlog by
-      itself; when you're done with it, it moves on.</p>
+    <h2>Five statuses. What they mean is up to you.</h2>
+    <p>Not a score out of ten. Where the lines fall is yours: for one person Trophy Case means one
+      hundred per cent, for another it means "finished, and done with it". The app makes one move for
+      you: log a session and a game leaves the Backlog by itself.</p>
 
     <div class="journey" id="journey" aria-label="How a game moves through the five statuses">
       <div class="stops">
-        <div class="stop" id="st-backlog" style="--c:var(--attention)"><span class="sn">Backlog</span><span class="sm">Want to play it. Haven't started.</span></div>
+        <div class="stop" id="st-backlog" style="--c:var(--attention)"><span class="sn">Backlog</span><span class="sm">Haven't started.</span></div>
         <div class="hop auto" id="hop-1"><span>first session<br><b>automatic</b></span></div>
-        <div class="stop" id="st-questing" style="--c:var(--done)"><span class="sn">Questing</span><span class="sm">Playing it now.</span></div>
-        <div class="hop" id="hop-2"><span>story<br>finished</span></div>
-        <div class="stop" id="st-postgame" style="--c:var(--progress)"><span class="sn">Post-Game</span><span class="sm">Story done. Still chasing extras.</span></div>
-        <div class="hop" id="hop-3"><span>every last<br>thing</span></div>
-        <div class="stop" id="st-trophy" style="--c:var(--trophy)"><span class="sn">Trophy Case</span><span class="sm">One hundred per cent.</span></div>
+        <div class="stop" id="st-questing" style="--c:var(--done)"><span class="sn">Questing</span><span class="sm">Playing it.</span></div>
+        <div class="hop" id="hop-2"><span>your<br>call</span></div>
+        <div class="stop" id="st-postgame" style="--c:var(--progress)"><span class="sn">Post-Game</span><span class="sm">Finished, still going back.</span></div>
+        <div class="hop" id="hop-3"><span>your<br>call</span></div>
+        <div class="stop" id="st-trophy" style="--c:var(--trophy)"><span class="sn">Trophy Case</span><span class="sm">Done with it.</span></div>
       </div>
       <div class="exitRow" id="exitRow">
-        <div class="stop" id="st-abandoned" style="--c:var(--dim)"><span class="drop">or give up</span><span class="sn">Abandoned</span><span class="sm">Left out of your completion rate, not counted against it.</span></div>
+        <div class="stop" id="st-abandoned" style="--c:var(--dim)"><span class="drop">or give up</span><span class="sn">Abandoned</span><span class="sm">Not for you. Never counted against you.</span></div>
       </div>
       <div class="token" id="token" aria-hidden="true"><span class="tk">🎮</span><span id="tokenName">Hades II</span></div>
       <p class="jNote mono" id="jNote" aria-live="polite">&nbsp;</p>
@@ -411,10 +427,17 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       </div>
     </div>
 
-    <div class="grid">
-      <div class="cell"><span class="glyph">🧮</span><h3>Rules for everything it knows</h3>
-        <p>Status, genre, console, subscription service, when you added it, when you last played
-          it, how many times, and How Long to Beat's hours and score.</p></div>
+
+    <div class="ruleFacts">
+      <div class="fact"><span class="n" data-to="9">9</span><span class="l">fields to build rules from</span>
+        <div class="chipline"><i>Status</i><i>Genre</i><i>Console</i><i>Service</i><i>Date Added</i><i>Date Last Played</i><i>Number of Times Played</i><i>How Long to Beat (hours)</i><i>How Long to Beat Score</i></div></div>
+      <div class="fact"><span class="n" data-to="11">11</span><span class="l">ways to compare them</span>
+        <div class="chipline"><i>is</i><i>is not</i><i>contains any</i><i>contains all</i><i>is before</i><i>is after</i><i>is in the last</i><i>is greater than</i><i>is less than</i><i>is known</i><i>is unknown</i></div></div>
+      <div class="fact"><span class="n word">All · Any</span><span class="l">every rule must match, or just one</span>
+        <div class="chipline"><i>Match ALL criteria</i><i>Match ANY criteria</i></div></div>
+    </div>
+
+    <div class="grid three">
       <div class="cell"><span class="glyph">💬</span><h3>Or describe it</h3>
         <p>With Apple Intelligence, type "short roguelikes on Switch I haven't played" and it
           writes the rules, which you check and change before saving.</p></div>
@@ -694,12 +717,12 @@ const RUNS = [
   {g:"Hades II", path:[
     ["st-backlog",  [],          "Hades II is added to the library. Backlog.", 1900],
     ["st-questing", ["hop-1"],   "First session logged. It moved to Questing by itself.", 2400],
-    ["st-postgame", ["hop-2"],   "Credits rolled. You mark it Post-Game.", 2000],
-    ["st-trophy",   ["hop-3"],   "Every last thing done. Trophy Case.", 2600]]},
+    ["st-postgame", ["hop-2"],   "You move it on when you decide it's finished. Post-Game.", 2300],
+    ["st-trophy",   ["hop-3"],   "Done with it, by your definition. Trophy Case.", 2600]]},
   {g:"Halo Infinite", path:[
     ["st-backlog",   [],          "Halo Infinite is added. Backlog.", 1700],
     ["st-questing",  ["hop-1"],   "First session logged. Questing, automatically.", 2200],
-    ["st-abandoned", ["exitRow"], "Not for you. Abandoned, and your completion rate doesn't hold it against you.", 3000]]}
+    ["st-abandoned", ["exitRow"], "Not for you. Abandoned, and your completion rate leaves it out.", 3000]]}
 ];
 async function runJourney(){
   if(reduced){ token.classList.add("show"); tokenName.textContent = "Hades II"; lightUp(["st-questing","hop-1"]); placeToken("st-questing");

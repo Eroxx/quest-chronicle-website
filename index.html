@@ -214,6 +214,21 @@ a{color:var(--action)}
 .ribbonNote{text-align:center;font-size:12.5px;color:var(--dim);margin:22px auto 0;max-width:none}
 @media (prefers-reduced-motion:reduce){.track{animation:none}.ribbon{overflow-x:auto}}
 
+/* --------------------------------------------- what a smart list can use
+   The numbers and the actual lists in one panel, in the app's own words, so
+   "9 fields" is something you can read rather than take on trust. */
+.ruleFacts{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:42px}
+@media(min-width:860px){.ruleFacts{grid-template-columns:1.25fr 1.25fr .9fr}}
+.fact{background:var(--panel);padding:28px}
+.fact .n{font-family:ui-monospace,Menlo,monospace;font-size:clamp(30px,5vw,46px);font-weight:800;color:var(--action);
+  font-variant-numeric:tabular-nums;display:block;line-height:1}
+.fact .n.word{font-size:clamp(26px,3.4vw,38px);white-space:nowrap}
+.fact .l{display:block;margin-top:8px;font-size:14px;color:var(--dim)}
+.chipline{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.chipline i{font-style:normal;font:12px/1.2 ui-monospace,Menlo,monospace;padding:5px 8px;color:var(--ink);
+  border:1px solid color-mix(in srgb,var(--action) 35%,var(--rule));background:color-mix(in srgb,var(--action) 7%,var(--panel))}
+@media(min-width:900px){.grid.three{grid-template-columns:repeat(3,1fr)}}
+
 footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-size:14px}
 /* Hidden only when JS is running. Unconditional, this left everything below the hero
    invisible to crawlers, reader mode and anyone with scripts off. */
@@ -354,10 +369,17 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       </div>
     </div>
 
-    <div class="grid">
-      <div class="cell"><span class="glyph">🧮</span><h3>Rules for everything it knows</h3>
-        <p>Status, genre, console, subscription service, when you added it, when you last played
-          it, how many times, and How Long to Beat's hours and score.</p></div>
+
+    <div class="ruleFacts">
+      <div class="fact"><span class="n" data-to="9">9</span><span class="l">fields to build rules from</span>
+        <div class="chipline"><i>Status</i><i>Genre</i><i>Console</i><i>Service</i><i>Date Added</i><i>Date Last Played</i><i>Number of Times Played</i><i>How Long to Beat (hours)</i><i>How Long to Beat Score</i></div></div>
+      <div class="fact"><span class="n" data-to="11">11</span><span class="l">ways to compare them</span>
+        <div class="chipline"><i>is</i><i>is not</i><i>contains any</i><i>contains all</i><i>is before</i><i>is after</i><i>is in the last</i><i>is greater than</i><i>is less than</i><i>is known</i><i>is unknown</i></div></div>
+      <div class="fact"><span class="n word">All · Any</span><span class="l">every rule must match, or just one</span>
+        <div class="chipline"><i>Match ALL criteria</i><i>Match ANY criteria</i></div></div>
+    </div>
+
+    <div class="grid three">
       <div class="cell"><span class="glyph">💬</span><h3>Or describe it</h3>
         <p>With Apple Intelligence, type "short roguelikes on Switch I haven't played" and it
           writes the rules, which you check and change before saving.</p></div>
