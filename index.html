@@ -61,6 +61,13 @@ a{color:var(--action)}
 .heroText .cta{justify-content:center}
 #hero .mark{margin:0 auto 18px}
 .cta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 20px;font-weight:700;font-size:15px;text-decoration:none;
+  border:1px solid var(--rule);color:var(--ink);background:var(--panel);transition:transform .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.btn.primary{background:var(--action);border-color:var(--action);color:var(--paper)}
+.btn.discord svg{width:19px;height:19px;color:#5865F2}
+.soonLine{font-size:12.5px;color:var(--dim);margin:16px auto 0;letter-spacing:.03em}
+.soonLine a{letter-spacing:0}
 .soon{display:inline-block;padding:11px 16px;border:1px solid var(--rule);color:var(--dim);
       font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 
@@ -86,27 +93,60 @@ a{color:var(--action)}
 .showcase img{display:block;height:auto;max-height:620px;width:auto;max-width:100%;margin:0 auto}
 .wide{display:block;width:100%;max-width:1000px;height:auto;margin:46px auto 0}
 
-/* ------------------------------------------- the status demo (clickable) */
-.statusDemo{display:grid;gap:30px;margin-top:42px}
-@media(min-width:820px){.statusDemo{grid-template-columns:auto 1fr;gap:44px;align-items:start}}
-.statusPicker{display:flex;flex-direction:column;gap:8px;padding:0;margin:0;list-style:none;min-width:230px}
-.statusBtn{
-  display:flex;align-items:baseline;gap:11px;width:100%;text-align:left;cursor:pointer;
-  padding:12px 15px;background:var(--panel);border:1px solid var(--rule);color:var(--ink);
-  font:inherit;font-size:14px;font-weight:700;transition:border-color .16s ease,transform .16s ease;
+/* ------------------------------------------------------------- the journey
+   A game travels the statuses on its own loop. The first hop is the app's one
+   automatic move; the narration line says what just happened, in its words. */
+:root{--trophy:#C8961E}
+.journey{position:relative;margin-top:46px}
+.stops{display:grid;grid-template-columns:1fr 96px 1fr 96px 1fr 96px 1fr}
+.stop{position:relative;background:color-mix(in srgb,var(--c) 11%,var(--panel));
+  border:2px solid color-mix(in srgb,var(--c) 40%,transparent);padding:70px 18px 20px;min-height:178px;
+  transition:transform .35s ease,background .35s ease,border-color .35s ease,box-shadow .35s ease}
+.stop.on{background:color-mix(in srgb,var(--c) 24%,var(--panel));border-color:var(--c);transform:translateY(-5px);
+  box-shadow:0 16px 36px color-mix(in srgb,var(--c) 32%,transparent)}
+.stop .sn{display:block;font:800 13px/1 ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--c)}
+.stop .sm{display:block;margin-top:9px;font-size:15px;line-height:1.4;color:var(--ink)}
+.hop{position:relative}
+.hop::before{content:"";position:absolute;left:8px;right:12px;top:50%;height:3px;margin-top:-1px;background:var(--rule);transition:background .3s ease}
+.hop::after{content:"";position:absolute;right:4px;top:50%;margin-top:-7px;border:7px solid transparent;border-left:10px solid var(--rule);border-right:0;transition:border-color .3s ease}
+.hop.on::before{background:var(--action)}
+.hop.on::after{border-left-color:var(--action)}
+.hop span{position:absolute;left:0;right:0;bottom:calc(50% + 10px);text-align:center;font:600 10.5px/1.3 ui-monospace,Menlo,monospace;color:var(--dim)}
+.hop.auto span b{color:var(--done);font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.exitRow{display:grid;grid-template-columns:1fr 96px 1fr 96px 1fr 96px 1fr;margin-top:58px}
+.exitRow .stop{grid-column:3;min-height:0}
+.exitRow .stop::before{content:"";position:absolute;left:50%;top:-60px;height:58px;border-left:3px dashed var(--rule);transition:border-color .3s ease}
+.exitRow.on .stop::before{border-left-color:var(--action)}
+.drop{position:absolute;left:calc(50% + 12px);top:-42px;font:600 10.5px ui-monospace,Menlo,monospace;color:var(--dim)}
+.token{position:absolute;left:0;top:0;z-index:5;display:flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;
+  background:var(--ink);color:var(--paper);font:700 14px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;white-space:nowrap;
+  box-shadow:0 10px 26px rgba(0,0,0,.28);transition:transform .9s cubic-bezier(.55,0,.2,1),opacity .3s ease;opacity:0}
+.token.show{opacity:1}
+.jNote{margin:26px 0 0;min-height:1.6em;font-size:14px;color:var(--action);max-width:none;text-align:center}
+.libbarWrap{margin-top:46px}
+.libbar{display:flex;height:64px;gap:3px;transform-origin:left;transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
+.on .libbar{transform:none}
+.libbar span{flex-basis:0;background:var(--c);color:var(--paper);display:flex;flex-direction:column;justify-content:center;
+  padding:0 12px;overflow:hidden;white-space:nowrap;font:700 11px/1.2 ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase}
+.libbar span b{font-size:22px;letter-spacing:0}
+@media(max-width:860px){
+  .stops,.exitRow{grid-template-columns:1fr}
+  .stop{padding-top:64px;min-height:0}
+  .hop{height:62px}
+  .hop::before{left:50%;right:auto;top:6px;bottom:14px;width:3px;height:auto;margin:0 0 0 -1px}
+  .hop::after{left:50%;right:auto;top:auto;bottom:4px;margin:0 0 0 -7px;border:7px solid transparent;border-top:10px solid var(--rule);border-bottom:0}
+  .hop.on::after{border-top-color:var(--action);border-left-color:transparent}
+  .hop span{left:calc(50% + 14px);right:auto;top:50%;bottom:auto;transform:translateY(-50%);text-align:left}
+  .exitRow{margin-top:40px}
+  .exitRow .stop{grid-column:1}
+  .exitRow .stop::before{top:-42px;height:40px}
+  .drop{top:-30px}
+  .libbar span{padding:0 7px}
+  .libbar span b{font-size:17px}
+  .libbar span{font-size:0}
+  .libbar span b{font-size:17px}
 }
-.statusBtn:hover{transform:translateX(2px)}
-.statusBtn[aria-pressed="true"]{border-color:currentColor}
-.statusBtn .dot{width:9px;height:9px;flex:none;border-radius:50%;background:currentColor;align-self:center}
-.statusBtn .nm{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;text-transform:uppercase;font-size:12px}
-.gameCard{background:var(--panel);border:1px solid var(--rule);border-left-width:6px;padding:30px 32px;transition:border-color .2s ease}
-.gameCard .title{font-size:clamp(22px,3vw,30px);font-weight:800;margin:0 0 14px;color:var(--ink);letter-spacing:-.01em}
-.gameCard .pill{
-  display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;
-  letter-spacing:.07em;text-transform:uppercase;padding:5px 10px;border:1px solid currentColor;
-}
-.gameCard .meaning{margin:20px 0 0;font-size:19px;line-height:1.45;color:var(--ink);min-height:2.9em}
-.gameCard .foot{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule);font-size:13px;color:var(--dim)}
+@media (prefers-reduced-motion:reduce){.libbar{transform:none}}
 
 
 
@@ -136,8 +176,7 @@ a{color:var(--action)}
 @keyframes pulse{0%{box-shadow:0 0 0 0 var(--paper)}80%,100%{box-shadow:0 0 0 7px transparent}}
 .touchOnly{display:none}
 @media (hover:none){.touchOnly{display:inline}.mouseOnly{display:none}}
-.try .statusDemo{margin-top:0}
-.statusBtn:active,.ground:active{transform:scale(.97)}
+.ground:active{transform:scale(.97)}
 
 
 /* ---------------------------------------------------------------- lists */
@@ -264,9 +303,10 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
           in order and keeps an honest record of what you actually play — not just what you
           meant to.</p>
         <div class="cta">
-          <span class="soon mono">Coming soon to the App&nbsp;Store</span>
-          <a href="#sync">See how it logs itself&nbsp;→</a>
+          <a class="btn primary" href="https://testflight.apple.com/join/feDKESJ8">Try the beta on TestFlight</a>
+          <a class="btn discord" href="https://discord.gg/dyfWpzsnQZ"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.6 1.3a18.4 18.4 0 0 0-5.6 0L8.6 3a19.7 19.7 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18.1a19.9 19.9 0 0 0 6 3l1.3-2.1a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4a12.9 12.9 0 0 1-2.1 1l1.3 2.1a19.8 19.8 0 0 0 6-3c.5-5.2-.8-9.7-3.5-13.7ZM8.3 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm7.4 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"/></svg>Join the Discord</a>
         </div>
+        <p class="soonLine mono">Coming soon to the App&nbsp;Store · <a href="#sync">See how it logs itself&nbsp;→</a></p>
     </div>
 
     <div class="ribbon" id="ribbon" aria-label="Quest Chronicle in its eight themes, light and dark">
@@ -324,20 +364,37 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
 <section class="band">
   <div class="wrap reveal">
     <span class="eyebrow mono">Where things stand</span>
-    <h2>Five honest answers to "what is this game to me?"</h2>
-    <p>Not a rating out of ten. Where the game actually stands with you. Pick one and see what it
-      means.</p>
-    <div class="try">
-    <span class="tryTag"><span class="pulse" aria-hidden="true"></span>Try it<span class="how">Pick a status</span></span>
-    <div class="statusDemo">
-      <ul class="statusPicker" id="statusPicker"></ul>
-      <div class="gameCard" id="gameCard">
-        <p class="title" id="gcTitle">Hollow Knight: Silksong</p>
-        <span class="pill" id="gcPill">QUESTING</span>
-        <p class="meaning" id="gcMeaning"></p>
-        <p class="foot" id="gcFoot"></p>
+    <h2>Five statuses. What they mean is up to you.</h2>
+    <p>Not a score out of ten. Where the lines fall is yours: for one person Trophy Case means one
+      hundred per cent, for another it means "finished, and done with it". The app makes one move for
+      you: log a session and a game leaves the Backlog by itself.</p>
+
+    <div class="journey" id="journey" aria-label="How a game moves through the five statuses">
+      <div class="stops">
+        <div class="stop" id="st-backlog" style="--c:var(--attention)"><span class="sn">Backlog</span><span class="sm">Haven't started.</span></div>
+        <div class="hop auto" id="hop-1"><span>first session<br><b>automatic</b></span></div>
+        <div class="stop" id="st-questing" style="--c:var(--done)"><span class="sn">Questing</span><span class="sm">Playing it.</span></div>
+        <div class="hop" id="hop-2"><span>your<br>call</span></div>
+        <div class="stop" id="st-postgame" style="--c:var(--progress)"><span class="sn">Post-Game</span><span class="sm">Finished, still going back.</span></div>
+        <div class="hop" id="hop-3"><span>your<br>call</span></div>
+        <div class="stop" id="st-trophy" style="--c:var(--trophy)"><span class="sn">Trophy Case</span><span class="sm">Done with it.</span></div>
       </div>
+      <div class="exitRow" id="exitRow">
+        <div class="stop" id="st-abandoned" style="--c:var(--dim)"><span class="drop">or give up</span><span class="sn">Abandoned</span><span class="sm">Not for you. Never counted against you.</span></div>
+      </div>
+      <div class="token" id="token" aria-hidden="true"><span class="tk">🎮</span><span id="tokenName">Hades II</span></div>
+      <p class="jNote mono" id="jNote" aria-live="polite">&nbsp;</p>
     </div>
+
+    <div class="libbarWrap">
+      <div class="libbar" id="libbar">
+        <span style="--c:var(--attention);flex-grow:12"><b>12</b>Backlog</span>
+        <span style="--c:var(--done);flex-grow:12"><b>12</b>Questing</span>
+        <span style="--c:var(--progress);flex-grow:7"><b>7</b>Post-Game</span>
+        <span style="--c:var(--trophy);flex-grow:8"><b>8</b>Trophy Case</span>
+        <span style="--c:var(--dim);flex-grow:1.6" title="Abandoned: 1"><b>1</b></span>
+      </div>
+      <p class="cap">A 40-game library by status, the same breakdown the Achievements screen draws. Post-Game and Trophy Case count as finished: 38%.</p>
     </div>
   </div>
 </section>
@@ -638,34 +695,49 @@ try{
 }catch(e){}
 paint();
 
-/* ---------------------------------------------------------------- status */
-const STATUSES = [
- {k:"Backlog",     c:"--attention",t:"Alan Wake II",              m:"Games you want to play but haven't started yet.",                 f:"Backlog empties itself: log a session and the game moves on by itself, because playing it proves you started."},
- {k:"Questing",    c:"--done",     t:"Hollow Knight: Silksong",   m:"Games you're actively playing.",                                  f:"This is where the console sync puts things without being asked."},
- {k:"Post-Game",   c:"--progress", t:"Dave the Diver",            m:"The main content is done, but you still have optional goals.",    f:"Counts as finished in your completion rate. So does Trophy Case."},
- {k:"Trophy Case", c:"--ink",      t:"Outer Wilds",               m:"Games you've completed one hundred per cent.",                    f:"The only status you have to award yourself."},
- {k:"Abandoned",   c:"--dim",      t:"Halo Infinite",             m:"Games you've given up on, or decided not to play.",               f:"Left out of completion rates entirely. Quitting isn't failing, and it isn't finishing either."}
-];
-const picker=document.getElementById("statusPicker"), card=document.getElementById("gameCard");
-const gcT=document.getElementById("gcTitle"), gcP=document.getElementById("gcPill"),
-      gcM=document.getElementById("gcMeaning"), gcF=document.getElementById("gcFoot");
-function showStatus(s){
-  const col = `var(${s.c})`;
-  gcT.textContent=s.t; gcP.textContent=s.k.toUpperCase();
-  gcP.style.color=col; card.style.borderColor=col;
-  gcM.textContent=s.m; gcF.textContent=s.f;
-  picker.querySelectorAll("button").forEach(b=>
-    b.setAttribute("aria-pressed", String(b.dataset.k===s.k)));
+/* ------------------------------------------------------------ the journey */
+const journey = document.getElementById("journey"), token = document.getElementById("token"),
+      jNote = document.getElementById("jNote"), tokenName = document.getElementById("tokenName");
+const sleep = ms => new Promise(r=>setTimeout(r, ms));
+let journeyVisible = false;
+function placeToken(stopId){
+  const st = document.getElementById(stopId).getBoundingClientRect(), jr = journey.getBoundingClientRect();
+  const x = st.left - jr.left + st.width/2 - token.offsetWidth/2, y = st.top - jr.top + 16;
+  token.style.transform = `translate(${x}px, ${y}px)`;
 }
-STATUSES.forEach(s=>{
-  const li=document.createElement("li"), b=document.createElement("button");
-  b.type="button"; b.className="statusBtn"; b.dataset.k=s.k;
-  b.style.color=`var(${s.c})`; b.setAttribute("aria-pressed","false");
-  b.innerHTML=`<span class="dot" aria-hidden="true"></span><span class="nm">${s.k}</span>`;
-  b.addEventListener("click",()=>{ showStatus(s); used(picker); });
-  li.appendChild(b); picker.appendChild(li);
-});
-showStatus(STATUSES[1]);
+function lightUp(ids){
+  document.querySelectorAll(".journey .stop, .journey .hop, .exitRow").forEach(el=>el.classList.toggle("on", ids.includes(el.id)));
+}
+async function step(stop, extra, note, wait){
+  while(!journeyVisible) await sleep(400);
+  lightUp([stop, ...extra]); placeToken(stop); jNote.textContent = note;
+  await sleep(wait);
+}
+const RUNS = [
+  {g:"Hades II", path:[
+    ["st-backlog",  [],          "Hades II is added to the library. Backlog.", 1900],
+    ["st-questing", ["hop-1"],   "First session logged. It moved to Questing by itself.", 2400],
+    ["st-postgame", ["hop-2"],   "You move it on when you decide it's finished. Post-Game.", 2300],
+    ["st-trophy",   ["hop-3"],   "Done with it, by your definition. Trophy Case.", 2600]]},
+  {g:"Halo Infinite", path:[
+    ["st-backlog",   [],          "Halo Infinite is added. Backlog.", 1700],
+    ["st-questing",  ["hop-1"],   "First session logged. Questing, automatically.", 2200],
+    ["st-abandoned", ["exitRow"], "Not for you. Abandoned, and your completion rate leaves it out.", 3000]]}
+];
+async function runJourney(){
+  if(reduced){ token.classList.add("show"); tokenName.textContent = "Hades II"; lightUp(["st-questing","hop-1"]); placeToken("st-questing");
+    jNote.textContent = "First session logged. It moved to Questing by itself."; return; }
+  for(;;) for(const run of RUNS){
+    token.classList.remove("show"); await sleep(350);
+    tokenName.textContent = run.g; lightUp([]);
+    token.style.transition = "none"; placeToken(run.path[0][0]); token.offsetWidth; token.style.transition = "";
+    token.classList.add("show");
+    for(const [stop, extra, note, wait] of run.path) await step(stop, extra, note, wait);
+  }
+}
+new IntersectionObserver(es=>{ journeyVisible = es[0].isIntersecting; },{threshold:.25}).observe(journey);
+window.addEventListener("resize", ()=>{ const on = document.querySelector(".journey .stop.on"); if(on) placeToken(on.id); });
+runJourney();
 
 
 
