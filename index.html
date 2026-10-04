@@ -287,14 +287,14 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
       library it writes the session itself, with how long it lasted. One evening is one session,
       however many times it looked.</p>
     <p>It uses <strong>your</strong> key, kept on <strong>your</strong> device. No account to make,
-      no server of mine in the middle — which is also why there's nothing to cancel.</p>
+      no server in the middle — which is also why there's nothing to cancel.</p>
 
     <div class="feed" id="feed" aria-label="Example of sessions appearing on their own"></div>
     <button class="replay" id="replay" type="button">Play it again</button>
 
     <div class="grid">
       <div class="cell"><span class="glyph">🎙️</span><h3>Or just say so</h3>
-        <p>"Hey Siri, log a session in Quest Chronicle." Name the game in the same breath and the
+        <p>"Hey Siri, log Hades in Quest Chronicle." Name the game in the same breath and the
           app never has to open.</p></div>
       <div class="cell"><span class="glyph">🔒</span><h3>Never a game you don't own</h3>
         <p>It only logs titles already in your library, so a housemate borrowing the console can't
@@ -400,7 +400,7 @@ const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------------------------------------------------------------- themes */
 const THEMES = [
- {id:"system",   name:"Classic",       blurb:"Follows light and dark.",
+ {id:"system",   name:"Classic",       blurb:"The default: plain, and out of the way.",
   light:{paper:"#F4F4F6",panel:"#FFFFFF",ink:"#16161A",dim:"#5C5C68",rule:"#D8D8DE",action:"#2F5FE0",alert:"#B52318"},
   dark: {paper:"#0E0E12",panel:"#17171D",ink:"#F2F2F0",dim:"#9A9AA6",rule:"#2A2A34",action:"#7FA0FF",alert:"#E5665A"}},
  {id:"terminal", name:"Green Terminal",blurb:"Phosphor on paper, or on glass.",
@@ -452,7 +452,7 @@ function paint(){
   document.querySelectorAll(".ground").forEach(b=>
     b.setAttribute("aria-pressed", String(b.dataset.ground === ground)));
   const blurb = document.getElementById("themeBlurb");
-  if(blurb) blurb.textContent = theme.blurb;
+  if(blurb) blurb.textContent = theme.name + ": " + theme.blurb;
   try{ localStorage.setItem("qc-theme", theme.id); localStorage.setItem("qc-ground", ground); }catch(e){}
 }
 function setTheme(t){ theme = t; paint(); }
@@ -511,7 +511,7 @@ showStatus(STATUSES[1]);
 const EVENTS=[
  {g:"Hades II",                i:"🎮", s:"Logged session · 2h 15m", auto:true},
  {g:"Balatro",                 i:"🎮", s:"Logged session · 48m",    auto:true},
- {g:"Hollow Knight: Silksong", i:"🎮", s:"Logged session · 1h 32m", auto:false},
+ {g:"Hollow Knight: Silksong", i:"🎮", s:"Logged session · 1h 32m", auto:true, src:"Xbox"},
  {g:"Hades II",                i:"🎮", s:"Moved to Questing",       auto:false}
 ];
 const feed=document.getElementById("feed");
@@ -522,7 +522,7 @@ function playFeed(){
     const row=document.createElement("div"); row.className="ev";
     row.innerHTML=`<span class="ic" aria-hidden="true">${e.i}</span><div>
         <div class="nm">${e.g}</div>
-        <div class="sub">${e.s}${e.auto?' · <span class="auto">logged automatically from Steam</span>':""}</div>
+        <div class="sub">${e.s}${e.auto?' · <span class="auto">logged automatically from ${e.src||"Steam"}</span>':""}</div>
       </div>`;
     feed.appendChild(row);
     if(reduced){ row.classList.add("in"); }
