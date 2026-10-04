@@ -64,6 +64,14 @@ a{color:var(--action)}
 .themebar{margin-top:34px;padding-top:26px;border-top:1px solid var(--rule)}
 .themebar h3{font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
 .themebar .hint{font-size:14px;margin:0 0 16px}
+.themebar .blurb{color:var(--action);font-weight:600}
+.groundToggle{display:inline-flex;gap:0;margin:0 0 16px;border:1px solid var(--rule)}
+.ground{
+  background:var(--panel);border:0;color:var(--dim);cursor:pointer;
+  font:inherit;font-size:13px;font-weight:700;padding:9px 16px;transition:color .16s ease,background .16s ease;
+}
+.ground + .ground{border-left:1px solid var(--rule)}
+.ground[aria-pressed="true"]{background:var(--action);color:var(--paper)}
 .swatches{display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0;list-style:none}
 .swatch{
   display:flex;align-items:center;gap:9px;padding:8px 13px 8px 9px;cursor:pointer;
@@ -188,8 +196,14 @@ footer{padding:60px 0;border-top:1px solid var(--rule);color:var(--dim);font-siz
     <!-- The switcher is the feature, demonstrated. Picking a theme repaints
          this page with the app's real palette for that skin. -->
     <div class="themebar">
-      <h3 class="mono">Eight themes. Try them on this page.</h3>
-      <p class="hint">These are the app's real palettes, not an impression of them.</p>
+      <h3 class="mono">Eight themes, light or dark. Try them on this page.</h3>
+      <p class="hint">The app's real palettes, not an impression of them — and the theme and the
+        light/dark choice are separate, exactly as they are in the app.
+        <span id="themeBlurb" class="blurb"></span></p>
+      <div class="groundToggle" role="group" aria-label="Light or dark">
+        <button type="button" class="ground" data-ground="light" aria-pressed="false">☀︎ Light</button>
+        <button type="button" class="ground" data-ground="dark"  aria-pressed="false">☾ Dark</button>
+      </div>
       <ul class="swatches" id="swatches"></ul>
     </div>
   </div>
@@ -368,18 +382,40 @@ const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------------------------------------------------------------- themes */
 const THEMES = [
- {id:"system",   name:"Classic",       p:{paper:"#0E0E12",panel:"#17171D",ink:"#F2F2F0",dim:"#9A9AA6",rule:"#2A2A34",action:"#7FA0FF",alert:"#E5665A"}},
- {id:"terminal", name:"Green Terminal",p:{paper:"#0A0F0A",panel:"#121A12",ink:"#5CF26B",dim:"#3D9E4C",rule:"#2E7A38",action:"#3DB852",alert:"#FF594C"}},
- {id:"steampunk",name:"Steampunk",     p:{paper:"#1C140D",panel:"#2B2114",ink:"#E6C78C",dim:"#A88A5C",rule:"#B8852E",action:"#B8852E",alert:"#EB5C47"}},
- {id:"cyberpunk",name:"Cyberpunk",     p:{paper:"#0E0B17",panel:"#1B1429",ink:"#1AF2E0",dim:"#947AC7",rule:"#F22699",action:"#F22699",alert:"#FF4059"}},
- {id:"anime",    name:"Anime",         p:{paper:"#1A1426",panel:"#292138",ink:"#F7E6F2",dim:"#B8A3D1",rule:"#EB7AA8",action:"#EB7AA8",alert:"#FF6B80"}},
- {id:"scifi",    name:"Sci-Fi",        p:{paper:"#080F1A",panel:"#0F1B2B",ink:"#B8E6FF",dim:"#7099B8",rule:"#339ED9",action:"#339ED9",alert:"#FF9426"}},
- {id:"arcade",   name:"Arcade",        p:{paper:"#0D0C12",panel:"#1C1B25",ink:"#FFED4C",dim:"#B8AD73",rule:"#F22938",action:"#F22938",alert:"#F22938"}},
- {id:"handheld", name:"Handheld",      p:{paper:"#242B17",panel:"#333D21",ink:"#CCE099",dim:"#94A86B",rule:"#708A47",action:"#ADCC66",alert:"#F2CC66"}}
+ {id:"system",   name:"Classic",       blurb:"Follows light and dark.",
+  light:{paper:"#F4F4F6",panel:"#FFFFFF",ink:"#16161A",dim:"#5C5C68",rule:"#D8D8DE",action:"#2F5FE0",alert:"#B52318"},
+  dark: {paper:"#0E0E12",panel:"#17171D",ink:"#F2F2F0",dim:"#9A9AA6",rule:"#2A2A34",action:"#7FA0FF",alert:"#E5665A"}},
+ {id:"terminal", name:"Green Terminal",blurb:"Phosphor on paper, or on glass.",
+  light:{paper:"#F2EDE0",panel:"#FAF5EB",ink:"#006600",dim:"#004C00",rule:"#006600",action:"#006600",alert:"#CC0000"},
+  dark: {paper:"#0A0F0A",panel:"#121A12",ink:"#5CF26B",dim:"#3D9E4C",rule:"#2E7A38",action:"#3DB852",alert:"#FF594C"}},
+ {id:"steampunk",name:"Steampunk",     blurb:"Brass, oxblood and aged parchment.",
+  light:{paper:"#E8D9BA",panel:"#F2E6CC",ink:"#3D210D",dim:"#704C29",rule:"#8C6129",action:"#6B471A",alert:"#9E1C12"},
+  dark: {paper:"#1C140D",panel:"#2B2114",ink:"#E6C78C",dim:"#A88A5C",rule:"#B8852E",action:"#B8852E",alert:"#EB5C47"}},
+ {id:"cyberpunk",name:"Cyberpunk",     blurb:"Neon signage after the rain.",
+  light:{paper:"#DEE3F7",panel:"#EDF0FF",ink:"#1A0D38",dim:"#574785",rule:"#D91A8C",action:"#CC0D85",alert:"#E02647"},
+  dark: {paper:"#0E0B17",panel:"#1B1429",ink:"#1AF2E0",dim:"#947AC7",rule:"#F22699",action:"#F22699",alert:"#FF4059"}},
+ {id:"anime",    name:"Anime",         blurb:"Sakura, sky and clean line art.",
+  light:{paper:"#FCEBED",panel:"#FFF7F7",ink:"#4C1A33",dim:"#8A5270",rule:"#F59EBF",action:"#852EC7",alert:"#ED4061"},
+  dark: {paper:"#1A1426",panel:"#292138",ink:"#F7E6F2",dim:"#B8A3D1",rule:"#EB7AA8",action:"#EB7AA8",alert:"#FF6B80"}},
+ {id:"scifi",    name:"Sci-Fi",        blurb:"Cold instrumentation, amber warnings.",
+  light:{paper:"#EDF2F7",panel:"#FAFCFF",ink:"#0F263D",dim:"#47617A",rule:"#3385B8",action:"#3385B8",alert:"#CC6B0D"},
+  dark: {paper:"#080F1A",panel:"#0F1B2B",ink:"#B8E6FF",dim:"#7099B8",rule:"#339ED9",action:"#339ED9",alert:"#FF9426"}},
+ {id:"arcade",   name:"Arcade",        blurb:"Cabinet glass in a dark room.",
+  light:{paper:"#D6D9E0",panel:"#EBEDF2",ink:"#0F0F14",dim:"#575761",rule:"#D9212E",action:"#D11424",alert:"#D9212E"},
+  dark: {paper:"#0D0C12",panel:"#1C1B25",ink:"#FFED4C",dim:"#B8AD73",rule:"#F22938",action:"#F22938",alert:"#F22938"}},
+ {id:"handheld", name:"Handheld",      blurb:"Four shades of green, like it\'s 1989.",
+  light:{paper:"#C2CC82",panel:"#ABBA70",ink:"#0F210F",dim:"#384F26",rule:"#304224",action:"#304224",alert:"#0F210F"},
+  dark: {paper:"#242B17",panel:"#333D21",ink:"#CCE099",dim:"#94A86B",rule:"#708A47",action:"#ADCC66",alert:"#F2CC66"}}
 ];
 const root = document.documentElement;
-function applyTheme(t){
-  const p = t.p;
+/* Theme and light/dark are INDEPENDENT in the app — picking Steampunk does not
+   decide whether you get parchment or a dark workshop; the Appearance setting
+   does. The page mirrors that rather than collapsing the two into one list. */
+let theme = THEMES[0];
+let ground = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+
+function paint(){
+  const p = theme[ground];
   root.style.setProperty("--paper",p.paper);
   root.style.setProperty("--panel",p.panel);
   root.style.setProperty("--ink",p.ink);
@@ -387,25 +423,42 @@ function applyTheme(t){
   root.style.setProperty("--rule",p.rule);
   root.style.setProperty("--action",p.action);
   root.style.setProperty("--alert",p.alert);
-  document.querySelectorAll(".swatch").forEach(b=>
-    b.setAttribute("aria-pressed", String(b.dataset.theme === t.id)));
-  try{ localStorage.setItem("qc-theme", t.id); }catch(e){}
+  root.style.colorScheme = ground;
+  document.querySelectorAll(".swatch").forEach(b=>{
+    const t = THEMES.find(x=>x.id===b.dataset.theme);
+    b.setAttribute("aria-pressed", String(b.dataset.theme === theme.id));
+    [...b.querySelectorAll(".chip")].forEach((c,i)=>{
+      c.style.background = t[ground][["paper","action","ink"][i]];
+    });
+  });
+  document.querySelectorAll(".ground").forEach(b=>
+    b.setAttribute("aria-pressed", String(b.dataset.ground === ground)));
+  const blurb = document.getElementById("themeBlurb");
+  if(blurb) blurb.textContent = theme.blurb;
+  try{ localStorage.setItem("qc-theme", theme.id); localStorage.setItem("qc-ground", ground); }catch(e){}
 }
+function setTheme(t){ theme = t; paint(); }
+function setGround(g){ ground = g; paint(); }
+
 const swatches = document.getElementById("swatches");
 THEMES.forEach(t=>{
   const li = document.createElement("li");
   const b  = document.createElement("button");
-  b.type = "button"; b.className = "swatch"; b.dataset.theme = t.id;
+  b.type="button"; b.className="swatch"; b.dataset.theme=t.id;
   b.setAttribute("aria-pressed","false");
-  b.innerHTML = '<span class="chips" aria-hidden="true">'
-    + ['paper','action','ink'].map(k=>`<span class="chip" style="background:${t.p[k]}"></span>`).join("")
-    + `</span>${t.name}`;
-  b.addEventListener("click",()=>applyTheme(t));
+  b.innerHTML = '<span class="chips" aria-hidden="true"><span class="chip"></span><span class="chip"></span><span class="chip"></span></span>' + t.name;
+  b.addEventListener("click",()=>setTheme(t));
   li.appendChild(b); swatches.appendChild(li);
 });
-let saved = null;
-try{ saved = localStorage.getItem("qc-theme"); }catch(e){}
-applyTheme(THEMES.find(t=>t.id===saved) || THEMES[0]);
+document.querySelectorAll(".ground").forEach(b=>
+  b.addEventListener("click",()=>setGround(b.dataset.ground)));
+
+try{
+  const st = localStorage.getItem("qc-theme"), sg = localStorage.getItem("qc-ground");
+  if(st) theme = THEMES.find(t=>t.id===st) || theme;
+  if(sg==="light"||sg==="dark") ground = sg;
+}catch(e){}
+paint();
 
 /* ---------------------------------------------------------------- status */
 const STATUSES = [
