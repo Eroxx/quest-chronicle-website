@@ -100,7 +100,7 @@ footer a{color:var(--accent)}
   <div class="wrap doc">
     <a class="back mono" href="index.html">&lsaquo; Quest Chronicle</a>
     <h1>Privacy Policy</h1>
-    <p class="mono">Last updated 11 October 2026</p>
+    <p class="mono">Last updated 30 October 2026</p>
 
     <p>Quest Chronicle has no account, no analytics, no advertising and no tracking of any kind.
       There is no server run by the developer, and your library is never sent to him.</p>
@@ -136,12 +136,35 @@ footer a{color:var(--accent)}
             browsers and can stop working without notice</td>
           <td>How long games take, cover artwork</td></tr>
       <tr><td>Steam<br><span class="mono">api.steampowered.com</span></td>
-          <td>Your Steam ID and your own Steam Web API key</td>
-          <td>What you are playing and how long you have played it</td></tr>
+          <td>Your Steam ID and your own Steam Web API key, and the Steam number of a game when
+            you look at its achievements</td>
+          <td>What you are playing, the games you own, how long you have played them, and your
+            achievements</td></tr>
       <tr><td>Xbox, through OpenXBL<br><span class="mono">xbl.io</span></td>
           <td>Your own OpenXBL key</td>
           <td>What you are playing and when you last played each game</td></tr>
+      <tr><td>Microsoft Store catalog<br><span class="mono">displaycatalog.mp.microsoft.com</span></td>
+          <td>The title of an Xbox game you have not started yet. Nothing about you or your
+            account</td>
+          <td>That game's Xbox number, so its achievements can be listed</td></tr>
+      <tr><td>PlayStation, through Sony<br><span class="mono">ca.account.sony.com, m.np.playstation.com</span></td>
+          <td>Your sign-in, which you type into Sony's own page, never into the app. After that,
+            only the sign-in token Sony gives back</td>
+          <td>Your PlayStation account number and online name, what you are playing, how long you
+            have played your games, and your trophies</td></tr>
     </table>
+
+    <p>Sony offers no public way for apps to connect, so Quest Chronicle signs in the way Sony's
+      own PlayStation app does, as other trophy apps on the App Store do. Sony can change or block
+      this at any time. Your password goes only to Sony; the token Sony returns stays in this
+      device's Keychain. So that all your devices follow the same PlayStation account, your
+      account number and online name are kept in your own iCloud, along with a short list of
+      recent sign-in events (when, on which kind of device, and Sony's reply), which never
+      includes a token.</p>
+
+    <p>The app never sends anything to leveluphq.app. That address, from the app's old name, only
+      appears as a label: in the line that identifies the app to HowLongToBeat, and on the Siri
+      shortcuts it offers, which open inside the app.</p>
 
     <p>OpenXBL is an independent service, not Microsoft. Using it means trusting that service with
       your Xbox account, which is why the app says so where you set it up, and why nothing happens
