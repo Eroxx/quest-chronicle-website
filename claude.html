@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quest Chronicle — Use it with Claude</title>
+<meta name="description" content="How to connect Quest Chronicle on the Mac to Claude, Claude Code, Codex and other AI apps, and what you can ask.">
+<meta property="og:title" content="Quest Chronicle — Use it with Claude">
+<meta property="og:description" content="How to connect Quest Chronicle on the Mac to Claude, Claude Code, Codex and other AI apps, and what you can ask.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+/* The app's identity is blocky — square corners on purpose, monospace for anything that is
+   data rather than prose. The site inherits that rather than inventing a softer version of it. */
+:root{
+  --bg:#F4F4F6; --panel:#FFFFFF; --ink:#16161A; --dim:#5C5C68; --line:#D8D8DE;
+  --accent:#2F5FE0; --done:#2E8B57; --attention:#C97F19; --danger:#B52318; --progress:#7D5CFF;
+  --ground:#16161A;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0E0E12; --panel:#17171D; --ink:#F2F2F0; --dim:#9A9AA6; --line:#2A2A34;
+         --accent:#7FA0FF; --done:#57C98A; --attention:#E8AC4A; --danger:#E5665A; --progress:#A98CFF; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+section{padding:88px 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+h1,h2,h3{margin:0 0 16px;letter-spacing:-0.02em;line-height:1.08}
+h1{font-size:clamp(34px,6vw,62px);font-weight:800}
+h2{font-size:clamp(26px,4vw,42px);font-weight:800}
+h3{font-size:19px;font-weight:700;letter-spacing:-0.01em}
+p{margin:0 0 16px;color:var(--dim);font-size:17px;max-width:62ch}
+.lead{font-size:clamp(18px,2.2vw,22px);color:var(--dim);max-width:56ch}
+
+/* ---- hero ---- */
+#hero{background:var(--ground);color:#F2F2F0;border-top:0;padding:64px 0 0}
+#hero p{color:#A6A6B4}
+.badge{
+  display:inline-block;padding:5px 10px;border:1px solid #3A3A46;color:#A6A6B4;
+  font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;
+}
+.mark{display:block;width:76px;height:76px;margin-bottom:22px}
+.shot{
+  display:block;width:100%;max-width:1000px;margin:56px auto -1px;border:1px solid #2A2A34;
+  border-bottom:0;box-shadow:0 -20px 60px rgba(0,0,0,.35);
+}
+.shotnote{text-align:center;font-size:12px;color:#6E6E7C;padding:0 0 14px}
+
+/* ---- feature grid ---- */
+.grid{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);margin-top:40px}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+.cell{background:var(--panel);padding:28px}
+.cell p{font-size:15px;margin-bottom:0}
+.glyph{font-size:22px;line-height:1;margin-bottom:14px;display:block}
+
+/* ---- status list ---- */
+.statuses{list-style:none;padding:0;margin:32px 0 0;border-top:1px solid var(--line)}
+.statuses li{
+  display:flex;gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);
+}
+.statuses .name{
+  font-weight:700;font-size:14px;letter-spacing:0.04em;text-transform:uppercase;
+  min-width:132px;flex:none;
+}
+.statuses .what{color:var(--dim);font-size:15px}
+
+/* ---- keyboard ---- */
+.keys{display:grid;gap:10px 20px;margin-top:32px}
+@media(min-width:640px){.keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.keyrow{display:flex;gap:14px;align-items:center;font-size:15px;color:var(--dim)}
+kbd{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:600;
+  color:var(--ink);background:var(--panel);border:1px solid var(--line);border-bottom-width:3px;
+  padding:4px 9px;letter-spacing:0.7px;min-width:52px;text-align:center;flex:none;
+}
+
+footer{padding:56px 0;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+footer a{color:var(--accent)}
+</style>
+<style>
+  .doc h2{margin-top:32px}
+  .doc h3{margin-top:24px;font-size:1.05rem}
+  .doc li{margin:6px 0}
+  .doc table{width:100%;border-collapse:collapse;margin:16px 0}
+  .doc th,.doc td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .doc th{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+  .back{display:inline-block;margin-bottom:8px}
+</style>
+<style>
+  .doc pre{background:var(--panel);border:1px solid var(--line);padding:14px 16px;overflow-x:auto;
+    font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);margin:12px 0 16px;
+    white-space:pre-wrap;overflow-wrap:break-word;min-width:0}
+  .doc code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.92em}
+  .doc ol,.doc ul{color:var(--dim);max-width:66ch}
+  .doc ol li strong,.doc ul li strong{color:var(--ink)}
+  .ask{list-style:none;padding:0}
+  .ask li{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;color:var(--ink);
+    padding:10px 0;border-bottom:1px solid var(--line)}
+</style>
+</head>
+<body>
+<section>
+  <div class="wrap doc">
+    <a class="back mono" href="index.html">&lsaquo; Quest Chronicle</a>
+    <h1>Use Quest Chronicle with Claude</h1>
+    <p class="lead">On the Mac, Claude, Codex and other AI apps can read your game library and play
+      history, answer questions about it, and log sessions, change statuses, add and tag games and
+      build lists for you. You set it up once.</p>
+    <p>This works with Quest Chronicle on a Mac only. The iPhone and iPad apps can't be connected,
+      but anything the AI app changes reaches them through iCloud like any other change.</p>
+
+    <h2>Set it up</h2>
+    <ol>
+      <li><strong>Have an AI app on your Mac.</strong> The Claude app (from claude.ai/download),
+        Claude Code, Codex, or any app that supports MCP servers.</li>
+      <li><strong>Open Quest Chronicle's setup.</strong> In Quest Chronicle on the Mac, go to
+        Settings, then AI Apps (Help, then Use Quest Chronicle with Claude, goes there too).
+        It has a Copy Setup button for each app, with the exact text shown under it.</li>
+      <li><strong>Add it to your AI app</strong>, as below for the app you use.</li>
+      <li><strong>Ask about your games</strong> in a new chat.</li>
+    </ol>
+    <p>The setup names where Quest Chronicle is on your Mac. If it's in your Applications folder,
+      the text is exactly what's below. Copying it from Settings is safest, since it always has the
+      right place.</p>
+
+    <h3>The Claude app (Claude Desktop)</h3>
+    <ol>
+      <li>In Claude, choose Settings, then Developer, then <strong>Edit Config</strong>. That shows
+        a file called claude_desktop_config.json.</li>
+      <li>If the file is empty or holds only <code>{}</code>, replace it with this:
+<pre>{
+  "mcpServers": {
+    "quest-chronicle": {
+      "command": "/Applications/Quest Chronicle.app/Contents/MacOS/Quest Chronicle",
+      "args": ["--mcp"]
+    }
+  }
+}</pre>
+        If it already lists other servers under <code>"mcpServers"</code>, add just the
+        <code>"quest-chronicle": { … }</code> part beside them, with a comma between entries.</li>
+      <li>Save the file, then quit Claude completely (Command-Q) and open it again. Claude reads
+        this file only when it starts.</li>
+    </ol>
+
+    <h3>Claude Code</h3>
+    <p>Paste this into Terminal and press Return, once:</p>
+<pre>claude mcp add --scope user quest-chronicle -- "/Applications/Quest Chronicle.app/Contents/MacOS/Quest Chronicle" --mcp</pre>
+    <p>Every new Claude Code session can then use it. <code>claude mcp list</code> shows it.</p>
+
+    <h3>Codex</h3>
+    <p>Paste this into Terminal and press Return, once:</p>
+<pre>codex mcp add quest-chronicle -- "/Applications/Quest Chronicle.app/Contents/MacOS/Quest Chronicle" --mcp</pre>
+
+    <h3>Another app that supports MCP</h3>
+    <p>Add a local (stdio) server with the command
+      <code>/Applications/Quest Chronicle.app/Contents/MacOS/Quest Chronicle</code> and the one argument <code>--mcp</code>.</p>
+
+    <h2>What to ask</h2>
+    <p>Ask in your own words. Some things people ask:</p>
+    <ul class="ask">
+      <li>“What have I played most this month?”</li>
+      <li>“Log two hours of Hades II for last night.”</li>
+      <li>“Which short Switch games have I never started?”</li>
+      <li>“Make a smart list of Backlog games under 10 hours.”</li>
+      <li>“Tag every Zelda game as Zelda.”</li>
+      <li>“Which games am I closest to 100% achievements on?”</li>
+      <li>“Show me that list in Quest Chronicle.”</li>
+    </ul>
+
+    <h2>What it can do</h2>
+    <ul>
+      <li><strong>Read:</strong> your games with their statuses, consoles, genres, notes, tags and
+        lists; your play sessions; play statistics for any period; Steam, Xbox and PlayStation
+        achievements.</li>
+      <li><strong>Change:</strong> log a play session, change a game's status, add a game, edit a
+        game's notes or genre, add games to a list or take them out, create a list or a smart list,
+        and tag or untag games.</li>
+      <li><strong>Show:</strong> bring Quest Chronicle forward on a game or a list.</li>
+    </ul>
+    <p>Every change goes through Quest Chronicle, so it syncs to your other devices like one you
+      made, and you can ask it to undo its last change. It can't delete a game or a list. The one
+      thing it can remove is a single play session, and it asks you which one first.</p>
+
+    <h2>Questions</h2>
+    <h3>Does Quest Chronicle have to be open?</h3>
+    <p>No. When the AI app needs it, it opens Quest Chronicle in the background, out of your way.</p>
+    <h3>Does my library go to Anthropic or OpenAI?</h3>
+    <p>Quest Chronicle sends nothing to them by itself. What the AI app reads to answer you becomes
+      part of that conversation, under that company's own privacy policy. Nothing is connected until
+      you add the setup, and removing it from your AI app disconnects it.
+      <a href="privacy.html">The privacy policy</a> says more.</p>
+    <h3>It doesn't show up in my AI app.</h3>
+    <p>Quit the AI app completely and open it again: it reads its setup only when it starts. If you
+      moved Quest Chronicle to another folder, copy the setup again from Settings, since it names
+      where the app is. In Claude's Edit Config file, a missing comma or bracket stops every server
+      loading; Claude says so in Settings, then Developer.</p>
+    <h3>How do I remove it?</h3>
+    <p>Claude app: delete the "quest-chronicle" entry from the config file and restart Claude.
+      Claude Code: <code>claude mcp remove quest-chronicle</code>. Codex:
+      <code>codex mcp remove quest-chronicle</code>.</p>
+
+    <h2>Still stuck</h2>
+    <p>Ask in the <a href="https://discord.gg/dyfWpzsnQZ">Quest Chronicle Discord</a>, or see
+      <a href="support.html">Support</a>.</p>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <p class="mono" style="margin:0">Quest Chronicle — a game library and play tracker for macOS, iPhone and iPad.</p>
+    <p style="margin:8px 0 0">© 2026 Chai Wellness</p>
+    <p class="mono" style="margin:10px 0 0">
+      <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+      <a href="support.html">Support</a> &nbsp;·&nbsp;
+      <a href="https://discord.gg/dyfWpzsnQZ">Discord</a>
+    </p>
+  </div>
+</footer>
+</body>
+</html>
